@@ -42,6 +42,7 @@ A fresh clone of the public repository at `70dca58084c4d97e6da09b4a50e2819ce99d3
 
 ## Bonus Evidence and Limits
 
+- Browser page rendering uses PDF.js, not MuPDF WASM, so the optional WASM-rendering bonus is partial. MuPDF WASM worker-side document processing, mutation, and serialization are directly evidenced.
 - Native Text and Highlight annotations persist in `../evidence/generated-pdfs/existing-annotations-edited.pdf`.
 - Applied redaction removes the controlled secret in `../evidence/generated-pdfs/applied-redaction.pdf`; `artifact-inspection-final.json` reports `secretFound: false`.
 - Bookmark edits persist in `../evidence/generated-pdfs/bookmarks-edited.pdf`.
