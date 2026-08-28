@@ -7,3 +7,6 @@ coverage/
 .env
 .env.*
 !.env.example
+A/tests/fixtures/generated/
+C/evidence/artifacts/generated/
+tmp/

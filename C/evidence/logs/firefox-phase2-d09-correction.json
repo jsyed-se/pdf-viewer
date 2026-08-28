@@ -1,0 +1,77 @@
+{
+  "runAtUtc": "2026-08-28T23:02:24.883753+00:00",
+  "browser": {
+    "name": "firefox",
+    "version": "154.0.1",
+    "platform": "windows",
+    "headless": true,
+    "viewport": "1440x900"
+  },
+  "fixtureManifestHashes": {
+    "normal.pdf": "0aef5927\u2026",
+    "large-linearized.pdf": "abf38a01\u2026"
+  },
+  "results": {
+    "D09": {
+      "outcome": "PASS",
+      "replacementEvents": [
+        "primary:progress:11032/11032",
+        "primary:ready:multi-page-text.pdf:16"
+      ],
+      "replacementPrimaryPage": 1,
+      "replacementPageCallbackCount": 0,
+      "secondaryEventsDuringReplacementCount": 0,
+      "secondaryAfterReplacement": {
+        "pageCount": 2,
+        "currentPage": 1
+      },
+      "workspaceBeforeDeliberateScroll": {
+        "clientHeight": 659,
+        "scrollHeight": 25180,
+        "scrollTop": 0
+      },
+      "postScrollEvents": [
+        "primary:page:2",
+        "primary:page:3"
+      ],
+      "postScrollTrackedPage": 3,
+      "postScrollPageCallbackCount": 2,
+      "workspaceAfterDeliberateScroll": {
+        "clientHeight": 659,
+        "scrollHeight": 25180,
+        "scrollTop": 3200
+      },
+      "capturedAppErrors": []
+    },
+    "D12_loaded_to_loaded_smoke": {
+      "outcome": "PASS",
+      "sequence": [
+        "normal.pdf",
+        "multi-page-text.pdf",
+        "existing-annotations.pdf",
+        "normal.pdf"
+      ],
+      "completed": [
+        "normal.pdf",
+        "multi-page-text.pdf",
+        "existing-annotations.pdf",
+        "normal.pdf"
+      ],
+      "finalCurrentPage": 1,
+      "capturedAppErrors": []
+    }
+  },
+  "summary": {
+    "passed": 2,
+    "failed": 0,
+    "sendWithPromiseCount": 0,
+    "applicationJavaScriptErrorCount": 0
+  },
+  "combinedGeckodriverLog": "C\\evidence\\logs\\firefox-phase2-d09-correction-geckodriver.log",
+  "partLogs": [
+    "C\\evidence\\logs\\firefox-phase2-d09-correction-geckodriver-part-1.log",
+    "C\\evidence\\logs\\firefox-phase2-d09-correction-geckodriver-part-2.log"
+  ],
+  "sendWithPromiseLines": [],
+  "applicationJavaScriptErrorLines": []
+}

@@ -20,19 +20,20 @@ Demo host (`App`)
 
 ## SDK Integration Boundary
 
-The host supplies a discriminated `file`, `url`, or `bytes` source plus attachment metadata. It owns surrounding navigation and decides how to react to `onReady`, `onProgress`, `onPageChange`, `onDirtyChange`, `onSave`, `onError`, and password requests. The SDK owns every PDF concern. This keeps host navigation and attachment rules out of both PDF engines.
+The host supplies a discriminated `file`, `url`, or `bytes` source plus attachment metadata. It owns surrounding navigation and decides how to react to `onReady`, `onProgress`, `onPageChange`, `onDirtyChange`, `onSave`, `onError`, `onCloseRequest`, and password requests. The SDK owns every PDF concern. This keeps host navigation and attachment rules out of both PDF engines.
 
 ## Major Modules
 
 - `sdk/PdfViewerSDK.tsx` coordinates lifecycle, viewing state, dirty-state protection, print, and export.
 - `components/PdfPageCanvas.tsx` renders visible pages and selectable text at device pixel ratio, then converts region and text-selection coordinates through the PDF.js viewport.
 - `components/DocumentEditor.tsx` provides transactional page manipulation and accessible reorder controls.
-- `sdk/engineClient.ts` is a request/response bridge with pending-call cleanup.
+- `sdk/engineClient.ts` is a request/response bridge with a bounded startup handshake and pending-call cleanup.
+- `workers/pdfEngine.bootstrap.worker.ts` registers immediately, loads the MuPDF engine module, and reports ready or startup failure.
 - `workers/pdfEngine.worker.ts` owns the MuPDF document, journal, clipboard, committed bytes, native PDF structures, and serialization.
 
 ## State Management
 
-React state holds view mode, current page, zoom policy, panel visibility, loading status, errors, and the worker snapshot. The worker is the authority for committed/working PDF bytes, journal history, clipboard pages, annotations, outlines, and dirty state. The host retains attachment/source state. A monotonically increasing viewer revision rejects stale loads; worker requests carry unique IDs.
+React state holds view mode, current page, zoom policy, panel visibility, loading status, errors, and the worker snapshot. The worker is the authority for committed/working PDF bytes, serialized undo/redo history, clipboard pages, annotations, outlines, and dirty state. The host retains attachment/source state. A monotonically increasing viewer revision rejects stale loads; worker requests carry unique IDs.
 
 ## Document-Loading Lifecycle
 
@@ -44,7 +45,7 @@ PDF.js page viewports provide real page dimensions. A `ResizeObserver` measures 
 
 ## Editing and Save Lifecycle
 
-Entering the editor initializes MuPDF from complete bytes and enables its journal. Operations mutate only the working document and return serialized bytes that atomically replace the PDF.js view. Undo/redo uses the MuPDF journal. `Cancel` reloads committed bytes; `Save` serializes and replaces the commit; `Export` serializes without changing the commit. Host replacement, editor close, and browser unload protect dirty work. Every-page deletion and unavailable commands are disabled.
+Entering the editor initializes MuPDF from complete bytes. Operations mutate only the working document and return serialized bytes that atomically replace the PDF.js view. The worker stores a serialized pre-operation revision for reliable undo/redo of structural changes. `Cancel` reloads committed bytes; `Save` serializes and replaces the commit; `Export` serializes without changing the commit. Host replacement, editor close, and browser unload protect dirty work. Every-page deletion and unavailable commands are disabled.
 
 ## WASM Worker Responsibilities
 
@@ -53,8 +54,8 @@ MuPDF.js performs rotation, reorder, delete, graft/import, subset extraction, co
 ## Decisions and Tradeoffs
 
 - **Two engines:** PDF.js has stronger browser streaming/rendering; MuPDF has stronger document mutation. Atomic serialized revisions cost CPU but prevent split-brain state.
-- **Performance:** Lazy rendering, range-only remote acquisition, and capped device scale avoid fetching or rendering every page. `PdfEngineClient` creates the MuPDF worker only on the first processing command, so its ~10 MB WASM payload is deferred until editing, annotation, print, or export.
-- **History:** MuPDF journaling avoids storing a complete PDF for each undo step. Import and clipboard still increase worker memory for large files.
+- **Performance:** Lazy rendering, range-only remote acquisition, and capped device scale avoid fetching or rendering every page. `PdfEngineClient` creates the MuPDF worker only on the first processing command, so its ~10 MB WASM payload is not loaded by idle viewing. Unedited print/export can use PDF.js bytes directly.
+- **History:** Serialized pre-operation revisions make structural undo reliable but increase worker memory for large documents and long editing sessions. Save, Cancel, and document replacement reset session history.
 - **Accessibility:** Semantic toolbars, live regions, visible focus, button-based reorder, and PDF.js text layers support keyboard workflows and selectable page text. Full tagged-PDF reading order still depends on source quality.
 - **Annotations:** Region tools and per-page text selection create native PDF structures that survive export. A selected annotation is identified in the panel and outlined on the page; numeric resizing is reliable but less direct than drag handles.
 - **Printing:** A synchronously opened placeholder avoids popup timing, but final print controls remain browser-owned.
@@ -74,5 +75,9 @@ Local PDFs remain in browser memory and are never uploaded. Remote PDFs are fetc
 - Add bounded worker checkpoints and configurable memory limits for very large edit histories.
 - Preserve nested outline placement when adding new child bookmarks.
 - Add a host-supplied confirmation callback instead of relying on browser confirmation dialogs.
-- Add Phase 2 cross-browser, encrypted-file, malformed-file, range-server, and combined-export validation.
+- Complete the remaining Phase 2 cross-browser, encrypted-file, malformed-file, range-server, and combined-export validation.
 - Add multi-page text-selection batching and tagged-PDF reading-order audits.
+
+## Validation Status
+
+This document describes the design validated when Phase 2 closed. See [`../C/phase-2/validation-report.md`](../C/phase-2/validation-report.md) for the accepted result and [`../C/phase-2/defects.md`](../C/phase-2/defects.md) for the correction history.

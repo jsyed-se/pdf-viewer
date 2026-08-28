@@ -11,4 +11,4 @@ This project is distributed under **AGPL-3.0-or-later** because it links MuPDF.j
 
 Exact resolved packages are recorded in `package-lock.json`. No dependency source was modified. The application source, build scripts, worker source, and dependency lock file are the preferred form for modification of this submission. See [`A/public/SOURCE_OFFER.txt`](A/public/SOURCE_OFFER.txt).
 
-The application's corresponding source is published at <https://github.com/jsyed-se/neubus_pdf_viewer>.
+The application's corresponding source is published at <https://github.com/jsyed-se/pdf-viewer>.

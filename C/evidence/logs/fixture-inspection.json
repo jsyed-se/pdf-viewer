@@ -1,0 +1,1579 @@
+[
+  {
+    "path": "bookmarks.pdf",
+    "bytes": 4042,
+    "sha256": "291f98e98e827bf1540eb8821a8620750d42e0dec4852a754bc7515730e3dac2",
+    "mime": "application/pdf",
+    "pdfHeader": true,
+    "linearized": false,
+    "valid": true,
+    "encrypted": false,
+    "pageCount": 4,
+    "pages": [
+      {
+        "index": 1,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "BOOKMARK-1 Outline destination page 1 BOOKMARK_TOKEN_1",
+        "annotations": []
+      },
+      {
+        "index": 2,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "BOOKMARK-2 Outline destination page 2 BOOKMARK_TOKEN_2",
+        "annotations": []
+      },
+      {
+        "index": 3,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "BOOKMARK-3 Outline destination page 3 BOOKMARK_TOKEN_3",
+        "annotations": []
+      },
+      {
+        "index": 4,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "BOOKMARK-4 Outline destination page 4 BOOKMARK_TOKEN_4",
+        "annotations": []
+      }
+    ],
+    "outline": [
+      {
+        "title": "Phase 2 Root",
+        "depth": 0
+      },
+      {
+        "title": "Nested page 2",
+        "depth": 1
+      },
+      {
+        "title": "Final page",
+        "depth": 0
+      }
+    ],
+    "fields": [],
+    "extractedTextLength": 223,
+    "secret": "PHASE2_SECRET_7F3A9",
+    "secretFound": false
+  },
+  {
+    "path": "existing-annotations.pdf",
+    "bytes": 2614,
+    "sha256": "15ca5cfbd699a54e7e60b00b8c05846bf0219c85915dd85609fe80ded9be4ca7",
+    "mime": "application/pdf",
+    "pdfHeader": true,
+    "linearized": false,
+    "valid": true,
+    "encrypted": false,
+    "pageCount": 2,
+    "pages": [
+      {
+        "index": 1,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "NORMAL-01 PAGE 1 Small controlled PDF Vector border and selectable text",
+        "annotations": [
+          {
+            "subtype": "/Text",
+            "fieldType": "",
+            "name": "",
+            "contents": "Existing Phase 2 text note",
+            "rect": [
+              72.0,
+              500.0,
+              110.0,
+              538.0
+            ],
+            "quadPoints": []
+          },
+          {
+            "subtype": "/Highlight",
+            "fieldType": "",
+            "name": "",
+            "contents": "",
+            "rect": [
+              72.0,
+              430.0,
+              330.0,
+              454.0
+            ],
+            "quadPoints": [
+              72.0,
+              454.0,
+              330.0,
+              454.0,
+              72.0,
+              430.0,
+              330.0,
+              430.0
+            ]
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "NORMAL-02 PAGE 2 Second page marker Used for navigation and print",
+        "annotations": []
+      }
+    ],
+    "outline": [],
+    "fields": [],
+    "extractedTextLength": 139,
+    "secret": "PHASE2_SECRET_7F3A9",
+    "secretFound": false
+  },
+  {
+    "path": "large-linearized.pdf",
+    "bytes": 2492916,
+    "sha256": "abf38a010de548f18c7c31846403cf6837a34d91df472368521bf94436db3911",
+    "mime": "application/pdf",
+    "pdfHeader": true,
+    "linearized": true,
+    "valid": true,
+    "encrypted": false,
+    "pageCount": 120,
+    "pages": [
+      {
+        "index": 1,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-001 Large linearized fixture page 1 of 120 LARGE_TOKEN_001",
+        "annotations": []
+      },
+      {
+        "index": 2,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-002 Large linearized fixture page 2 of 120 LARGE_TOKEN_002",
+        "annotations": []
+      },
+      {
+        "index": 3,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-003 Large linearized fixture page 3 of 120 LARGE_TOKEN_003",
+        "annotations": []
+      },
+      {
+        "index": 4,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-004 Large linearized fixture page 4 of 120 LARGE_TOKEN_004",
+        "annotations": []
+      },
+      {
+        "index": 5,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-005 Large linearized fixture page 5 of 120 LARGE_TOKEN_005",
+        "annotations": []
+      },
+      {
+        "index": 6,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-006 Large linearized fixture page 6 of 120 LARGE_TOKEN_006",
+        "annotations": []
+      },
+      {
+        "index": 7,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-007 Large linearized fixture page 7 of 120 LARGE_TOKEN_007",
+        "annotations": []
+      },
+      {
+        "index": 8,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-008 Large linearized fixture page 8 of 120 LARGE_TOKEN_008",
+        "annotations": []
+      },
+      {
+        "index": 9,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-009 Large linearized fixture page 9 of 120 LARGE_TOKEN_009",
+        "annotations": []
+      },
+      {
+        "index": 10,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-010 Large linearized fixture page 10 of 120 LARGE_TOKEN_010",
+        "annotations": []
+      },
+      {
+        "index": 11,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-011 Large linearized fixture page 11 of 120 LARGE_TOKEN_011",
+        "annotations": []
+      },
+      {
+        "index": 12,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-012 Large linearized fixture page 12 of 120 LARGE_TOKEN_012",
+        "annotations": []
+      },
+      {
+        "index": 13,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-013 Large linearized fixture page 13 of 120 LARGE_TOKEN_013",
+        "annotations": []
+      },
+      {
+        "index": 14,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-014 Large linearized fixture page 14 of 120 LARGE_TOKEN_014",
+        "annotations": []
+      },
+      {
+        "index": 15,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-015 Large linearized fixture page 15 of 120 LARGE_TOKEN_015",
+        "annotations": []
+      },
+      {
+        "index": 16,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-016 Large linearized fixture page 16 of 120 LARGE_TOKEN_016",
+        "annotations": []
+      },
+      {
+        "index": 17,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-017 Large linearized fixture page 17 of 120 LARGE_TOKEN_017",
+        "annotations": []
+      },
+      {
+        "index": 18,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-018 Large linearized fixture page 18 of 120 LARGE_TOKEN_018",
+        "annotations": []
+      },
+      {
+        "index": 19,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-019 Large linearized fixture page 19 of 120 LARGE_TOKEN_019",
+        "annotations": []
+      },
+      {
+        "index": 20,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-020 Large linearized fixture page 20 of 120 LARGE_TOKEN_020",
+        "annotations": []
+      },
+      {
+        "index": 21,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-021 Large linearized fixture page 21 of 120 LARGE_TOKEN_021",
+        "annotations": []
+      },
+      {
+        "index": 22,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-022 Large linearized fixture page 22 of 120 LARGE_TOKEN_022",
+        "annotations": []
+      },
+      {
+        "index": 23,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-023 Large linearized fixture page 23 of 120 LARGE_TOKEN_023",
+        "annotations": []
+      },
+      {
+        "index": 24,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-024 Large linearized fixture page 24 of 120 LARGE_TOKEN_024",
+        "annotations": []
+      },
+      {
+        "index": 25,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-025 Large linearized fixture page 25 of 120 LARGE_TOKEN_025",
+        "annotations": []
+      },
+      {
+        "index": 26,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-026 Large linearized fixture page 26 of 120 LARGE_TOKEN_026",
+        "annotations": []
+      },
+      {
+        "index": 27,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-027 Large linearized fixture page 27 of 120 LARGE_TOKEN_027",
+        "annotations": []
+      },
+      {
+        "index": 28,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-028 Large linearized fixture page 28 of 120 LARGE_TOKEN_028",
+        "annotations": []
+      },
+      {
+        "index": 29,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-029 Large linearized fixture page 29 of 120 LARGE_TOKEN_029",
+        "annotations": []
+      },
+      {
+        "index": 30,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-030 Large linearized fixture page 30 of 120 LARGE_TOKEN_030",
+        "annotations": []
+      },
+      {
+        "index": 31,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-031 Large linearized fixture page 31 of 120 LARGE_TOKEN_031",
+        "annotations": []
+      },
+      {
+        "index": 32,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-032 Large linearized fixture page 32 of 120 LARGE_TOKEN_032",
+        "annotations": []
+      },
+      {
+        "index": 33,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-033 Large linearized fixture page 33 of 120 LARGE_TOKEN_033",
+        "annotations": []
+      },
+      {
+        "index": 34,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-034 Large linearized fixture page 34 of 120 LARGE_TOKEN_034",
+        "annotations": []
+      },
+      {
+        "index": 35,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-035 Large linearized fixture page 35 of 120 LARGE_TOKEN_035",
+        "annotations": []
+      },
+      {
+        "index": 36,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-036 Large linearized fixture page 36 of 120 LARGE_TOKEN_036",
+        "annotations": []
+      },
+      {
+        "index": 37,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-037 Large linearized fixture page 37 of 120 LARGE_TOKEN_037",
+        "annotations": []
+      },
+      {
+        "index": 38,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-038 Large linearized fixture page 38 of 120 LARGE_TOKEN_038",
+        "annotations": []
+      },
+      {
+        "index": 39,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-039 Large linearized fixture page 39 of 120 LARGE_TOKEN_039",
+        "annotations": []
+      },
+      {
+        "index": 40,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-040 Large linearized fixture page 40 of 120 LARGE_TOKEN_040",
+        "annotations": []
+      },
+      {
+        "index": 41,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-041 Large linearized fixture page 41 of 120 LARGE_TOKEN_041",
+        "annotations": []
+      },
+      {
+        "index": 42,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-042 Large linearized fixture page 42 of 120 LARGE_TOKEN_042",
+        "annotations": []
+      },
+      {
+        "index": 43,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-043 Large linearized fixture page 43 of 120 LARGE_TOKEN_043",
+        "annotations": []
+      },
+      {
+        "index": 44,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-044 Large linearized fixture page 44 of 120 LARGE_TOKEN_044",
+        "annotations": []
+      },
+      {
+        "index": 45,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-045 Large linearized fixture page 45 of 120 LARGE_TOKEN_045",
+        "annotations": []
+      },
+      {
+        "index": 46,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-046 Large linearized fixture page 46 of 120 LARGE_TOKEN_046",
+        "annotations": []
+      },
+      {
+        "index": 47,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-047 Large linearized fixture page 47 of 120 LARGE_TOKEN_047",
+        "annotations": []
+      },
+      {
+        "index": 48,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-048 Large linearized fixture page 48 of 120 LARGE_TOKEN_048",
+        "annotations": []
+      },
+      {
+        "index": 49,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-049 Large linearized fixture page 49 of 120 LARGE_TOKEN_049",
+        "annotations": []
+      },
+      {
+        "index": 50,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-050 Large linearized fixture page 50 of 120 LARGE_TOKEN_050",
+        "annotations": []
+      },
+      {
+        "index": 51,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-051 Large linearized fixture page 51 of 120 LARGE_TOKEN_051",
+        "annotations": []
+      },
+      {
+        "index": 52,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-052 Large linearized fixture page 52 of 120 LARGE_TOKEN_052",
+        "annotations": []
+      },
+      {
+        "index": 53,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-053 Large linearized fixture page 53 of 120 LARGE_TOKEN_053",
+        "annotations": []
+      },
+      {
+        "index": 54,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-054 Large linearized fixture page 54 of 120 LARGE_TOKEN_054",
+        "annotations": []
+      },
+      {
+        "index": 55,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-055 Large linearized fixture page 55 of 120 LARGE_TOKEN_055",
+        "annotations": []
+      },
+      {
+        "index": 56,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-056 Large linearized fixture page 56 of 120 LARGE_TOKEN_056",
+        "annotations": []
+      },
+      {
+        "index": 57,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-057 Large linearized fixture page 57 of 120 LARGE_TOKEN_057",
+        "annotations": []
+      },
+      {
+        "index": 58,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-058 Large linearized fixture page 58 of 120 LARGE_TOKEN_058",
+        "annotations": []
+      },
+      {
+        "index": 59,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-059 Large linearized fixture page 59 of 120 LARGE_TOKEN_059",
+        "annotations": []
+      },
+      {
+        "index": 60,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-060 Large linearized fixture page 60 of 120 LARGE_TOKEN_060",
+        "annotations": []
+      },
+      {
+        "index": 61,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-061 Large linearized fixture page 61 of 120 LARGE_TOKEN_061",
+        "annotations": []
+      },
+      {
+        "index": 62,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-062 Large linearized fixture page 62 of 120 LARGE_TOKEN_062",
+        "annotations": []
+      },
+      {
+        "index": 63,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-063 Large linearized fixture page 63 of 120 LARGE_TOKEN_063",
+        "annotations": []
+      },
+      {
+        "index": 64,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-064 Large linearized fixture page 64 of 120 LARGE_TOKEN_064",
+        "annotations": []
+      },
+      {
+        "index": 65,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-065 Large linearized fixture page 65 of 120 LARGE_TOKEN_065",
+        "annotations": []
+      },
+      {
+        "index": 66,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-066 Large linearized fixture page 66 of 120 LARGE_TOKEN_066",
+        "annotations": []
+      },
+      {
+        "index": 67,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-067 Large linearized fixture page 67 of 120 LARGE_TOKEN_067",
+        "annotations": []
+      },
+      {
+        "index": 68,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-068 Large linearized fixture page 68 of 120 LARGE_TOKEN_068",
+        "annotations": []
+      },
+      {
+        "index": 69,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-069 Large linearized fixture page 69 of 120 LARGE_TOKEN_069",
+        "annotations": []
+      },
+      {
+        "index": 70,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-070 Large linearized fixture page 70 of 120 LARGE_TOKEN_070",
+        "annotations": []
+      },
+      {
+        "index": 71,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-071 Large linearized fixture page 71 of 120 LARGE_TOKEN_071",
+        "annotations": []
+      },
+      {
+        "index": 72,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-072 Large linearized fixture page 72 of 120 LARGE_TOKEN_072",
+        "annotations": []
+      },
+      {
+        "index": 73,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-073 Large linearized fixture page 73 of 120 LARGE_TOKEN_073",
+        "annotations": []
+      },
+      {
+        "index": 74,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-074 Large linearized fixture page 74 of 120 LARGE_TOKEN_074",
+        "annotations": []
+      },
+      {
+        "index": 75,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-075 Large linearized fixture page 75 of 120 LARGE_TOKEN_075",
+        "annotations": []
+      },
+      {
+        "index": 76,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-076 Large linearized fixture page 76 of 120 LARGE_TOKEN_076",
+        "annotations": []
+      },
+      {
+        "index": 77,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-077 Large linearized fixture page 77 of 120 LARGE_TOKEN_077",
+        "annotations": []
+      },
+      {
+        "index": 78,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-078 Large linearized fixture page 78 of 120 LARGE_TOKEN_078",
+        "annotations": []
+      },
+      {
+        "index": 79,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-079 Large linearized fixture page 79 of 120 LARGE_TOKEN_079",
+        "annotations": []
+      },
+      {
+        "index": 80,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-080 Large linearized fixture page 80 of 120 LARGE_TOKEN_080",
+        "annotations": []
+      },
+      {
+        "index": 81,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-081 Large linearized fixture page 81 of 120 LARGE_TOKEN_081",
+        "annotations": []
+      },
+      {
+        "index": 82,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-082 Large linearized fixture page 82 of 120 LARGE_TOKEN_082",
+        "annotations": []
+      },
+      {
+        "index": 83,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-083 Large linearized fixture page 83 of 120 LARGE_TOKEN_083",
+        "annotations": []
+      },
+      {
+        "index": 84,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-084 Large linearized fixture page 84 of 120 LARGE_TOKEN_084",
+        "annotations": []
+      },
+      {
+        "index": 85,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-085 Large linearized fixture page 85 of 120 LARGE_TOKEN_085",
+        "annotations": []
+      },
+      {
+        "index": 86,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-086 Large linearized fixture page 86 of 120 LARGE_TOKEN_086",
+        "annotations": []
+      },
+      {
+        "index": 87,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-087 Large linearized fixture page 87 of 120 LARGE_TOKEN_087",
+        "annotations": []
+      },
+      {
+        "index": 88,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-088 Large linearized fixture page 88 of 120 LARGE_TOKEN_088",
+        "annotations": []
+      },
+      {
+        "index": 89,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-089 Large linearized fixture page 89 of 120 LARGE_TOKEN_089",
+        "annotations": []
+      },
+      {
+        "index": 90,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-090 Large linearized fixture page 90 of 120 LARGE_TOKEN_090",
+        "annotations": []
+      },
+      {
+        "index": 91,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-091 Large linearized fixture page 91 of 120 LARGE_TOKEN_091",
+        "annotations": []
+      },
+      {
+        "index": 92,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-092 Large linearized fixture page 92 of 120 LARGE_TOKEN_092",
+        "annotations": []
+      },
+      {
+        "index": 93,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-093 Large linearized fixture page 93 of 120 LARGE_TOKEN_093",
+        "annotations": []
+      },
+      {
+        "index": 94,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-094 Large linearized fixture page 94 of 120 LARGE_TOKEN_094",
+        "annotations": []
+      },
+      {
+        "index": 95,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-095 Large linearized fixture page 95 of 120 LARGE_TOKEN_095",
+        "annotations": []
+      },
+      {
+        "index": 96,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-096 Large linearized fixture page 96 of 120 LARGE_TOKEN_096",
+        "annotations": []
+      },
+      {
+        "index": 97,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-097 Large linearized fixture page 97 of 120 LARGE_TOKEN_097",
+        "annotations": []
+      },
+      {
+        "index": 98,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-098 Large linearized fixture page 98 of 120 LARGE_TOKEN_098",
+        "annotations": []
+      },
+      {
+        "index": 99,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-099 Large linearized fixture page 99 of 120 LARGE_TOKEN_099",
+        "annotations": []
+      },
+      {
+        "index": 100,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-100 Large linearized fixture page 100 of 120 LARGE_TOKEN_100",
+        "annotations": []
+      },
+      {
+        "index": 101,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-101 Large linearized fixture page 101 of 120 LARGE_TOKEN_101",
+        "annotations": []
+      },
+      {
+        "index": 102,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-102 Large linearized fixture page 102 of 120 LARGE_TOKEN_102",
+        "annotations": []
+      },
+      {
+        "index": 103,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-103 Large linearized fixture page 103 of 120 LARGE_TOKEN_103",
+        "annotations": []
+      },
+      {
+        "index": 104,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-104 Large linearized fixture page 104 of 120 LARGE_TOKEN_104",
+        "annotations": []
+      },
+      {
+        "index": 105,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-105 Large linearized fixture page 105 of 120 LARGE_TOKEN_105",
+        "annotations": []
+      },
+      {
+        "index": 106,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-106 Large linearized fixture page 106 of 120 LARGE_TOKEN_106",
+        "annotations": []
+      },
+      {
+        "index": 107,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-107 Large linearized fixture page 107 of 120 LARGE_TOKEN_107",
+        "annotations": []
+      },
+      {
+        "index": 108,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-108 Large linearized fixture page 108 of 120 LARGE_TOKEN_108",
+        "annotations": []
+      },
+      {
+        "index": 109,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-109 Large linearized fixture page 109 of 120 LARGE_TOKEN_109",
+        "annotations": []
+      },
+      {
+        "index": 110,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-110 Large linearized fixture page 110 of 120 LARGE_TOKEN_110",
+        "annotations": []
+      },
+      {
+        "index": 111,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-111 Large linearized fixture page 111 of 120 LARGE_TOKEN_111",
+        "annotations": []
+      },
+      {
+        "index": 112,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-112 Large linearized fixture page 112 of 120 LARGE_TOKEN_112",
+        "annotations": []
+      },
+      {
+        "index": 113,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-113 Large linearized fixture page 113 of 120 LARGE_TOKEN_113",
+        "annotations": []
+      },
+      {
+        "index": 114,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-114 Large linearized fixture page 114 of 120 LARGE_TOKEN_114",
+        "annotations": []
+      },
+      {
+        "index": 115,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-115 Large linearized fixture page 115 of 120 LARGE_TOKEN_115",
+        "annotations": []
+      },
+      {
+        "index": 116,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-116 Large linearized fixture page 116 of 120 LARGE_TOKEN_116",
+        "annotations": []
+      },
+      {
+        "index": 117,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-117 Large linearized fixture page 117 of 120 LARGE_TOKEN_117",
+        "annotations": []
+      },
+      {
+        "index": 118,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-118 Large linearized fixture page 118 of 120 LARGE_TOKEN_118",
+        "annotations": []
+      },
+      {
+        "index": 119,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-119 Large linearized fixture page 119 of 120 LARGE_TOKEN_119",
+        "annotations": []
+      },
+      {
+        "index": 120,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "LARGE-120 Large linearized fixture page 120 of 120 LARGE_TOKEN_120",
+        "annotations": []
+      }
+    ],
+    "outline": [],
+    "fields": [],
+    "extractedTextLength": 8051,
+    "secret": "PHASE2_SECRET_7F3A9",
+    "secretFound": false
+  },
+  {
+    "path": "malformed.pdf",
+    "bytes": 60,
+    "sha256": "21334f09a20c3f422a913deb15841821b2910a9eef76c75a92b740f102d7a270",
+    "mime": "application/pdf",
+    "pdfHeader": true,
+    "linearized": false,
+    "valid": false,
+    "error": "PdfStreamError: Stream has ended unexpectedly"
+  },
+  {
+    "path": "merge-alpha.pdf",
+    "bytes": 2830,
+    "sha256": "8d35d28e43632f846984c552dda50435054ebfcec70f8d37f799f3342a5afec1",
+    "mime": "application/pdf",
+    "pdfHeader": true,
+    "linearized": false,
+    "valid": true,
+    "encrypted": false,
+    "pageCount": 3,
+    "pages": [
+      {
+        "index": 1,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "ALPHA-A1 Merge source alpha Identity ALPHA_A1",
+        "annotations": []
+      },
+      {
+        "index": 2,
+        "width": 792.0,
+        "height": 612.0,
+        "rotation": 0,
+        "textPrefix": "ALPHA-A2 Merge source alpha Identity ALPHA_A2",
+        "annotations": []
+      },
+      {
+        "index": 3,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "ALPHA-A3 Merge source alpha Identity ALPHA_A3",
+        "annotations": []
+      }
+    ],
+    "outline": [],
+    "fields": [],
+    "extractedTextLength": 140,
+    "secret": "PHASE2_SECRET_7F3A9",
+    "secretFound": false
+  },
+  {
+    "path": "merge-beta.pdf",
+    "bytes": 2255,
+    "sha256": "c2aee27bf85c2e7939a14e131e47e1dd82b2ed9911874227cf16b2abc0b7b23b",
+    "mime": "application/pdf",
+    "pdfHeader": true,
+    "linearized": false,
+    "valid": true,
+    "encrypted": false,
+    "pageCount": 2,
+    "pages": [
+      {
+        "index": 1,
+        "width": 595.28,
+        "height": 841.89,
+        "rotation": 0,
+        "textPrefix": "BETA-B1 Merge source beta Identity BETA_B1",
+        "annotations": []
+      },
+      {
+        "index": 2,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "BETA-B2 Merge source beta Identity BETA_B2",
+        "annotations": []
+      }
+    ],
+    "outline": [],
+    "fields": [],
+    "extractedTextLength": 87,
+    "secret": "PHASE2_SECRET_7F3A9",
+    "secretFound": false
+  },
+  {
+    "path": "mixed-pages.pdf",
+    "bytes": 3507,
+    "sha256": "ef17c87d63e1016e0d7ceeebf9d865bbe0610589c859177e20aab3e199dd228e",
+    "mime": "application/pdf",
+    "pdfHeader": true,
+    "linearized": false,
+    "valid": true,
+    "encrypted": false,
+    "pageCount": 4,
+    "pages": [
+      {
+        "index": 1,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "MIXED-PORTRAIT 612 x 792 points Portrait reference",
+        "annotations": []
+      },
+      {
+        "index": 2,
+        "width": 792.0,
+        "height": 612.0,
+        "rotation": 0,
+        "textPrefix": "MIXED-LANDSCAPE 792 x 612 points Landscape reference",
+        "annotations": []
+      },
+      {
+        "index": 3,
+        "width": 841.89,
+        "height": 595.28,
+        "rotation": 90,
+        "textPrefix": "MIXED-A4-ROTATED A4 page with 90 degree rotation Rotation reference",
+        "annotations": []
+      },
+      {
+        "index": 4,
+        "width": 540.0,
+        "height": 540.0,
+        "rotation": 0,
+        "textPrefix": "MIXED-SQUARE 540 x 540 points Custom-size reference",
+        "annotations": []
+      }
+    ],
+    "outline": [],
+    "fields": [],
+    "extractedTextLength": 227,
+    "secret": "PHASE2_SECRET_7F3A9",
+    "secretFound": false
+  },
+  {
+    "path": "multi-page-text.pdf",
+    "bytes": 11032,
+    "sha256": "a2e5a9465c72e2302e1ba5ecd72e9148231a18f106c020a63379b13b79748589",
+    "mime": "application/pdf",
+    "pdfHeader": true,
+    "linearized": false,
+    "valid": true,
+    "encrypted": false,
+    "pageCount": 16,
+    "pages": [
+      {
+        "index": 1,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "TEXT-01 PAGE 1 Selectable sentence for page 1 Identity token TEXT_TOKEN_01",
+        "annotations": []
+      },
+      {
+        "index": 2,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "TEXT-02 PAGE 2 Selectable sentence for page 2 Identity token TEXT_TOKEN_02",
+        "annotations": []
+      },
+      {
+        "index": 3,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "TEXT-03 PAGE 3 Selectable sentence for page 3 Identity token TEXT_TOKEN_03",
+        "annotations": []
+      },
+      {
+        "index": 4,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "TEXT-04 PAGE 4 Selectable sentence for page 4 Identity token TEXT_TOKEN_04",
+        "annotations": []
+      },
+      {
+        "index": 5,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "TEXT-05 PAGE 5 Selectable sentence for page 5 Identity token TEXT_TOKEN_05",
+        "annotations": []
+      },
+      {
+        "index": 6,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "TEXT-06 PAGE 6 Selectable sentence for page 6 Identity token TEXT_TOKEN_06",
+        "annotations": []
+      },
+      {
+        "index": 7,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "TEXT-07 PAGE 7 Selectable sentence for page 7 Identity token TEXT_TOKEN_07",
+        "annotations": []
+      },
+      {
+        "index": 8,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "TEXT-08 PAGE 8 Selectable sentence for page 8 Identity token TEXT_TOKEN_08",
+        "annotations": []
+      },
+      {
+        "index": 9,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "TEXT-09 PAGE 9 Selectable sentence for page 9 Identity token TEXT_TOKEN_09",
+        "annotations": []
+      },
+      {
+        "index": 10,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "TEXT-10 PAGE 10 Selectable sentence for page 10 Identity token TEXT_TOKEN_10",
+        "annotations": []
+      },
+      {
+        "index": 11,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "TEXT-11 PAGE 11 Selectable sentence for page 11 Identity token TEXT_TOKEN_11",
+        "annotations": []
+      },
+      {
+        "index": 12,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "TEXT-12 PAGE 12 Selectable sentence for page 12 Identity token TEXT_TOKEN_12",
+        "annotations": []
+      },
+      {
+        "index": 13,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "TEXT-13 PAGE 13 Selectable sentence for page 13 Identity token TEXT_TOKEN_13",
+        "annotations": []
+      },
+      {
+        "index": 14,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "TEXT-14 PAGE 14 Selectable sentence for page 14 Identity token TEXT_TOKEN_14",
+        "annotations": []
+      },
+      {
+        "index": 15,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "TEXT-15 PAGE 15 Selectable sentence for page 15 Identity token TEXT_TOKEN_15",
+        "annotations": []
+      },
+      {
+        "index": 16,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "TEXT-16 PAGE 16 Selectable sentence for page 16 Identity token TEXT_TOKEN_16",
+        "annotations": []
+      }
+    ],
+    "outline": [],
+    "fields": [],
+    "extractedTextLength": 1229,
+    "secret": "PHASE2_SECRET_7F3A9",
+    "secretFound": false
+  },
+  {
+    "path": "normal.pdf",
+    "bytes": 2289,
+    "sha256": "0aef592720013371bb2c38e0e9ab1d526d6ee81481a2b8a2533c91e47267b77e",
+    "mime": "application/pdf",
+    "pdfHeader": true,
+    "linearized": false,
+    "valid": true,
+    "encrypted": false,
+    "pageCount": 2,
+    "pages": [
+      {
+        "index": 1,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "NORMAL-01 PAGE 1 Small controlled PDF Vector border and selectable text",
+        "annotations": []
+      },
+      {
+        "index": 2,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "NORMAL-02 PAGE 2 Second page marker Used for navigation and print",
+        "annotations": []
+      }
+    ],
+    "outline": [],
+    "fields": [],
+    "extractedTextLength": 139,
+    "secret": "PHASE2_SECRET_7F3A9",
+    "secretFound": false
+  },
+  {
+    "path": "password-protected.pdf",
+    "bytes": 3397,
+    "sha256": "225c8405fe92db177ef6e019102bc606bcf4b19a9d5e2b33f787cf8e95b9cc0c",
+    "mime": "application/pdf",
+    "pdfHeader": true,
+    "linearized": false,
+    "valid": true,
+    "encrypted": true,
+    "pageCount": 2,
+    "pages": [
+      {
+        "index": 1,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "NORMAL-01 PAGE 1 Small controlled PDF Vector border and selectable text",
+        "annotations": []
+      },
+      {
+        "index": 2,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "NORMAL-02 PAGE 2 Second page marker Used for navigation and print",
+        "annotations": []
+      }
+    ],
+    "outline": [],
+    "fields": [],
+    "extractedTextLength": 139,
+    "secret": "PHASE2_SECRET_7F3A9",
+    "secretFound": false
+  },
+  {
+    "path": "secret-redaction.pdf",
+    "bytes": 2351,
+    "sha256": "bcd18c31a01176565c2b6a2127c8b059d898b9be1b6a8537cc27f240b0fd26c5",
+    "mime": "application/pdf",
+    "pdfHeader": true,
+    "linearized": false,
+    "valid": true,
+    "encrypted": false,
+    "pageCount": 2,
+    "pages": [
+      {
+        "index": 1,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "REDACTION-SECRET Public prefix PHASE2_SECRET_7F3A9 public suffix The unique phrase must disappear after applied redaction.",
+        "annotations": []
+      },
+      {
+        "index": 2,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "REDACTION-CONTROL Control page without the secret This content must remain extractable.",
+        "annotations": []
+      }
+    ],
+    "outline": [],
+    "fields": [],
+    "extractedTextLength": 212,
+    "secret": "PHASE2_SECRET_7F3A9",
+    "secretFound": true
+  },
+  {
+    "path": "widgets.pdf",
+    "bytes": 7322,
+    "sha256": "f46842be6de16a7ecf29c5873b7a30b359f14bd72fa5de6de1407bd448272e6b",
+    "mime": "application/pdf",
+    "pdfHeader": true,
+    "linearized": false,
+    "valid": true,
+    "encrypted": false,
+    "pageCount": 1,
+    "pages": [
+      {
+        "index": 1,
+        "width": 612.0,
+        "height": 792.0,
+        "rotation": 0,
+        "textPrefix": "WIDGETS-01 Existing form controls Reviewer name Approved Signature field below is intentionally empty.",
+        "annotations": [
+          {
+            "subtype": "/Widget",
+            "fieldType": "/Tx",
+            "name": "reviewer_name",
+            "contents": "",
+            "rect": [
+              72.0,
+              630.0,
+              312.0,
+              658.0
+            ],
+            "quadPoints": []
+          },
+          {
+            "subtype": "/Widget",
+            "fieldType": "/Btn",
+            "name": "approved",
+            "contents": "",
+            "rect": [
+              140.0,
+              580.0,
+              160.0,
+              600.0
+            ],
+            "quadPoints": []
+          },
+          {
+            "subtype": "/Widget",
+            "fieldType": "/Sig",
+            "name": "approval_signature",
+            "contents": "",
+            "rect": [
+              72.0,
+              455.0,
+              320.0,
+              495.0
+            ],
+            "quadPoints": []
+          }
+        ]
+      }
+    ],
+    "outline": [],
+    "fields": [
+      {
+        "name": "reviewer_name",
+        "fieldType": "/Tx",
+        "value": ""
+      },
+      {
+        "name": "approved",
+        "fieldType": "/Btn",
+        "value": "/Off"
+      },
+      {
+        "name": "approval_signature",
+        "fieldType": "/Sig",
+        "value": ""
+      }
+    ],
+    "extractedTextLength": 103,
+    "secret": "PHASE2_SECRET_7F3A9",
+    "secretFound": false
+  }
+]

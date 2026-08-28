@@ -46,16 +46,20 @@ If the WebAssembly approach is used, the following are bonus features:
 
 Provide a short architecture and design document that includes:
 
+Deliverable: [`B/architecture-and-design.md`](B/architecture-and-design.md).
+
 - [ ] One diagram showing components or modules; ASCII is acceptable.
 - [ ] The state-management approach, including what state exists and where it lives.
 - [ ] Key performance, accessibility, and library-choice tradeoffs.
 - [ ] An “If I had one more day” roadmap containing 5–8 bullets.
 
-## C. Cursor AI Usage Log
+## C. Approved AI Usage Log
 
-- [ ] Use Cursor Plan mode before building.
-- [ ] Finalize the plan, save it in the workspace, and upload the file.
-- [ ] From the Cursor prompt window, use the three-dot menu to export the transcript, then upload it.
+Deliverables are indexed in [`C/README.md`](C/README.md), including the saved phase plans, Codex activity record, AI-output changes, and Phase 2 validation report.
+
+- [ ] Use an approved planning mode before building; the reviewer approved Codex as the Cursor equivalent for this submission.
+- [ ] Finalize the plan and save it in the workspace.
+- [ ] Preserve the available Codex activity/transcript evidence. If the platform cannot export a full transcript, document that limitation and any manual upload step without fabricating content.
 - [ ] Explain what was changed from the AI output and why.
 - [ ] Explain how correctness was validated.
 
@@ -66,7 +70,7 @@ Provide a short architecture and design document that includes:
 - [ ] Create top-level `A/`, `B/`, and `C/` folders:
   - `A/` contains the MVP code.
   - `B/` contains the architecture and design document.
-  - `C/` contains the Cursor AI usage log and supporting files.
+  - `C/` contains the approved AI usage log and supporting files.
 
 ## Required End-to-End Checks
 
@@ -90,4 +94,4 @@ Resolve these from the job description or with the reviewer before relying on th
 - Does local saving require a browser download or the File System Access API?
 - What document range and options must the Print action support?
 - Which browsers, PDF size limits, accessibility target, and test coverage are expected?
-- Where should the Cursor plan and transcript be uploaded, and must sensitive transcript content be removed first?
+- Where should the saved Codex plan and available activity record be uploaded, and must sensitive activity content be removed first?

@@ -19,16 +19,19 @@ export function calculateScale({
   mountedPageCount: number;
   pageGap: number;
 }) {
-  const pageSlots = Math.max(1, mountedPageCount);
-  const pagesWidth = pageWidth * pageSlots;
-  const gapsWidth = pageGap * Math.max(0, pageSlots - 1);
-  const availableWidth = Math.max(1, viewportWidth - gapsWidth);
-  const availableHeight = Math.max(1, viewportHeight);
+  const finiteOr = (value: number, fallback: number) => Number.isFinite(value) ? value : fallback;
+  const pageSlots = Math.max(1, finiteOr(mountedPageCount, 1));
+  const safePageWidth = Math.max(1, finiteOr(pageWidth, 612));
+  const safePageHeight = Math.max(1, finiteOr(pageHeight, 792));
+  const pagesWidth = safePageWidth * pageSlots;
+  const gapsWidth = Math.max(0, finiteOr(pageGap, 0)) * Math.max(0, pageSlots - 1);
+  const availableWidth = Math.max(1, finiteOr(viewportWidth, 1) - gapsWidth);
+  const availableHeight = Math.max(1, finiteOr(viewportHeight, 1));
   if (zoomMode === 'fit-width') return Math.max(0.1, availableWidth / pagesWidth);
   if (zoomMode === 'fit-viewport') {
-    return Math.max(0.1, Math.min(availableWidth / pagesWidth, availableHeight / pageHeight));
+    return Math.max(0.1, Math.min(availableWidth / pagesWidth, availableHeight / safePageHeight));
   }
-  return Math.max(0.2, Math.min(customScale, 5));
+  return Math.max(0.2, Math.min(finiteOr(customScale, 1), 5));
 }
 
 export function pagesForMode(viewMode: ViewMode, currentPage: number, pageCount: number) {

@@ -6,9 +6,9 @@ Atlas is a reusable React/TypeScript PDF viewer and transactional document edito
 
 PDF.js provides lazy high-DPI rendering, selectable text, navigation, and byte-range URL loading. MuPDF.js 1.28.0 runs in an on-demand Web Worker for transactional page operations, native notes/highlights/redactions, applied redaction, bookmark editing, widget inspection, and final serialization. The editor supports rotation, reorder, delete, import/merge, extraction, keep-selected, copy/paste, undo/redo, save/cancel, print, and local export.
 
-## Phase 1 Status
+## Validation Status
 
-Phase 1 implements the working SDK and performs only build/start smoke checks. Final requirement certification, screenshots, broad browser testing, adversarial testing, benchmarks, and the final test report are intentionally deferred to Phases 2 and 3.
+**Phase 2 passed and is closed.** Controlled browser runs, reopened exported PDFs, range-server logs, and accessibility checks support the result. See [`C/phase-2/validation-report.md`](C/phase-2/validation-report.md). Final source revision: `FINAL_COMMIT_PENDING`.
 
 ## Setup
 
@@ -39,10 +39,11 @@ import { PdfViewerSDK } from './src/sdk/PdfViewerSDK';
   onReady={({ pageCount }) => console.log(pageCount)}
   onDirtyChange={(dirty) => protectHostNavigation(dirty)}
   onSave={(bytes, filename) => persistInHost(bytes, filename)}
+  onCloseRequest={() => closeViewerInHost()}
 />
 ```
 
-The host owns source metadata, navigation, and persistence. The SDK also accepts local `File` objects or raw `Uint8Array` bytes and exposes progress, page, error, password, dirty, and save callbacks.
+The host owns source metadata, navigation, persistence, and the response to a close request. The SDK also accepts local `File` objects or raw `Uint8Array` bytes and exposes progress, page, error, password, dirty, save, and close-request callbacks.
 
 ## Browser and Range-Server Requirements
 
@@ -50,17 +51,16 @@ Use a current Chrome, Edge, Firefox, or Safari release with Web Workers, WebAsse
 
 ## Repository Layout
 
-- `A/` — working MVP, reusable SDK, demonstration host, and app README
-- `B/architecture.md` — component diagram, lifecycles, state, and tradeoffs
-- `C/phase-1-plan.md` — plan saved before application changes
-- `C/phase-1-implementation.md` — evidence-based implementation record
-- `C/ai-usage.md` — Codex missions, recommendations, corrections, and validation
-- `REQUIREMENTS.md` — assignment acceptance checklist
+- [`A/`](A/README.md) — working MVP, reusable SDK, demonstration host, and app instructions
+- [`B/`](B/README.md) — architecture and design
+- [`C/`](C/README.md) — phase plans, validation, evidence, defects, and approved Codex records
+
+The assignment checklist remains in [`REQUIREMENTS.md`](REQUIREMENTS.md).
 
 ## Licensing
 
-The project is AGPL-3.0-or-later because it uses MuPDF.js WebAssembly. See [`LICENSE`](LICENSE), [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md), and [`A/public/SOURCE_OFFER.txt`](A/public/SOURCE_OFFER.txt). PDF.js is Apache-2.0. Corresponding application source is public at <https://github.com/jsyed-se/neubus_pdf_viewer>; deployed copies must retain the source-and-license notice.
+The project is AGPL-3.0-or-later because it uses MuPDF.js WebAssembly. See [`LICENSE`](LICENSE), [`NOTICE-MUPDF.md`](NOTICE-MUPDF.md), and [`A/public/SOURCE_OFFER.txt`](A/public/SOURCE_OFFER.txt). PDF.js is Apache-2.0. Corresponding application source is public at <https://github.com/jsyed-se/pdf-viewer>; deployed copies must retain the source-and-license notice.
 
 ## Known Limitations
 
-The referenced video was unavailable. Text-selection annotation is per page, annotation resize is numeric rather than handle-based, and signature-widget creation is not claimed; exact blockers are recorded in the implementation document. Cursor Plan-mode and exported-transcript artifacts were not available in this Codex environment and were not fabricated.
+The referenced video was unavailable. Text-selection annotation is per page, annotation resize is numeric rather than handle-based, and signature/widget creation and cryptographic signing are not claimed. The reviewer approved Codex plan and activity evidence as the AI-tool equivalent; the repository provides an honest activity summary and does not fabricate a word-for-word transcript.

@@ -25,6 +25,12 @@ export default function App() {
   }, []);
   const handleError = useCallback((error: Error) => setHostStatus(error.message), []);
   const handleSave = useCallback(() => setHostStatus('Changes committed · Local workspace'), []);
+  const handleCloseRequest = useCallback(() => {
+    setSource(null);
+    setAttachment(undefined);
+    setDirty(false);
+    setHostStatus('PDF workspace');
+  }, []);
 
   const canReplaceDocument = () => !dirty || window.confirm('This document has unsaved changes. Discard them and open another PDF?');
 
@@ -37,6 +43,7 @@ export default function App() {
 
   return (
     <main className="app-shell">
+      <h1 className="visually-hidden">Atlas PDF SDK demonstration</h1>
       <header className="host-header">
         <button
           type="button"
@@ -110,6 +117,7 @@ export default function App() {
         onReady={handleReady}
         onError={handleError}
         onSave={handleSave}
+        onCloseRequest={handleCloseRequest}
       />
     </main>
   );

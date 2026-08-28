@@ -4,6 +4,8 @@
 
 The SDK accepts local files, remote URLs, or raw bytes. PDF.js provides progressive/range loading and high-DPI lazy canvas rendering. MuPDF.js runs in a dedicated Web Worker for real page mutations, native annotations, applied redaction, bookmarks, and final PDF serialization.
 
+Phase 2 browser and persistence validation passed and is closed. See [`../C/phase-2/validation-report.md`](../C/phase-2/validation-report.md) for the tested scope and explicit limits.
+
 Implemented viewing features include thumbnails, previous/next/direct navigation, current-page tracking, continuous/single/cover-aware spread modes, keyboard navigation, custom zoom, and fit-to-width/fit-to-viewport calculated from the live container and page dimensions.
 
 The transactional editor supports select all/none, rotation, drag or accessible-button reordering, deletion, import/merge, extraction, keep-selected, copy/paste, undo/redo, save, cancel, and local export. It blocks deletion of every page and protects dirty work during editor close, document replacement, and browser unload.
@@ -30,10 +32,11 @@ const source: PdfDocumentSource = {
   onDirtyChange={(dirty) => protectHostNavigation(dirty)}
   onSave={(bytes, filename) => persistInHost(bytes, filename)}
   onError={(error) => reportToHost(error)}
+  onCloseRequest={() => closeViewerInHost()}
 />
 ```
 
-The host owns the source, attachment metadata, surrounding navigation, and component lifecycle. The SDK owns the PDF state and reports lifecycle changes through typed callbacks. Password handling can be customized with `onPasswordRequest`.
+The host owns the source, attachment metadata, surrounding navigation, and component lifecycle. The SDK owns the PDF state and reports lifecycle changes through typed callbacks. Password handling can be customized with `onPasswordRequest`; an optional `onCloseRequest` lets the host respond to the SDK's close control.
 
 ## Commands
 
@@ -83,8 +86,8 @@ Controls use semantic buttons, labels, pressed/disabled states, visible focus, s
 - Annotation resizing uses explicit PDF-point dimensions instead of drag handles.
 - MuPDF.js 1.28 exposes browser widget inspection but not a safe signature-field creation helper; signature/widget creation and cryptographic signing are not claimed.
 - Browser print UI and supported options remain browser-dependent.
-- Comprehensive compatibility, encrypted-PDF, corrupt-PDF, and large-file validation belongs to Phases 2 and 3.
+- Phase 2 evidence covers the accepted Chromium/Firefox workflows. Native print appearance, screen-reader/touch certification, broad performance testing, and unsupported signature/widget creation remain outside the validated claim.
 
 ## License
 
-AGPL-3.0-or-later. The built app serves `/LICENSE.txt` and `/SOURCE_OFFER.txt`; corresponding source is at <https://github.com/jsyed-se/neubus_pdf_viewer>. See the repository root notices for complete dependency details.
+AGPL-3.0-or-later. The built app serves `/LICENSE.txt` and `/SOURCE_OFFER.txt`; corresponding source is at <https://github.com/jsyed-se/pdf-viewer>. See the repository root notices for complete dependency details.

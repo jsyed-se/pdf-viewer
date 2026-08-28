@@ -43,7 +43,7 @@ svg { width: 18px; height: 18px; stroke-width: 1.8; }
 .back-button { border: 0; background: transparent; color: #536875; display: inline-flex; gap: 8px; align-items: center; justify-self: start; padding: 8px; }
 .attachment-summary { display: flex; align-items: center; gap: 10px; min-width: 250px; }
 .attachment-summary > span:last-child { display: grid; gap: 2px; }
-.attachment-summary small { color: var(--muted); }
+.attachment-summary small { color: #475569; }
 .attachment-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 8px; background: #0b4f70; color: white; font-weight: 800; }
 .source-controls { display: flex; align-items: stretch; justify-content: end; gap: 8px; }
 .source-offer-link { position: absolute; right: 26px; top: 8px; color: var(--blue-dark); font-size: 11px; }
@@ -65,7 +65,7 @@ svg { width: 18px; height: 18px; stroke-width: 1.8; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .viewer-toolbar { min-width: 0; display: flex; align-items: stretch; gap: 2px; padding: 8px 10px; border-bottom: 1px solid var(--line); background: white; overflow-x: auto; }
-.viewer-tool { min-width: 56px; border: 0; border-radius: 7px; padding: 4px 7px; display: grid; justify-items: center; gap: 3px; background: transparent; color: #40535f; font-size: 10px; white-space: nowrap; }
+.viewer-tool { flex: 0 0 auto; min-width: 56px; border: 0; border-radius: 7px; padding: 4px 7px; display: grid; justify-items: center; gap: 3px; background: transparent; color: #40535f; font-size: 10px; white-space: nowrap; }
 .viewer-tool:hover, .viewer-tool.active { color: var(--blue-dark); background: var(--blue-soft); }
 .viewer-tool svg { width: 17px; height: 17px; }
 .icon-button { border: 0; background: transparent; padding: 8px 4px; display: grid; place-items: center; }

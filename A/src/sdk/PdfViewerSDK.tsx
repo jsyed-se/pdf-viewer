@@ -15,6 +15,7 @@ import {
   Save,
   Search,
   ShieldAlert,
+  X,
   ZoomIn,
   ZoomOut,
 } from 'lucide-react';
@@ -28,6 +29,7 @@ import {
 import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { DocumentEditor } from '../components/DocumentEditor';
 import { PdfPageCanvas } from '../components/PdfPageCanvas';
+import { decideVisiblePage } from '../lib/navigation';
 import { calculateScale, pagesForMode } from '../lib/viewMath';
 import { PdfEngineClient } from './engineClient';
 import type {
@@ -69,8 +71,16 @@ function downloadBytes(bytes: Uint8Array, filename: string) {
   window.setTimeout(() => URL.revokeObjectURL(url), 1_000);
 }
 
-function describeLoadError(error: unknown) {
+function retireLoadingTask(task: PDFDocumentLoadingTask | null | undefined) {
+  if (!task) return;
+  window.setTimeout(() => void task.destroy(), 0);
+}
+
+function describeLoadError(error: unknown, sourceKind?: 'url' | 'file' | 'bytes') {
   const message = error instanceof Error ? error.message : String(error);
+  if (sourceKind !== 'url' && /requested file or directory.*not.*found|missing pdf/i.test(message)) {
+    return `The file is not a valid or supported PDF. ${message}`;
+  }
   if (/cors|fetch|network|http/i.test(message)) {
     return `The PDF could not be fetched. Check the URL, CORS headers, and network connection. ${message}`;
   }
@@ -117,11 +127,13 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     onPageChange,
     onDirtyChange,
     onSave,
+    onCloseRequest,
     onPasswordRequest,
   } = props;
   const filename = filenameFromSource(props);
   const engine = useMemo(() => new PdfEngineClient(), []);
   const loadingTaskRef = useRef<PDFDocumentLoadingTask | null>(null);
+  const loadingTasksPendingRetirementRef = useRef<PDFDocumentLoadingTask[]>([]);
   const pdfDocumentRef = useRef<PDFDocumentProxy | null>(null);
   const documentRevision = useRef(0);
   const viewerRef = useRef<HTMLDivElement>(null);
@@ -147,6 +159,18 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
   const [selectedAnnotation, setSelectedAnnotation] = useState<{ pageIndex: number; index: number } | null>(null);
   const [detailsPanel, setDetailsPanel] = useState<'none' | 'annotations' | 'bookmarks'>('none');
   const passwordRef = useRef<string | undefined>(undefined);
+  const pendingNavigationPageRef = useRef<number | null>(null);
+  const navigationReleaseTimerRef = useRef<number | null>(null);
+  const currentPageRef = useRef(1);
+
+  const lockVisiblePage = useCallback((page: number) => {
+    pendingNavigationPageRef.current = page;
+    if (navigationReleaseTimerRef.current != null) window.clearTimeout(navigationReleaseTimerRef.current);
+    navigationReleaseTimerRef.current = window.setTimeout(() => {
+      pendingNavigationPageRef.current = null;
+      navigationReleaseTimerRef.current = null;
+    }, 1_500);
+  }, []);
 
   const scale = useMemo(() => {
     return calculateScale({
@@ -188,7 +212,6 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
         if (cancelled) return;
         const viewport = page.getViewport({ scale: 1 });
         setPageSize({ width: viewport.width, height: viewport.height });
-        page.cleanup();
       })
       .catch(() => {
         // A document swap can invalidate an in-flight page request.
@@ -201,21 +224,26 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     nextFilename = filename,
     options: { resetPage?: boolean; notifyReady?: boolean } = {},
   ) => {
-    setPdfDocument((previous) => {
-      if (previous && previous !== next) void previous.cleanup();
-      return next;
-    });
+    setPdfDocument(next);
     pdfDocumentRef.current = next;
     setPageCount(next.numPages);
-    if (options.resetPage !== false) setCurrentPage(1);
+    if (options.resetPage !== false) {
+      lockVisiblePage(1);
+      if (workspaceRef.current) {
+        workspaceRef.current.scrollTop = 0;
+        workspaceRef.current.scrollLeft = 0;
+      }
+      currentPageRef.current = 1;
+      setCurrentPage(1);
+    }
     setError(null);
     setStatus(`${next.numPages} page${next.numPages === 1 ? '' : 's'} ready.`);
     if (options.notifyReady !== false) onReady?.({ pageCount: next.numPages, filename: nextFilename });
-  }, [filename, onReady]);
+  }, [filename, lockVisiblePage, onReady]);
 
   const loadBytesIntoViewer = useCallback(async (bytes: Uint8Array) => {
     const revision = ++documentRevision.current;
-    void loadingTaskRef.current?.destroy();
+    const previousTask = loadingTaskRef.current;
     const task = getDocument({ data: Uint8Array.from(bytes), useWasm: true });
     loadingTaskRef.current = task;
     const next = await task.promise;
@@ -223,12 +251,24 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
       await next.cleanup();
       throw new Error('A newer document replaced this result.');
     }
+    if (previousTask) loadingTasksPendingRetirementRef.current.push(previousTask);
     await installPdfDocument(next, filename, { resetPage: false, notifyReady: false });
   }, [filename, installPdfDocument]);
 
   useEffect(() => {
+    const tasks = loadingTasksPendingRetirementRef.current.splice(0);
+    for (const task of tasks) retireLoadingTask(task);
+  }, [pdfDocument]);
+
+  useEffect(() => {
     const revision = ++documentRevision.current;
-    loadingTaskRef.current?.destroy();
+    const previousTask = loadingTaskRef.current;
+    const hadPreviousDocument = pdfDocumentRef.current !== null;
+    loadingTaskRef.current = null;
+    if (previousTask) {
+      if (hadPreviousDocument) loadingTasksPendingRetirementRef.current.push(previousTask);
+      else retireLoadingTask(previousTask);
+    }
     void engine.resetIfStarted().catch(() => undefined);
     setEngineSnapshot(null);
     setEditorOpen(false);
@@ -237,15 +277,12 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     setSelectedAnnotation(null);
     setError(null);
     passwordRef.current = undefined;
+    setPdfDocument(null);
+    pdfDocumentRef.current = null;
 
     if (!source) {
       setLoading(false);
       setPageCount(0);
-      setPdfDocument((previous) => {
-        if (previous) void previous.cleanup();
-        return null;
-      });
-      pdfDocumentRef.current = null;
       setStatus('Choose a local PDF or enter a PDF URL.');
       return;
     }
@@ -293,10 +330,10 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
       })
       .catch((loadError) => {
         if (revision !== documentRevision.current) return;
-        const message = describeLoadError(loadError);
+        const message = describeLoadError(loadError, source.kind);
         setError(message);
         setStatus('Document failed to load.');
-        onError?.(loadError instanceof Error ? loadError : new Error(message));
+        onError?.(new Error(message));
       })
       .finally(() => {
         if (revision === documentRevision.current) {
@@ -306,15 +343,17 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
       });
 
     return () => {
-      void task?.destroy();
+      retireLoadingTask(task);
     };
   }, [engine, installPdfDocument, onError, onPasswordRequest, onProgress, source]);
 
   useEffect(() => () => {
     documentRevision.current += 1;
-    loadingTaskRef.current?.destroy();
+    retireLoadingTask(loadingTaskRef.current);
+    for (const task of loadingTasksPendingRetirementRef.current.splice(0)) retireLoadingTask(task);
     void pdfDocumentRef.current?.cleanup();
     engine.destroy();
+    if (navigationReleaseTimerRef.current != null) window.clearTimeout(navigationReleaseTimerRef.current);
   }, [engine]);
 
   useEffect(() => {
@@ -340,6 +379,17 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     return result.snapshot;
   }, [engine, engineSnapshot, pdfDocument]);
 
+  const cancelLoading = useCallback(() => {
+    documentRevision.current += 1;
+    const task = loadingTaskRef.current;
+    loadingTaskRef.current = null;
+    void task?.destroy();
+    setLoading(false);
+    setProgress(null);
+    setError(null);
+    setStatus('Loading cancelled.');
+  }, []);
+
   const runEngine = useCallback(async (command: EngineCommand, reload = true) => {
     setBusy(true);
     setError(null);
@@ -361,14 +411,82 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     }
   }, [engine, ensureEngine, loadBytesIntoViewer, onError]);
 
+  const reportEngineError = useCallback((operationError: unknown) => {
+    const message = operationError instanceof Error ? operationError.message : String(operationError);
+    setError(message);
+    setStatus('Document engine failed to start.');
+    onError?.(operationError instanceof Error ? operationError : new Error(message));
+  }, [onError]);
+
   const setPage = useCallback((page: number, scroll = true) => {
     const next = Math.max(1, Math.min(pageCount || 1, Math.round(page)));
+    if (scroll && viewMode === 'continuous') {
+      lockVisiblePage(next);
+    }
     setCurrentPage(next);
+    currentPageRef.current = next;
     onPageChange?.(next);
     if (scroll && viewMode === 'continuous') {
-      viewerRef.current?.querySelector(`[data-page-number="${next}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      workspaceRef.current?.querySelector(`[data-page-number="${next}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }, [onPageChange, pageCount, viewMode]);
+  }, [lockVisiblePage, onPageChange, pageCount, viewMode]);
+
+  useEffect(() => {
+    const workspace = workspaceRef.current;
+    if (!workspace || viewMode !== 'continuous' || !pdfDocument) return;
+    let frame: number | null = null;
+    const updateCurrentPage = () => {
+      frame = null;
+      const workspaceRect = workspace.getBoundingClientRect();
+      let bestPage = currentPageRef.current;
+      let bestVisibleArea = -1;
+      let bestTopDistance = Number.POSITIVE_INFINITY;
+      workspace.querySelectorAll<HTMLElement>('[data-page-number]').forEach((element) => {
+        const rect = element.getBoundingClientRect();
+        const visibleWidth = Math.max(0, Math.min(rect.right, workspaceRect.right) - Math.max(rect.left, workspaceRect.left));
+        const visibleHeight = Math.max(0, Math.min(rect.bottom, workspaceRect.bottom) - Math.max(rect.top, workspaceRect.top));
+        const visibleArea = visibleWidth * visibleHeight;
+        const topDistance = Math.abs(rect.top - workspaceRect.top);
+        const page = Number(element.dataset.pageNumber);
+        if (Number.isInteger(page) && (visibleArea > bestVisibleArea || (visibleArea === bestVisibleArea && topDistance < bestTopDistance))) {
+          bestPage = page;
+          bestVisibleArea = visibleArea;
+          bestTopDistance = topDistance;
+        }
+      });
+      const decision = decideVisiblePage(pendingNavigationPageRef.current, bestPage);
+      if (!decision.accept) return;
+      if (decision.clearPendingNavigation) {
+        pendingNavigationPageRef.current = null;
+        if (navigationReleaseTimerRef.current != null) {
+          window.clearTimeout(navigationReleaseTimerRef.current);
+          navigationReleaseTimerRef.current = null;
+        }
+      }
+      if (bestPage !== currentPageRef.current) {
+        currentPageRef.current = bestPage;
+        setCurrentPage(bestPage);
+        onPageChange?.(bestPage);
+      }
+    };
+    const schedule = () => {
+      if (frame == null) frame = window.requestAnimationFrame(updateCurrentPage);
+    };
+    workspace.addEventListener('scroll', schedule, { passive: true });
+    const resizeObserver = new ResizeObserver(schedule);
+    resizeObserver.observe(workspace);
+    schedule();
+    return () => {
+      workspace.removeEventListener('scroll', schedule);
+      resizeObserver.disconnect();
+      if (frame != null) window.cancelAnimationFrame(frame);
+    };
+  }, [onPageChange, pdfDocument, viewMode]);
+
+  const requestClose = useCallback(() => {
+    if (engineSnapshot?.dirty && !window.confirm('This document has unsaved changes. Discard them and close the viewer?')) return;
+    onCloseRequest?.();
+  }, [engineSnapshot?.dirty, onCloseRequest]);
 
   useEffect(() => {
     const handleKeyboard = (event: KeyboardEvent) => {
@@ -402,8 +520,8 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
       setEditorOpen(true);
       setAnnotationTool('none');
       setDetailsPanel('none');
-    } catch {
-      // ensureEngine reports the actionable error.
+    } catch (operationError) {
+      reportEngineError(operationError);
     }
   };
 
@@ -601,7 +719,7 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
               {progress.total ? Math.round((progress.loaded / progress.total) * 100) : progress.loaded}
             </progress>
           )}
-          <button type="button" className="secondary-button" onClick={() => void loadingTaskRef.current?.destroy()}>Cancel loading</button>
+          <button type="button" className="secondary-button" onClick={cancelLoading}>Cancel loading</button>
         </div>
       )}
       {!loading && pdfDocument && editorOpen && engineSnapshot ? (
@@ -626,6 +744,7 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
             <ToolButton label="Edit document" disabled={busy} onClick={() => void beginEditor()}><Edit3 /></ToolButton>
             <ToolButton label="Print" disabled={busy} onClick={() => void printDocument()}><Printer /></ToolButton>
             <ToolButton label="Save PDF" disabled={busy} onClick={() => void exportDocument()}><Save /></ToolButton>
+            {onCloseRequest && <ToolButton label="Close viewer" disabled={busy} onClick={requestClose}><X /></ToolButton>}
             <span className="toolbar-divider" />
             <button type="button" className="icon-button" aria-label="Previous page" disabled={currentPage <= 1} onClick={() => setPage(currentPage - 1)}><ChevronLeft /></button>
             <label className="page-input-label">
@@ -657,15 +776,18 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
             <ToolButton label="Highlight" active={annotationTool === 'highlight'} onClick={() => setAnnotationTool(annotationTool === 'highlight' ? 'none' : 'highlight')}><Highlighter /></ToolButton>
             <ToolButton label="Redact" active={annotationTool === 'redact'} onClick={() => setAnnotationTool(annotationTool === 'redact' ? 'none' : 'redact')}><ShieldAlert /></ToolButton>
             <ToolButton label="Text note" active={annotationTool === 'text'} onClick={() => setAnnotationTool(annotationTool === 'text' ? 'none' : 'text')}><MessageSquareText /></ToolButton>
-            <ToolButton label="Annotations" active={detailsPanel === 'annotations'} onClick={() => setDetailsPanel(detailsPanel === 'annotations' ? 'none' : 'annotations')}><Search /></ToolButton>
+            <ToolButton label="Annotations" active={detailsPanel === 'annotations'} onClick={() => {
+              void ensureEngine().catch(reportEngineError);
+              setDetailsPanel(detailsPanel === 'annotations' ? 'none' : 'annotations');
+            }}><Search /></ToolButton>
             <ToolButton label="Bookmarks" active={detailsPanel === 'bookmarks'} onClick={() => {
-              void ensureEngine().catch(() => undefined);
+              void ensureEngine().catch(reportEngineError);
               setDetailsPanel(detailsPanel === 'bookmarks' ? 'none' : 'bookmarks');
             }}><Bookmark /></ToolButton>
           </div>
           <div className="viewer-shell" ref={viewerRef}>
             {thumbnailsOpen && (
-              <aside className="thumbnail-rail" aria-label="Page thumbnails">
+              <aside className="thumbnail-rail" role="region" aria-label="Page thumbnails">
                 {Array.from({ length: pageCount }, (_, index) => (
                   <button
                     type="button"
@@ -680,7 +802,7 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
                 ))}
               </aside>
             )}
-            <main ref={workspaceRef} className={`page-workspace mode-${viewMode}`} aria-label="PDF pages">
+            <section ref={workspaceRef} className={`page-workspace mode-${viewMode}`} aria-label="PDF pages" tabIndex={0}>
               <div className="page-list">
                 {visiblePageNumbers.map((pageNumber) => (
                   <PdfPageCanvas
@@ -691,13 +813,12 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
                     active={pageNumber === currentPage}
                     annotationTool={annotationTool}
                     selectedAnnotationRect={selectedAnnotationMetadata?.pageIndex === pageNumber - 1 ? selectedAnnotationMetadata.rect : undefined}
-                    onVisible={(page) => viewMode === 'continuous' && page !== currentPage && setPage(page, false)}
                     onAnnotate={(page, tool, rect) => void addAnnotation(page, tool, rect)}
                     onTextAnnotate={(page, tool, quads) => void addTextSelection(page, tool, quads)}
                   />
                 ))}
               </div>
-            </main>
+            </section>
             {detailsPanel !== 'none' && (
               <aside className="details-panel" aria-label={detailsPanel === 'annotations' ? 'Annotation tools' : 'Bookmarks'}>
                 <div className="details-heading">

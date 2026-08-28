@@ -14,6 +14,8 @@ let document: mupdf.PDFDocument | null = null;
 let committedBytes: Uint8Array | null = null;
 let clipboardBytes: Uint8Array | null = null;
 let dirty = false;
+let undoHistory: Uint8Array[] = [];
+let redoHistory: Uint8Array[] = [];
 
 function copyBytes(bytes: Uint8Array<ArrayBufferLike>): Uint8Array {
   return Uint8Array.from(bytes);
@@ -44,10 +46,13 @@ function serialize(doc = requireDocument()): Uint8Array {
 
 function withOperation(name: string, operation: (doc: mupdf.PDFDocument) => void) {
   const doc = requireDocument();
+  const before = serialize(doc);
   doc.beginOperation(name);
   try {
     operation(doc);
     doc.endOperation();
+    undoHistory.push(before);
+    redoHistory = [];
     dirty = true;
   } catch (error) {
     doc.abandonOperation();
@@ -78,7 +83,12 @@ function rectFromQuads(quads: mupdf.Quad[]): mupdf.Rect {
 function annotationMetadata(pageIndex: number, page: mupdf.PDFPage): AnnotationMetadata[] {
   const inversePageTransform = mupdf.Matrix.invert(page.getTransform());
   return page.getAnnotations().map((annotation, index) => {
-    const quads = annotation.getQuadPoints();
+    let quads: mupdf.Quad[] = [];
+    try {
+      quads = annotation.getQuadPoints();
+    } catch {
+      // Text notes and other rectangle-based annotations do not expose QuadPoints.
+    }
     const pageRect = quads.length > 0 ? rectFromQuads(quads) : annotation.getRect();
     return {
       index,
@@ -151,8 +161,8 @@ function snapshot(): EngineSnapshot {
     annotations,
     widgets,
     bookmarks: flattenOutline(doc.loadOutline()),
-    canUndo: doc.canUndo(),
-    canRedo: doc.canRedo(),
+    canUndo: undoHistory.length > 0,
+    canRedo: redoHistory.length > 0,
     hasClipboard: clipboardBytes !== null,
     dirty,
     wasm: true,
@@ -215,6 +225,8 @@ async function handle(command: EngineCommand): Promise<EngineResult> {
       document.enableJournal();
       dirty = false;
       clipboardBytes = null;
+      undoHistory = [];
+      redoHistory = [];
       return { snapshot: snapshot() };
     }
     case 'reset':
@@ -223,6 +235,8 @@ async function handle(command: EngineCommand): Promise<EngineResult> {
       committedBytes = null;
       clipboardBytes = null;
       dirty = false;
+      undoHistory = [];
+      redoHistory = [];
       return {};
     case 'snapshot':
       return { snapshot: snapshot() };
@@ -235,6 +249,8 @@ async function handle(command: EngineCommand): Promise<EngineResult> {
       document = openPdf(bytes);
       document.enableJournal();
       dirty = false;
+      undoHistory = [];
+      redoHistory = [];
       return { bytes, snapshot: snapshot() };
     }
     case 'cancel':
@@ -243,15 +259,29 @@ async function handle(command: EngineCommand): Promise<EngineResult> {
       document = openPdf(committedBytes);
       document.enableJournal();
       dirty = false;
+      undoHistory = [];
+      redoHistory = [];
       return { bytes: copyBytes(committedBytes), snapshot: snapshot() };
-    case 'undo':
-      if (requireDocument().canUndo()) requireDocument().undo();
+    case 'undo': {
+      const previous = undoHistory.pop();
+      if (!previous) return { bytes: serialize(), snapshot: snapshot() };
+      redoHistory.push(serialize());
+      document?.destroy();
+      document = openPdf(previous);
+      document.enableJournal();
+      dirty = undoHistory.length > 0;
+      return { bytes: copyBytes(previous), snapshot: snapshot() };
+    }
+    case 'redo': {
+      const next = redoHistory.pop();
+      if (!next) return { bytes: serialize(), snapshot: snapshot() };
+      undoHistory.push(serialize());
+      document?.destroy();
+      document = openPdf(next);
+      document.enableJournal();
       dirty = true;
-      return { bytes: serialize(), snapshot: snapshot() };
-    case 'redo':
-      if (requireDocument().canRedo()) requireDocument().redo();
-      dirty = true;
-      return { bytes: serialize(), snapshot: snapshot() };
+      return { bytes: copyBytes(next), snapshot: snapshot() };
+    }
     case 'rotate':
       withOperation('Rotate pages', (doc) => {
         for (const pageIndex of normalizePageIndexes(command.pages, doc.countPages())) {
@@ -473,3 +503,5 @@ self.onmessage = async (event: MessageEvent<{ id: number; command: EngineCommand
     self.postMessage({ id, error: message });
   }
 };
+
+self.postMessage({ type: 'ready' });

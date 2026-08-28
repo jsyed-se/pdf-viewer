@@ -43,50 +43,46 @@ export function PdfPageCanvas({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const textLayerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<ReturnType<PDFPageProxy['getViewport']> | null>(null);
-  const renderTaskRef = useRef<ReturnType<PDFPageProxy['render']> | null>(null);
   const [nearViewport, setNearViewport] = useState(false);
-  const [dimensions, setDimensions] = useState({ width: compact ? 140 : 612, height: compact ? 180 : 792 });
+  const [dimensions, setDimensions] = useState({
+    width: compact ? 140 : 612 * scale,
+    height: compact ? 180 : 792 * scale,
+  });
   const [drawingStart, setDrawingStart] = useState<Point | null>(null);
   const [drawingEnd, setDrawingEnd] = useState<Point | null>(null);
   const [selectedAnnotationStyle, setSelectedAnnotationStyle] = useState<React.CSSProperties | undefined>();
   const [renderError, setRenderError] = useState<string | null>(null);
+  const onVisibleRef = useRef(onVisible);
+
+  useEffect(() => {
+    onVisibleRef.current = onVisible;
+  }, [onVisible]);
 
   useEffect(() => {
     const frame = frameRef.current;
     if (!frame) return;
-    const observer = new IntersectionObserver(
+    const root = compact ? frame.closest('.thumbnail-rail') : frame.closest('.page-workspace');
+    const preloadObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) setNearViewport(true);
-        if (entry.intersectionRatio >= 0.45) onVisible?.(pageNumber);
       },
-      { rootMargin: compact ? '400px 0px' : '700px 0px', threshold: [0, 0.45] },
+      { root, rootMargin: compact ? '400px 0px' : '700px 0px', threshold: 0 },
     );
-    observer.observe(frame);
-    return () => observer.disconnect();
-  }, [compact, onVisible, pageNumber]);
-
-  useEffect(() => {
-    let cancelled = false;
-    void document.getPage(pageNumber)
-      .then((page) => {
-        if (cancelled) {
-          page.cleanup();
-          return;
-        }
-        const viewport = page.getViewport({ scale });
-        viewportRef.current = viewport;
-        setDimensions({ width: viewport.width, height: viewport.height });
-        page.cleanup();
-      })
-      .catch(() => {
-        // A document swap can invalidate an in-flight page request.
-      });
+    preloadObserver.observe(frame);
+    const visibilityObserver = compact || !onVisibleRef.current
+      ? null
+      : new IntersectionObserver(
+        ([entry]) => {
+          if (entry.intersectionRatio >= 0.45) onVisibleRef.current?.(pageNumber);
+        },
+        { root, rootMargin: '0px', threshold: [0, 0.45] },
+      );
+    visibilityObserver?.observe(frame);
     return () => {
-      cancelled = true;
-      renderTaskRef.current?.cancel();
-      renderTaskRef.current = null;
+      preloadObserver.disconnect();
+      visibilityObserver?.disconnect();
     };
-  }, [document, pageNumber, scale]);
+  }, [compact, pageNumber]);
 
   useEffect(() => {
     if (!nearViewport) return;
@@ -98,6 +94,7 @@ export function PdfPageCanvas({
         if (cancelled || !canvasRef.current) return;
         const viewport = page.getViewport({ scale });
         viewportRef.current = viewport;
+        setDimensions({ width: viewport.width, height: viewport.height });
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d', { alpha: false });
         if (!context) throw new Error('Canvas rendering is unavailable in this browser.');
@@ -112,12 +109,7 @@ export function PdfPageCanvas({
           viewport,
           transform: outputScale === 1 ? undefined : [outputScale, 0, 0, outputScale, 0, 0],
         });
-        renderTaskRef.current = activeTask;
-        try {
-          await activeTask.promise;
-        } finally {
-          page.cleanup();
-        }
+        await activeTask.promise;
       })
       .catch((error: unknown) => {
         if (cancelled) return;
@@ -147,7 +139,6 @@ export function PdfPageCanvas({
         width: Math.abs(second[0] - first[0]),
         height: Math.abs(second[1] - first[1]),
       });
-      page.cleanup();
     }).catch(() => setSelectedAnnotationStyle(undefined));
     return () => { cancelled = true; };
   }, [document, pageNumber, scale, selectedAnnotationRect]);
@@ -167,11 +158,7 @@ export function PdfPageCanvas({
           container,
           viewport,
         });
-        try {
-          await textLayer.render();
-        } finally {
-          page.cleanup();
-        }
+        await textLayer.render();
       })
       .catch((error: unknown) => {
         if (cancelled || (error instanceof Error && /cancel/i.test(error.message))) return;
@@ -247,6 +234,7 @@ export function PdfPageCanvas({
       className={`pdf-page-frame${compact ? ' compact' : ''}${active ? ' active' : ''}`}
       style={{ width: dimensions.width, minHeight: dimensions.height }}
       data-page-number={pageNumber}
+      role="group"
       aria-label={`PDF page ${pageNumber}`}
     >
       <canvas ref={canvasRef} aria-hidden="true" />
@@ -254,11 +242,12 @@ export function PdfPageCanvas({
         <div
           ref={textLayerRef}
           className={`text-layer${annotationTool === 'highlight-text' || annotationTool === 'redact-text' ? ' selecting' : ''}`}
+          role="group"
           aria-label={`Selectable text for page ${pageNumber}`}
           onPointerUp={finishTextSelection}
         />
       )}
-      {!nearViewport && <div className="page-skeleton" aria-label={`Page ${pageNumber} waiting to render`} />}
+      {!nearViewport && <div className="page-skeleton" role="img" aria-label={`Page ${pageNumber} waiting to render`} />}
       {renderError && <div className="page-render-error" role="alert">Page {pageNumber} could not be rendered: {renderError}</div>}
       {!compact && annotationTool !== 'none' && annotationTool !== 'highlight-text' && annotationTool !== 'redact-text' && (
         <div

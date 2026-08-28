@@ -35,6 +35,15 @@ describe('calculateScale', () => {
     });
     expect(reducedWorkspace).toBeCloseTo(690 / 600);
   });
+
+  it('never returns a non-finite scale while layout measurements are settling', () => {
+    expect(calculateScale({
+      ...base,
+      zoomMode: 'fit-width',
+      viewportWidth: Number.NaN,
+      pageGap: Number.NaN,
+    })).toBe(0.1);
+  });
 });
 
 describe('pagesForMode', () => {

@@ -9,14 +9,14 @@ Codex was used for Phase 1 planning, implementation, inspection, debugging, revi
 - No application source existed in the workspace at Phase 1 start.
 - The deployed application was inspected, but that did not establish whether its controls performed real PDF mutations.
 - `example_viewer_demo.mov` was not provided, so no behavior is attributed to it.
-- Cursor Plan-mode output and a Cursor-exported transcript were not present. Codex records are not substitutes and those artifacts were not fabricated.
+- Cursor artifacts were not present. The reviewer later approved Codex equivalents: saved plans, the available Codex activity record, AI-change explanations, and correctness evidence. No unavailable full transcript was fabricated.
 
 ## Missions and Material Recommendations
 
 | Date | Mission | Recommendation / result | Decision and validation |
 | --- | --- | --- | --- |
 | 2026-08-28 | Convert the assignment into repository requirements | Preserve required vs bonus scope and track open questions | Accepted; `REQUIREMENTS.md` reviewed by captain, vice captain, and documentation agents |
-| 2026-08-28 | Plan Phase 1 before code | Use PDF.js for range display and MuPDF in a document worker; save the plan first | Accepted; `C/phase-1-plan.md` predates application files |
+| 2026-08-28 | Plan Phase 1 before code | Use PDF.js for range display and MuPDF in a document worker; save the plan first | Accepted; `C/phase-1/plan.md` predates application files |
 | 2026-08-28 | Inspect the deployed baseline | Reuse its host header, compact toolbar, thumbnail rail, and page-card editor interaction | Accepted as interaction guidance only; no implementation claims copied from the site |
 | 2026-08-28 | Verify MuPDF feasibility | Test actual package APIs before building controls | Accepted; Node spike created a native note, bookmark, rotation, journal history, serialized bytes, and reopened them |
 | 2026-08-28 | Implement reusable SDK | Keep host metadata/source/navigation outside PDF engines | Accepted through typed source union and lifecycle callbacks |
@@ -39,8 +39,8 @@ Codex was used for Phase 1 planning, implementation, inspection, debugging, revi
 
 ## Correctness Checks
 
-The exact commands and results are recorded in `C/phase-1-implementation.md`. Phase 1 used package install/audit, TypeScript, ESLint, Vitest, a MuPDF serialization/reopen spike, production build, development-server startup, and a narrow live remote-PDF/WASM-editor smoke. No Phase 2/3 certification is claimed.
+The exact commands and results are recorded in `C/phase-1/implementation.md`. Phase 1 used package install/audit, TypeScript, ESLint, Vitest, a MuPDF serialization/reopen spike, production build, development-server startup, and a narrow live remote-PDF/WASM-editor smoke. No Phase 2/3 certification is claimed.
 
-## Cursor Requirement Status
+## Approved Codex Equivalent Status
 
-The assignment separately requires a Cursor Plan-mode plan saved/uploaded and a transcript exported from Cursor’s prompt menu. Those files were not available in this Codex workspace. If they are produced later, add them to `C/` without rewriting or fabricating their contents.
+The reviewer approved Codex in place of Cursor. Saved plans are in `C/phase-1/plan.md` and `C/phase-2/plan.md`; the available activity record is in `C/codex-transcript.md`; changes from AI output and correctness validation are recorded separately. Any external upload remains a reviewer/user action and is not claimed here.

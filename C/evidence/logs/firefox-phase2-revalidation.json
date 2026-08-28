@@ -1,0 +1,104 @@
+{
+  "runAtUtc": "2026-08-28T22:28:08.506507+00:00",
+  "app": "http://127.0.0.1:5173",
+  "browser": {
+    "name": "firefox",
+    "version": "154.0.1",
+    "platform": "windows",
+    "headless": true
+  },
+  "desktopViewport": {
+    "dpr": 1,
+    "height": 815,
+    "width": 1440
+  },
+  "results": [
+    {
+      "name": "Principal/local fixture",
+      "outcome": "PASS",
+      "details": "normal.pdf loaded with 2 pages in the viewer."
+    },
+    {
+      "name": "Principal/navigation, modes, zoom",
+      "outcome": "PASS",
+      "details": "Previous/next passed; selected single/spread/continuous; zoom changed 195%\u2192210%; both fit controls activated."
+    },
+    {
+      "name": "Principal/editor real operation",
+      "outcome": "PASS",
+      "details": "Selected page 1, serialized a 90\u00b0 right rotation through the editor, and saved to the viewer."
+    },
+    {
+      "name": "Current-page tracking stability",
+      "outcome": "PASS",
+      "details": "Direct page 2 remained stable for 2 seconds; real workspace scroll tracked page 1 then page 2 and remained stable for 2 seconds.",
+      "evidence": {
+        "directStable": true,
+        "scrollStable": true
+      }
+    },
+    {
+      "name": "P2-D07 existing annotations",
+      "outcome": "PASS",
+      "details": "Annotations panel initialized MuPDF metadata and listed existing annotation types.",
+      "evidence": [
+        "Text",
+        "Highlight"
+      ]
+    },
+    {
+      "name": "P2-D09 source replacement/scroll stability",
+      "outcome": "PARTIAL",
+      "details": "Firefox replacement changed the same SDK instance from 2 to 16 pages, settled at page 1 for 3 seconds, and rendered the new host-ready state. The demo has no callback event log or dual-instance raw-byte harness, so absence/order of onPageChange callbacks is not directly proven.",
+      "evidence": {
+        "initialPageAfterReplacement": "1",
+        "stableAtPage1": true,
+        "hostReady": true,
+        "callbackHarnessAvailable": false
+      }
+    },
+    {
+      "name": "P2-D08 unsupported-file guidance",
+      "outcome": "PASS",
+      "details": "Unsupported plain-text fixture was rejected with invalid/supported-PDF guidance in both viewer alert and host callback state; no PDF workspace rendered.",
+      "evidence": {
+        "errorBanner": "The file is not a valid or supported PDF. Invalid PDF structure.\nDismiss",
+        "hostError": "The file is not a valid or supported PDF. Invalid PDF structure.",
+        "workspaceAbsent": true
+      }
+    },
+    {
+      "name": "P2-D10 axe-core revalidation",
+      "outcome": "PASS",
+      "details": "axe-core 4.10.3 returned 0 violation rules and 0 affected nodes.",
+      "evidence": {
+        "violations": 0,
+        "violationNodes": 0,
+        "incomplete": 1,
+        "passes": 37
+      }
+    },
+    {
+      "name": "Principal/responsive layout",
+      "outcome": "PASS",
+      "details": "Responsive viewport retained page width and keyboard-scrollable toolbar overflow.",
+      "evidence": {
+        "viewport": {
+          "bodyScrollWidth": 820,
+          "dpr": 1,
+          "height": 895,
+          "width": 820
+        },
+        "toolbar": {
+          "clientWidth": 798,
+          "overflowX": "auto",
+          "scrollWidth": 1275
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "The demo does not expose onPageChange callback logs or the Chromium dual-instance raw-byte harness; D09 callback-sequence proof remains partial in Firefox.",
+    "Headless automation validates DOM/browser behavior and screenshots, not screen-reader, real touch, native print, or broad compatibility certification."
+  ]
+}

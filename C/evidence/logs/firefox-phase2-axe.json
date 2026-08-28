@@ -1,0 +1,150 @@
+{
+  "runAtUtc": "2026-08-28T22:17:44.974131+00:00",
+  "app": "http://127.0.0.1:5173",
+  "fixture": "A\\tests\\fixtures\\generated\\normal.pdf",
+  "browser": {
+    "name": "firefox",
+    "version": "154.0.1",
+    "platform": "windows",
+    "headless": true
+  },
+  "viewport": {
+    "dpr": 1,
+    "height": 815,
+    "width": 1440
+  },
+  "scanner": {
+    "name": "axe-core",
+    "version": "4.10.3",
+    "source": "cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js"
+  },
+  "outcome": "VIOLATIONS FOUND",
+  "counts": {
+    "violations": 7,
+    "violationNodes": 8,
+    "incomplete": 2,
+    "passes": 31
+  },
+  "violations": [
+    {
+      "id": "aria-prohibited-attr",
+      "impact": "serious",
+      "help": "Elements must only use permitted ARIA attributes",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-prohibited-attr?application=axeAPI",
+      "description": "Ensure ARIA attributes are not prohibited for an element's role",
+      "nodes": [
+        {
+          "target": [
+            "div[aria-label=\"Selectable text for page 2\"]"
+          ],
+          "html": "<div class=\"text-layer\" aria-label=\"Selectable text for page 2\"></div>",
+          "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on a div with no valid role attribute."
+        },
+        {
+          "target": [
+            ".page-skeleton"
+          ],
+          "html": "<div class=\"page-skeleton\" aria-label=\"Page 2 waiting to render\"></div>",
+          "failureSummary": "Fix all of the following:\n  aria-label attribute cannot be used on a div with no valid role attribute."
+        }
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=axeAPI",
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "nodes": [
+        {
+          "target": [
+            "small"
+          ],
+          "html": "<small>2 pages ready</small>",
+          "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.95 (foreground color: #667783, background color: #e7eef3, font size: 10.0pt (13.3281px), font weight: normal). Expected contrast ratio of 4.5:1"
+        }
+      ]
+    },
+    {
+      "id": "landmark-complementary-is-top-level",
+      "impact": "moderate",
+      "help": "Aside should not be contained in another landmark",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/landmark-complementary-is-top-level?application=axeAPI",
+      "description": "Ensure the complementary landmark or aside is at top level",
+      "nodes": [
+        {
+          "target": [
+            "aside"
+          ],
+          "html": "<aside class=\"thumbnail-rail\" aria-label=\"Page thumbnails\">",
+          "failureSummary": "Fix any of the following:\n  The complementary landmark is contained in another landmark."
+        }
+      ]
+    },
+    {
+      "id": "landmark-main-is-top-level",
+      "impact": "moderate",
+      "help": "Main landmark should not be contained in another landmark",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/landmark-main-is-top-level?application=axeAPI",
+      "description": "Ensure the main landmark is at top level",
+      "nodes": [
+        {
+          "target": [
+            ".page-workspace"
+          ],
+          "html": "<main class=\"page-workspace mode-continuous\" aria-label=\"PDF pages\">",
+          "failureSummary": "Fix any of the following:\n  The main landmark is contained in another landmark."
+        }
+      ]
+    },
+    {
+      "id": "landmark-no-duplicate-main",
+      "impact": "moderate",
+      "help": "Document should not have more than one main landmark",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/landmark-no-duplicate-main?application=axeAPI",
+      "description": "Ensure the document has at most one main landmark",
+      "nodes": [
+        {
+          "target": [
+            ".app-shell"
+          ],
+          "html": "<main class=\"app-shell\">",
+          "failureSummary": "Fix any of the following:\n  Document has more than one main landmark"
+        }
+      ]
+    },
+    {
+      "id": "page-has-heading-one",
+      "impact": "moderate",
+      "help": "Page should contain a level-one heading",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=axeAPI",
+      "description": "Ensure that the page, or at least one of its frames contains a level-one heading",
+      "nodes": [
+        {
+          "target": [
+            "html"
+          ],
+          "html": "<html lang=\"en\">",
+          "failureSummary": "Fix all of the following:\n  Page must have a level-one heading"
+        }
+      ]
+    },
+    {
+      "id": "scrollable-region-focusable",
+      "impact": "serious",
+      "help": "Scrollable region must have keyboard access",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/scrollable-region-focusable?application=axeAPI",
+      "description": "Ensure elements that have scrollable content are accessible by keyboard",
+      "nodes": [
+        {
+          "target": [
+            ".page-workspace"
+          ],
+          "html": "<main class=\"page-workspace mode-continuous\" aria-label=\"PDF pages\">",
+          "failureSummary": "Fix any of the following:\n  Element should have focusable content\n  Element should be focusable"
+        }
+      ]
+    }
+  ],
+  "limitation": "Automated axe results do not replace keyboard, screen-reader, reading-order, contrast visual, or touch-device testing."
+}

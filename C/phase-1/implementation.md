@@ -37,7 +37,7 @@ The repository contained no application source, architecture document, AI log, R
 - `A/src/components/DocumentEditor.tsx` — page manipulation UI
 - `A/src/sdk/types.ts` — public integration contract and worker protocol
 - `A/src/lib/viewMath.ts` — fit/spread calculations
-- `B/architecture.md` — architecture and tradeoffs
+- `B/architecture-and-design.md` — architecture and tradeoffs
 
 ## Design Decisions
 
@@ -51,7 +51,7 @@ The implementation did not inherit source AI output. Material Codex corrections 
 
 - Root and app packages declare `AGPL-3.0-or-later`.
 - The full MuPDF-provided AGPL text is copied unchanged to `LICENSE` and served as `A/public/LICENSE.txt`.
-- `THIRD_PARTY_NOTICES.md` names exact direct dependencies, licenses, roles, and upstream sources.
+- `NOTICE-MUPDF.md` names exact direct dependencies, licenses, roles, and upstream sources.
 - `A/public/SOURCE_OFFER.txt` identifies the preferred source form and exact upstream sources.
 - `package-lock.json` pins the dependency graph; no MuPDF source modifications were made.
 - The repository contains the application and worker source used to produce the build.
@@ -71,7 +71,7 @@ The implementation did not inherit source AI output. Material Codex corrections 
 
 - The reference video and original source were absent.
 - Multi-page text-selection batching, drag annotation resize, signature/widget creation, and cryptographic signing are not claimed.
-- Cursor Plan-mode and Cursor transcript upload evidence remains absent.
+- Historical note: Cursor-specific artifacts were absent at Phase 1 completion. The reviewer subsequently approved Codex equivalents; see `C/codex-transcript.md` and `C/ai-output-changes.md`.
 - This phase does not provide comprehensive browser, malformed/encrypted document, combination-export, performance, or accessibility certification.
 
 ## Phase 2 Starting Point

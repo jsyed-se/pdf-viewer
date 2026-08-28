@@ -1,0 +1,41 @@
+.harness-shell {
+  display: grid;
+  gap: 16px;
+  height: 100%;
+  overflow: auto;
+  padding: 16px;
+}
+
+.harness-shell > header,
+.harness-log {
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.harness-shell h1,
+.harness-shell h2,
+.harness-shell p {
+  margin: 0 0 8px;
+}
+
+.harness-shell button {
+  margin-right: 8px;
+}
+
+.harness-log output {
+  display: block;
+  max-height: 160px;
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
+.sdk-host {
+  height: 720px;
+  min-width: 0;
+}
+
+.sdk-host > .pdf-sdk {
+  height: 100%;
+}

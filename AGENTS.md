@@ -6,7 +6,7 @@ Read [`REQUIREMENTS.md`](REQUIREMENTS.md) before planning or implementation. Tre
 
 ## Project Structure & Module Organization
 
-Treat `A/` as the React/TypeScript MVP and SDK root. Application code is in `A/src/`, static license/source assets are in `A/public/`, and focused tests are in `A/src/tests/`. Keep SDK integration under `A/src/sdk/`, UI in `A/src/components/`, and document processing in `A/src/workers/`. Architecture lives in `B/`; plans and AI/implementation records live in `C/`. Do not track build output, coverage, dependencies, secrets, or private PDFs.
+Treat `A/` as the React/TypeScript MVP and SDK root. Application code is in `A/src/`, static license/source assets are in `A/public/`, and focused tests are in `A/src/tests/`. Keep SDK integration under `A/src/sdk/`, UI in `A/src/components/`, and document processing in `A/src/workers/`. Architecture is indexed by `B/README.md`; phase plans and reports are indexed by `C/README.md`, with evidence left under `C/evidence/`. Do not track build output, coverage, dependencies, secrets, or private PDFs.
 
 ## Build, Test, and Development Commands
 
@@ -26,11 +26,11 @@ Use React and TypeScript with two-space indentation. Name components and classes
 
 ## Testing Guidelines
 
-Add Vitest coverage with behavior changes and regression fixes. Name unit tests `*.test.ts` or `*.test.tsx`; reserve `*.spec.ts` for later browser scenarios. Phase 1 tests cover deterministic view calculations and the MuPDF spike verifies serialization/reopen behavior. Broader browser evidence belongs to Phases 2 and 3.
+Add Vitest coverage with behavior changes and regression fixes. Name unit tests `*.test.ts` or `*.test.tsx`; reserve `*.spec.ts` for browser scenarios. Phase 1 tests cover deterministic view calculations, and the MuPDF spike verifies serialization/reopen behavior. Phase 2 browser and artifact evidence is indexed in `C/evidence/README.md`; do not create Phase 3 work unless explicitly requested.
 
 ## Commit & Pull Request Guidelines
 
-Because no Git history is present, use concise, imperative subjects such as `Add keyboard page navigation`. Pull requests must describe user-visible changes, verification, and linked issues. Include screenshots or recordings for UI changes. Never commit credentials, private documents, local environment files, or generated bundles.
+Use the repository’s concise, imperative subjects, such as `Add keyboard page navigation`. Pull requests must describe user-visible changes, verification, and linked issues. Include screenshots or recordings for UI changes. Never commit credentials, private documents, local environment files, or generated bundles.
 
 ## Sub-Agent Collaboration Policy
 

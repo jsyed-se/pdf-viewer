@@ -12,7 +12,10 @@ Validation starts from clean commit `c33ba71bc845ce022366fa15656a746efc6f92a6`, 
 4. Run controlled Chromium and Firefox principal workflows. Capture network/worker evidence for range loading and WebAssembly, and record any unavailable browser capability without substituting a claim.
 5. Record every observed defect before correction. Apply only the smallest fix, re-run the blocked flow, and preserve failure/revalidation evidence.
 6. Freeze the final validated application commit. Capture a small screenshot set from that exact code revision with consistent, non-private fixtures and viewports.
+   Review those screenshots at desktop and tablet widths for toolbar alignment, page centering, clipping, overflow, panel spacing, visible focus, and overall presentation. Use measured geometry when appearance alone is ambiguous.
 7. Complete the validation report, defect log, Codex evidence, AI-output corrections, architecture/README review, and screenshot index. Publish a clean repository.
+
+The user-supplied viewer screenshot is a visual-QA reference only. It is not final evidence because it predates the final Phase 2 commit.
 
 ## Required Validation Passes
 
