@@ -51,7 +51,7 @@ A fresh clone of the public repository at `70dca58084c4d97e6da09b4a50e2819ce99d3
 
 ## Evidence Boundaries
 
-No original source baseline or reference video was available. The authenticated reference application informed interaction and layout only; its implementation and exported PDFs were not treated as evidence. See [`defects.md`](defects.md) for the full correction history and [`requirements-validation.md`](requirements-validation.md) for the detailed test inventory.
+No original source baseline was available. The authenticated reference application informed interaction and layout only; its implementation and exported PDFs were not treated as evidence. See [`defects.md`](defects.md) for the full correction history and [`requirements-validation.md`](requirements-validation.md) for the detailed test inventory.
 
 Phase 3 must start from the published `phase-2-complete` tag. Phase 3 risks are broad malformed-input coverage, long-duration/resource profiling, performance benchmarking, native assistive-technology testing, and security/adversarial work. None was started in Phase 2.
 

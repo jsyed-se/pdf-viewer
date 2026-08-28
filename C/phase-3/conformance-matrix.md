@@ -21,4 +21,4 @@ This grouped matrix compares [`REQUIREMENTS.md`](../../REQUIREMENTS.md) with the
 
 ## Evidence Boundaries
 
-The unavailable reference video and original source baseline were not treated as evidence. Native screen-reader/touch certification, broad performance profiling, and broad adversarial testing were not performed.
+The original source baseline was not treated as evidence. Native screen-reader/touch certification, broad performance profiling, and broad adversarial testing were not performed.

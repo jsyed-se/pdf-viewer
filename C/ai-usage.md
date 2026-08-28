@@ -8,7 +8,6 @@ Codex was used for Phase 1 planning, implementation, inspection, debugging, revi
 
 - No application source existed in the workspace at Phase 1 start.
 - The deployed application was inspected, but that did not establish whether its controls performed real PDF mutations.
-- `example_viewer_demo.mov` was not provided, so no behavior is attributed to it.
 - Cursor artifacts were not present. The reviewer later approved Codex equivalents: saved plans, the available Codex activity record, AI-change explanations, and correctness evidence. No unavailable full transcript was fabricated.
 
 ## Missions and Material Recommendations

@@ -2,7 +2,7 @@
 
 ## Baseline Findings
 
-The repository contained no application source, architecture document, AI log, README, or reference video. The deployed app was inspected after authorized sign-in. It provided a useful layout and interaction baseline—host attachment header, URL/local input, compact viewer toolbar, thumbnail rail, three view modes, native-looking annotation tools, and selectable page-card editor—but its implementation and serialized output were not available. Phase 1 is therefore a written-requirement-driven greenfield implementation, not a source migration.
+The repository contained no application source, architecture document, AI log, or README. The deployed app was inspected after authorized sign-in. It provided a useful layout and interaction baseline—host attachment header, URL/local input, compact viewer toolbar, thumbnail rail, three view modes, native-looking annotation tools, and selectable page-card editor—but its implementation and serialized output were not available. Phase 1 is therefore a written-requirement-driven greenfield implementation, not a source migration.
 
 ## Capability Status
 
@@ -69,7 +69,7 @@ The implementation did not inherit source AI output. Material Codex corrections 
 
 ## Known Limitations
 
-- The reference video and original source were absent.
+- The original source was absent.
 - Multi-page text-selection batching, drag annotation resize, signature/widget creation, and cryptographic signing are not claimed.
 - Historical note: Cursor-specific artifacts were absent at Phase 1 completion. The reviewer subsequently approved Codex equivalents; see `C/codex-transcript.md` and `C/ai-output-changes.md`.
 - This phase does not provide comprehensive browser, malformed/encrypted document, combination-export, performance, or accessibility certification.

@@ -2,7 +2,7 @@
 
 ## Baseline and Boundaries
 
-Validation starts from clean commit `c33ba71bc845ce022366fa15656a746efc6f92a6`, which matches `origin/main`. Treat every Phase 1 claim as unverified. The referenced `example_viewer_demo.mov` is not present, so no evidence will be attributed to it. Phase 2 may make only narrow requirement-blocking fixes and stops before adversarial, stress, security, or performance work.
+Validation starts from clean commit `c33ba71bc845ce022366fa15656a746efc6f92a6`, which matches `origin/main`. Treat every Phase 1 claim as unverified. Phase 2 may make only narrow requirement-blocking fixes and stops before adversarial, stress, security, or performance work.
 
 ## Evidence Strategy
 

@@ -16,7 +16,7 @@ The authenticated reference application was inspected on 2026-08-28. It shows a 
 
 ### Unavailable evidence
 
-`example_viewer_demo.mov` was not supplied, and no original source was available. No behavior is attributed to the video or absent source. Cursor Plan-mode and exported-transcript evidence is also unavailable and will not be fabricated.
+No original source was available. No behavior is attributed to the absent source. Cursor Plan-mode and exported-transcript evidence is also unavailable and will not be fabricated.
 
 ## Requirement Classes
 

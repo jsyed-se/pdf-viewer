@@ -72,4 +72,4 @@ The project is AGPL-3.0-or-later because it uses MuPDF.js WebAssembly. See [`LIC
 
 ## Known Limitations
 
-The referenced video was unavailable. Text-selection annotation is per page, annotation resize is numeric rather than handle-based, and signature/widget creation and cryptographic signing are not claimed. The reviewer approved Codex plan and activity evidence as the AI-tool equivalent; the repository provides an honest activity summary and does not fabricate a word-for-word transcript.
+Text-selection annotation is per page, annotation resize is numeric rather than handle-based, and signature/widget creation and cryptographic signing are not claimed. The reviewer approved Codex plan and activity evidence as the AI-tool equivalent; the repository provides an honest activity summary and does not fabricate a word-for-word transcript.
