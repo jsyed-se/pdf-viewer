@@ -24,7 +24,7 @@ Validation used controlled, non-sensitive fixtures and direct browser or reopene
 | Editing, transactions, and export | Pass | `../evidence/generated-pdfs/combined-working-copy.pdf`, `../evidence/generated-pdfs/combined-selected-pages.pdf`, `../evidence/generated-pdfs/save-cancel-boundary.pdf`, and `../evidence/logs/artifact-inspection-final.json` |
 | Print launch | Pass within browser-print scope | `../evidence/logs/firefox-phase2-print-launch.json`, `../evidence/logs/firefox-phase2-print-window.png` |
 | Accessibility and tablet layout | Pass for tested automated/browser checks | `../evidence/logs/firefox-phase2-revalidation-axe.json`, `../evidence/logs/firefox-phase2-responsive.png` |
-| Reliability and stale-work cleanup | Pass | `../evidence/logs/firefox-phase2-d09-correction.json`, `../evidence/logs/firefox-phase2-postfix.json`, driver logs, and `../evidence/logs/range-server-cancel.jsonl` |
+| Reliability and stale-work cleanup | Pass | `../evidence/logs/firefox-phase2-d09-correction.json`, `../evidence/logs/firefox-phase2-postfix.json`, and `../evidence/logs/range-server-cancel.jsonl`; JSON summaries retain callback and error counts |
 | Documentation, licensing, delivery, and approved AI record | Pass | root/A/B documentation, `LICENSE`, `NOTICE-MUPDF.md`, `../codex-transcript.md`, and `../ai-output-changes.md` |
 
 All mandatory requirement groups passed. Defects P2-D01 through P2-D13 were corrected and revalidated; the defect record preserves the original failures and final evidence. The final screenshot inventory is in `../evidence/screenshots/README.md`.
@@ -34,7 +34,7 @@ All mandatory requirement groups passed. Defects P2-D01 through P2-D13 were corr
 A fresh clone of the public repository at `70dca58084c4d97e6da09b4a50e2819ce99d372a` passed the reviewer-facing root workflow on Node.js 24.14.1:
 
 - `npm ci`: 182 packages installed; 0 vulnerabilities.
-- `npm run typecheck`: pass.
+- `npm run typecheck`: pass (the Phase 2 command spelling; Phase 3 adds the required `type-check` alias).
 - `npm run lint`: pass.
 - `npm test`: 2 files and 10 tests passed.
 - `npm run build`: pass; the documented MuPDF bundle-size warnings remain non-blocking.
@@ -54,3 +54,5 @@ A fresh clone of the public repository at `70dca58084c4d97e6da09b4a50e2819ce99d3
 No original source baseline or reference video was available. The authenticated reference application informed interaction and layout only; its implementation and exported PDFs were not treated as evidence. See [`defects.md`](defects.md) for the full correction history and [`requirements-validation.md`](requirements-validation.md) for the detailed test inventory.
 
 Phase 3 must start from the published `phase-2-complete` tag. Phase 3 risks are broad malformed-input coverage, long-duration/resource profiling, performance benchmarking, native assistive-technology testing, and security/adversarial work. None was started in Phase 2.
+
+Raw browser-driver logs are intentionally omitted because they contain local browser-profile paths. The committed JSON summaries retain the relevant counts and results.

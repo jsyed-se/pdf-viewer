@@ -80,4 +80,4 @@ Local PDFs remain in browser memory and are never uploaded. Remote PDFs are fetc
 
 ## Validation Status
 
-This document describes the design validated when Phase 2 closed. See [`../C/phase-2/validation-report.md`](../C/phase-2/validation-report.md) for the accepted result and [`../C/phase-2/defects.md`](../C/phase-2/defects.md) for the correction history.
+This document describes the design validated when Phase 2 closed. See [`../C/phase-2/validation-report.md`](../C/phase-2/validation-report.md) for the accepted result, [`../C/phase-2/defects.md`](../C/phase-2/defects.md) for the correction history, and the [`final conformance matrix`](../C/phase-3/conformance-matrix.md) for reviewer navigation.

@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "npm --workspace @atlas/pdf-sdk-demo run dev",
     "build": "npm --workspace @atlas/pdf-sdk-demo run build",
+    "type-check": "npm --workspace @atlas/pdf-sdk-demo run typecheck",
     "typecheck": "npm --workspace @atlas/pdf-sdk-demo run typecheck",
     "lint": "npm --workspace @atlas/pdf-sdk-demo run lint",
     "test": "npm --workspace @atlas/pdf-sdk-demo run test"

@@ -16,7 +16,7 @@ Root npm scripts delegate to the `A/` workspace:
 - `npm run build` creates a production build in `A/dist/`.
 - `npm test` runs focused Vitest checks.
 - `npm run lint` checks formatting and static-analysis rules.
-- `npm run typecheck` checks TypeScript without emitting files.
+- `npm run type-check` checks TypeScript without emitting files.
 
 Update this guide and the README when commands or prerequisites change.
 

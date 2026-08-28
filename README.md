@@ -10,6 +10,8 @@ PDF.js provides lazy high-DPI rendering, selectable text, navigation, and byte-r
 
 **Phase 2 passed and is closed.** Controlled browser runs, reopened exported PDFs, range-server logs, accessibility checks, and final screenshots support the result. See [`C/phase-2/validation-report.md`](C/phase-2/validation-report.md). Validated application revision: `d778c24b1ef09d777eadcdd6eb336984a1d6fc23`.
 
+Phase 3 is the final documentation and publication gate. Use its [`conformance matrix`](C/phase-3/conformance-matrix.md) and [`closure report`](C/phase-3/closure-report.md); the report remains pending until the frozen revision passes every listed check.
+
 ## Setup
 
 Prerequisite: Node.js 22.13+ or 24+.
@@ -23,7 +25,7 @@ The development server prints its local URL. No environment variables or manual 
 
 ```bash
 npm run build       # Type-check and create A/dist
-npm run typecheck   # Check TypeScript
+npm run type-check  # Check TypeScript
 npm run lint        # Run ESLint
 npm test            # Run focused Phase 1 unit tests
 ```
@@ -47,15 +49,22 @@ The host owns source metadata, navigation, persistence, and the response to a cl
 
 ## Browser and Range-Server Requirements
 
-Use a current Chrome, Edge, Firefox, or Safari release with Web Workers, WebAssembly, canvas, `ResizeObserver`, and `IntersectionObserver`. For fast first-page URL display, the origin must allow CORS, expose range headers, return `206 Partial Content`, and serve a linearized PDF. Background stream/autofetch is disabled so complete bytes are only requested explicitly for processing; servers without range support may require a full viewing response.
+Phase 2 browser evidence covers current Chrome and Firefox. Other browsers are not certified; they require Web Workers, WebAssembly, canvas, `ResizeObserver`, and `IntersectionObserver`. For fast first-page URL display, the origin must allow CORS, expose range headers, return `206 Partial Content`, and serve a linearized PDF. Background stream/autofetch is disabled so complete bytes are only requested explicitly for processing; servers without range support may require a full viewing response.
 
 ## Repository Layout
 
 - [`A/`](A/README.md) — working MVP, reusable SDK, demonstration host, and app instructions
 - [`B/`](B/README.md) — architecture and design
-- [`C/`](C/README.md) — phase plans, validation, evidence, defects, and approved Codex records
+- [`C/`](C/README.md) — phase plans, final conformance, validation, evidence, defects, and approved Codex records
 
 The assignment checklist remains in [`REQUIREMENTS.md`](REQUIREMENTS.md).
+
+| Requirement | Reviewer location |
+| --- | --- |
+| A. Working MVP | [`A/`](A/README.md) |
+| B. Architecture and design | [`B/`](B/README.md) |
+| C. Approved AI record and validation | [`C/`](C/README.md) |
+| D. Repository setup and delivery | This README, `package.json`, and the top-level A/B/C folders |
 
 ## Licensing
 

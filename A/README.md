@@ -6,6 +6,8 @@ The SDK accepts local files, remote URLs, or raw bytes. PDF.js provides progress
 
 Phase 2 browser and persistence validation passed and is closed. See [`../C/phase-2/validation-report.md`](../C/phase-2/validation-report.md) for the tested scope and explicit limits.
 
+The final reviewer map is [`../C/phase-3/conformance-matrix.md`](../C/phase-3/conformance-matrix.md); Phase 3 publication status is recorded separately in its closure report.
+
 Implemented viewing features include thumbnails, previous/next/direct navigation, current-page tracking, continuous/single/cover-aware spread modes, keyboard navigation, custom zoom, and fit-to-width/fit-to-viewport calculated from the live container and page dimensions.
 
 The transactional editor supports select all/none, rotation, drag or accessible-button reordering, deletion, import/merge, extraction, keep-selected, copy/paste, undo/redo, save, cancel, and local export. It blocks deletion of every page and protects dirty work during editor close, document replacement, and browser unload.
@@ -46,14 +48,14 @@ Run from the repository root:
 npm install
 npm run dev
 npm run build
-npm run typecheck
+npm run type-check
 npm run lint
 npm test
 ```
 
 ## Browser and Remote-Server Requirements
 
-Use a current desktop or tablet release of Chrome, Edge, Firefox, or Safari with Web Workers, WebAssembly, canvas, `ResizeObserver`, and `IntersectionObserver`. JavaScript must be enabled.
+Phase 2 browser evidence covers current Chrome and Firefox. Other browsers are not certified; they require JavaScript, Web Workers, WebAssembly, canvas, `ResizeObserver`, and `IntersectionObserver`.
 
 For progressive and linearized remote loading, the PDF server must:
 
