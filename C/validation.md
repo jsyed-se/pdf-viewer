@@ -4,7 +4,7 @@ Phase 2 is closed at `phase-2-complete`. The authoritative result is the [`Phase
 
 ## How Correctness Was Checked
 
-- Phase 2 used a clean public clone for install, type-check, lint, test, build, audit, and development-server checks. The Phase 3 candidate has passed the required commands locally; its final clean public-clone check remains pending until the candidate revision is published.
+- Phase 3 candidate `6ab29a7f06535ef616779c7aea1d5c4fbef52de0` passed `npm install`, `npm run type-check`, `npm run lint`, `npm test`, `npm run build`, and `npm run dev` from a clean public clone. The server returned HTTP 200, the clone remained clean, and GitHub CI passed.
 - Synthetic fixtures from `A/tests/fixtures/` cover normal, mixed-size/rotation, large linearized, encrypted, corrupt, annotation, bookmark, widget, and import cases. They contain no private data.
 - Controlled Chrome and Firefox workflows exercised loading, navigation, fit/modes, editing, dirty-state protection, print launch, accessibility, responsive layout, and source replacement. Safari was not available and is not certified.
 - Exported PDFs in [`evidence/generated-pdfs/`](evidence/generated-pdfs/) were reopened and structurally inspected for page order, rotation, annotations, applied redaction, bookmarks, and save/cancel behavior.

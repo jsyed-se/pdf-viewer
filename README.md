@@ -10,7 +10,7 @@ PDF.js provides lazy high-DPI rendering, selectable text, navigation, and byte-r
 
 **Phase 2 passed and is closed.** Controlled browser runs, reopened exported PDFs, range-server logs, accessibility checks, and final screenshots support the result. See [`C/phase-2/validation-report.md`](C/phase-2/validation-report.md). Validated application revision: `d778c24b1ef09d777eadcdd6eb336984a1d6fc23`.
 
-Phase 3 is the final documentation and publication gate. Use its [`conformance matrix`](C/phase-3/conformance-matrix.md) and [`closure report`](C/phase-3/closure-report.md); the report remains pending until the frozen revision passes every listed check.
+**Phase 3 passed and the submission is closed.** Use its [`conformance matrix`](C/phase-3/conformance-matrix.md) and [`closure report`](C/phase-3/closure-report.md). The validated package revision is `6ab29a7f06535ef616779c7aea1d5c4fbef52de0`; the published `phase-3-complete` tag adds only the final closure record.
 
 ## Setup
 
