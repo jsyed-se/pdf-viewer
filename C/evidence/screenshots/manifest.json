@@ -1,0 +1,58 @@
+{
+  "capturedAtUtc": "2026-08-28T23:22:54.369196+00:00",
+  "validatedCommit": "d778c24b1ef09d777eadcdd6eb336984a1d6fc23",
+  "browser": {
+    "name": "firefox",
+    "version": "154.0.1",
+    "platform": "windows"
+  },
+  "desktopViewport": "1440x900",
+  "tabletViewport": "820x900",
+  "screenshots": [
+    {
+      "filename": "01-firefox-desktop-continuous.png",
+      "purpose": "Host/SDK boundary, thumbnails, corrected fixture spacing, and continuous mode",
+      "bytes": 68631
+    },
+    {
+      "filename": "02-firefox-single-page.png",
+      "purpose": "Single-page mode and centered page presentation",
+      "bytes": 68786
+    },
+    {
+      "filename": "03-firefox-spread.png",
+      "purpose": "Per-spread mode with two pages",
+      "bytes": 58310
+    },
+    {
+      "filename": "04-firefox-editor-page-organization.png",
+      "purpose": "Editor selection, page organization, rotation, and manipulation toolbar",
+      "bytes": 48678
+    },
+    {
+      "filename": "05-firefox-native-annotations.png",
+      "purpose": "Native Text/Highlight inspection and edited note persistence",
+      "bytes": 79149
+    },
+    {
+      "filename": "06-firefox-bookmark-management.png",
+      "purpose": "Persisted native bookmark edit and bookmark controls",
+      "bytes": 71770
+    },
+    {
+      "filename": "07-firefox-applied-redaction.png",
+      "purpose": "Reopened applied-redaction output with the secret visibly removed",
+      "bytes": 74630
+    },
+    {
+      "filename": "08-firefox-error-guidance.png",
+      "purpose": "Understandable unsupported-file error and host callback state",
+      "bytes": 26011
+    },
+    {
+      "filename": "09-firefox-tablet-focus.png",
+      "purpose": "Tablet-width alignment, scrollable toolbar, and visible keyboard focus",
+      "bytes": 43459
+    }
+  ]
+}

@@ -8,7 +8,7 @@ PDF.js provides lazy high-DPI rendering, selectable text, navigation, and byte-r
 
 ## Validation Status
 
-**Phase 2 passed and is closed.** Controlled browser runs, reopened exported PDFs, range-server logs, and accessibility checks support the result. See [`C/phase-2/validation-report.md`](C/phase-2/validation-report.md). Final source revision: `FINAL_COMMIT_PENDING`.
+**Phase 2 passed and is closed.** Controlled browser runs, reopened exported PDFs, range-server logs, accessibility checks, and final screenshots support the result. See [`C/phase-2/validation-report.md`](C/phase-2/validation-report.md). Validated application revision: `d778c24b1ef09d777eadcdd6eb336984a1d6fc23`.
 
 ## Setup
 
