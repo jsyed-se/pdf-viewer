@@ -39,7 +39,7 @@ Exported PDFs were reopened and inspected for page count, page order, rotation, 
 
 ## SDK Packaging Validation
 
-Validated on Windows 11 with Node.js 24.14.1, npm 11.11.0, and Chromium 151 using the `feature/sdk` implementation revision. The local package is `@atlas-pdf/react-sdk`; it is not published to npm or presented as a production-supported package.
+Validated implementation commit: `6193bab860eb52ba6c5ec70c2c73549418181a34` on `feature/sdk`. Validation ran on Windows 11 with Node.js 24.14.1, npm 11.11.0, and Chromium 151. The local package is `@atlas-pdf/react-sdk`; it is not published to npm or presented as a production-supported package.
 
 ```bash
 npm ci
@@ -72,4 +72,4 @@ Controlled Chromium checks exercised the installed tarball in both Vite developm
 | Host/SDK responsibility boundary | Package API contracts, host callback example, default host-owned confirmation | PASS |
 | Documentation, license, and A/B/C preservation | Root/A/B/C guides, AGPL notice/source offer, unchanged deliverable layout | PASS |
 
-Generated SDK output, tarballs, temporary consumers, copied runtime assets, and `node_modules` remain untracked. The implementation commit is added to this record immediately after the validated source is committed; the subsequent record-only commit does not change package contents.
+Generated SDK output, tarballs, temporary consumers, copied runtime assets, and `node_modules` remain untracked. This exact implementation commit contains the validated package contents; the subsequent record-only commit changes only this validation file.
