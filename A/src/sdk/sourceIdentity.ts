@@ -1,4 +1,4 @@
-import type { PdfDocumentSource } from './types';
+import type { PdfDocumentSource } from './publicTypes';
 
 export type PdfDocumentSourceIdentity = string | File | Uint8Array | null;
 

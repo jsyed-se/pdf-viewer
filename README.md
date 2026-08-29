@@ -1,6 +1,6 @@
 # Atlas PDF SDK
 
-Atlas is a React/TypeScript PDF viewer and transactional document editor. PDF.js provides browser rendering, selectable text, navigation, and HTTP range loading. MuPDF.js runs as WebAssembly in Web Workers for document mutation, annotations, redaction, bookmarks, image-to-PDF conversion, and serialization.
+Atlas contains a React/TypeScript PDF viewer, transactional document editor, locally distributable SDK package, and demonstration host. The package name is `@atlas-pdf/react-sdk`. It is validated as a local `npm pack` artifact, but it is not published to npm, production-supported, or presented as an official Neubus package. See [`C/validation.md`](C/validation.md) for the packed-consumer evidence.
 
 ## Run locally
 
@@ -18,7 +18,11 @@ npm run type-check
 npm run lint
 npm test
 npm run build
+npm run build:sdk
+npm run pack:sdk
 ```
+
+`npm run build` builds the demonstration application. `npm run build:sdk` creates the library output, declarations, source maps, stylesheet, notices, and runtime assets. `npm run pack:sdk` creates a local `.tgz` with `npm pack`; generated output and tarballs are not committed.
 
 ## Features
 
@@ -33,23 +37,39 @@ npm run build
 
 ## Repository structure
 
-- [`A/`](A/) — MVP application and reusable SDK source
+- [`A/`](A/README.md) — MVP application, SDK source, and public API guide
 - [`B/architecture-and-design.md`](B/architecture-and-design.md) — required architecture and design document
 - [`C/README.md`](C/README.md) — required AI usage and validation records
 
 ## SDK integration
 
+Install the locally generated tarball in the consumer, then import only the public package entries:
+
+```bash
+npm install /absolute/path/to/atlas-pdf-react-sdk-1.0.0.tgz
+```
+
 ```tsx
+import { PdfViewerSDK, type PdfDocumentSource } from '@atlas-pdf/react-sdk';
+import '@atlas-pdf/react-sdk/styles.css';
+
+const source: PdfDocumentSource = {
+  kind: 'url',
+  url: 'https://files.example.com/report.pdf',
+  filename: 'report.pdf',
+};
+
 <PdfViewerSDK
-  source={{ kind: 'url', url: 'https://files.example.com/report.pdf' }}
+  source={source}
   attachment={{ id: 'report-42', filename: 'report.pdf' }}
+  assets={{ baseUrl: '/atlas-pdf-assets/' }}
   onSave={(request) => persistInHost(request)}
   onDirtyChange={(dirty) => protectHostNavigation(dirty)}
   onCloseRequest={() => closeViewerInHost()}
 />
 ```
 
-The host owns records, attachment metadata, surrounding navigation, and persistence. The SDK owns PDF loading, viewing, editing, printing, and export. It awaits the host's asynchronous `onSave` result before committing a working document.
+Recursively copy the installed package's complete `dist-sdk/assets/` directory to the host's public assets directory and set `assets.baseUrl` to its served URL. Do not copy selected files: worker entry files load hashed chunks and WASM from the same directory. The host owns records, attachment metadata, surrounding navigation, authentication, and persistence. The SDK owns PDF loading, viewing, editing, printing, export, and save initiation. It serializes a candidate, awaits the host's asynchronous `onSave` result, and commits only after success; failure preserves dirty edits for retry or local download. See [`A/README.md`](A/README.md) for the public API and complete integration contract.
 
 ## Known limitations
 
@@ -61,4 +81,4 @@ The host owns records, attachment metadata, surrounding navigation, and persiste
 
 ## Licensing
 
-This project is AGPL-3.0-or-later because it uses MuPDF.js. See [`LICENSE`](LICENSE), [`NOTICE-MUPDF.md`](NOTICE-MUPDF.md), and [`A/public/SOURCE_OFFER.txt`](A/public/SOURCE_OFFER.txt). PDF.js is Apache-2.0.
+This project is AGPL-3.0-or-later because it uses MuPDF.js. Packaging MuPDF does not remove its license obligations. Distribution or network deployment may require corresponding-source and other AGPL compliance, while proprietary distribution may require a commercial Artifex license. See [`LICENSE`](LICENSE), [`NOTICE-MUPDF.md`](NOTICE-MUPDF.md), and [`A/public/SOURCE_OFFER.txt`](A/public/SOURCE_OFFER.txt). PDF.js is Apache-2.0. This summary is not legal advice.

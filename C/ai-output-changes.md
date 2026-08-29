@@ -14,4 +14,6 @@ AI-generated plans and code were treated as proposals, not proof of correctness.
 - Converted scan images in a separate worker and imported only a completed batch so cancellation or invalid input cannot partially modify the PDF.
 - Kept signature-field creation explicitly unsupported rather than shipping a decorative or false implementation.
 
-These changes were retained only after their relevant static, automated, browser, or exported-artifact checks passed.
+The SDK packaging correction also narrows consumer access to one explicit `@atlas-pdf/react-sdk` entry, keeps React and React DOM as host-provided peers, and separates the library build from the demonstration build. Runtime files use a typed `assets.baseUrl`; consumers recursively copy the complete packaged asset directory so MuPDF workers, hashed dependencies, embedded MuPDF WASM, and PDF.js support data remain together, while the PDF.js worker stays embedded in the package entry. Host-specific success presentation remains with the host by default, with an explicit opt-in generic SDK confirmation retained for the legacy demo. A clean consumer imports only the package and explicit stylesheet. The packed-artifact, clean-consumer, automated, and browser results are recorded in `C/validation.md`.
+
+The earlier PDF behavior corrections were retained only after their relevant static, automated, browser, or exported-artifact checks passed. Packaging was accepted only after the separate package-boundary and browser checks passed.

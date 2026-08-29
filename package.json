@@ -7,11 +7,15 @@
     "A"
   ],
   "scripts": {
-    "dev": "npm --workspace @atlas/pdf-sdk-demo run dev",
-    "build": "npm --workspace @atlas/pdf-sdk-demo run build",
-    "type-check": "npm --workspace @atlas/pdf-sdk-demo run typecheck",
-    "typecheck": "npm --workspace @atlas/pdf-sdk-demo run typecheck",
-    "lint": "npm --workspace @atlas/pdf-sdk-demo run lint",
-    "test": "npm --workspace @atlas/pdf-sdk-demo run test"
+    "dev": "npm --workspace @atlas-pdf/react-sdk run dev",
+    "build": "npm --workspace @atlas-pdf/react-sdk run build",
+    "build:sdk": "npm --workspace @atlas-pdf/react-sdk run build:sdk",
+    "pack:sdk": "npm --workspace @atlas-pdf/react-sdk run pack:sdk",
+    "type-check": "npm --workspace @atlas-pdf/react-sdk run typecheck",
+    "typecheck": "npm --workspace @atlas-pdf/react-sdk run typecheck",
+    "lint": "npm --workspace @atlas-pdf/react-sdk run lint",
+    "test": "npm --workspace @atlas-pdf/react-sdk run test",
+    "test:package": "npm --workspace @atlas-pdf/react-sdk run test:package",
+    "test:consumer-package": "npm --workspace @atlas-pdf/react-sdk run test:consumer-package"
   }
 }

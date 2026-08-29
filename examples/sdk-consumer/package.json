@@ -1,0 +1,26 @@
+{
+  "name": "atlas-pdf-sdk-consumer-example",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare-sdk-assets": "node scripts/copy-sdk-assets.mjs",
+    "predev": "npm run prepare-sdk-assets",
+    "dev": "vite",
+    "prebuild": "npm run prepare-sdk-assets",
+    "build": "tsc -b && vite build",
+    "typecheck": "tsc -b --pretty false",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "@vitejs/plugin-react": "^6.1.1",
+    "typescript": "^5.9.3",
+    "vite": "^8.2.2"
+  }
+}

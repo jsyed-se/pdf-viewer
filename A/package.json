@@ -1,22 +1,38 @@
 {
-  "name": "@atlas/pdf-sdk-demo",
+  "name": "@atlas-pdf/react-sdk",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "license": "AGPL-3.0-or-later",
+  "main": "./dist-sdk/index.js",
+  "module": "./dist-sdk/index.js",
+  "types": "./dist-sdk/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist-sdk/index.d.ts",
+      "import": "./dist-sdk/index.js"
+    },
+    "./styles.css": "./dist-sdk/styles.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist-sdk",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "react": ">=19.0.0",
+    "react-dom": ">=19.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:sdk": "vite build --config vite.sdk.config.ts && vite build --config vite.sdk.workers.config.ts && tsc -p tsconfig.sdk.json && node scripts/finalize-sdk-package.mjs",
+    "pack:sdk": "npm run build:sdk && npm pack",
     "typecheck": "tsc -b --pretty false",
     "lint": "eslint .",
-    "test": "vitest run"
-  },
-  "dependencies": {
-    "lucide-react": "^1.35.0",
-    "mupdf": "^1.28.0",
-    "pdfjs-dist": "^6.2.108",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "test": "vitest run",
+    "test:package": "npm run build:sdk && node --test tests/package-artifact.node.mjs",
+    "test:consumer-package": "npm run build:sdk && node tests/packed-consumer.node.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -29,6 +45,11 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.6.0",
+    "lucide-react": "^1.35.0",
+    "mupdf": "^1.28.0",
+    "pdfjs-dist": "^6.2.108",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "react-test-renderer": "^19.2.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.68.0",

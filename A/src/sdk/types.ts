@@ -1,50 +1,20 @@
-export type PdfDocumentSource =
-  | { kind: 'file'; file: File }
-  | { kind: 'url'; url: string; filename?: string }
-  | { kind: 'bytes'; bytes: Uint8Array; filename: string };
-
-export interface AttachmentMetadata {
-  id: string;
-  filename: string;
-  label?: string;
-  recordId?: string;
-  size?: number;
-  updatedAt?: string;
-}
-
-export interface PdfSaveRequest {
-  bytes: Uint8Array;
-  filename: string;
-  mimeType: 'application/pdf';
-  attachment?: AttachmentMetadata;
-  signal: AbortSignal;
-}
-
-export interface PdfSaveResult {
-  attachment: AttachmentMetadata;
-  savedAt: string;
-}
-
 export type ViewMode = 'continuous' | 'single' | 'spread';
 export type ZoomMode = 'custom' | 'fit-width' | 'fit-viewport';
 export type AnnotationTool = 'none' | 'text' | 'highlight' | 'redact' | 'highlight-text' | 'redact-text';
 
-export interface ViewerLifecycleCallbacks {
-  onReady?: (details: { pageCount: number; filename: string }) => void;
-  onProgress?: (loaded: number, total?: number) => void;
-  onError?: (error: Error) => void;
-  onPageChange?: (page: number) => void;
-  onDirtyChange?: (dirty: boolean) => void;
-  onSave?: (request: PdfSaveRequest) => Promise<PdfSaveResult>;
-  onCloseRequest?: () => void;
-  onPasswordRequest?: (reason: 'required' | 'incorrect') => Promise<string | null>;
-}
-
-export interface PdfViewerSDKProps extends ViewerLifecycleCallbacks {
-  source: PdfDocumentSource | null;
-  attachment?: AttachmentMetadata;
-  className?: string;
-}
+export type {
+  AttachmentMetadata,
+  PdfDocumentSource,
+  PdfErrorCallback,
+  PdfPasswordReason,
+  PdfProgressCallback,
+  PdfReadyDetails,
+  PdfSaveRequest,
+  PdfSaveResult,
+  PdfViewerAssetConfig,
+  PdfViewerSDKProps,
+  ViewerLifecycleCallbacks,
+} from './publicTypes';
 
 export interface PageMetadata {
   index: number;
