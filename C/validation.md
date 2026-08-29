@@ -51,7 +51,7 @@ npm run test:package
 npm run test:consumer-package
 ```
 
-Results: install completed with zero vulnerabilities; type checking and linting passed; Vitest passed 28 tests in 9 files; the demonstration production build passed; and all 3 packed-artifact tests passed. The repeatable clean-consumer gate packed the package, installed its tarball into a fresh temporary React application, type-checked it, recursively copied its installed asset tree, and completed a production build.
+Results: install completed with zero vulnerabilities; type checking and linting passed; Vitest passed 29 tests in 10 files; the demonstration production build passed; and all 3 packed-artifact tests passed. The repeatable clean-consumer gate packed the package, installed its tarball into a fresh temporary React application, type-checked it, recursively copied its installed asset tree, and completed a production build.
 
 The inspected tarball contained 226 intended files (9.4 MB packed, 23.3 MB unpacked): ESM, declarations, source maps, scoped CSS, deterministic worker bootstraps and chunks, MuPDF code with embedded WASM, PDF.js CMaps/fonts/decoder WASM, package metadata, README, license, notice, and source offer. It excluded application source, tests, fixtures, demo files, screenshots, evidence, and transcripts.
 
@@ -66,7 +66,7 @@ Controlled Chromium checks exercised the installed tarball in both Vite developm
 | Host-provided React runtime | React and React DOM peer dependencies; artifact import assertion | PASS |
 | Intentional tarball contents | npm pack allowlist test; 226-file inventory | PASS |
 | Clean install, typecheck, and build | `test:consumer-package` temporary-consumer gate | PASS |
-| Reliable PDF.js, MuPDF, and scan runtime assets | Artifact path checks plus Chromium worker/network checks | PASS |
+| Reliable PDF.js, MuPDF, and scan runtime assets | Asset-resolution and document-worker handshake/correlation tests, artifact path checks, and Chromium worker/network checks | PASS |
 | Real document mutation | MuPDF editor rotation observed in the installed consumer | PASS |
 | Transactional save success and failure | Automated save tests and installed-consumer success/rejection workflows | PASS |
 | Host/SDK responsibility boundary | Package API contracts, host callback example, default host-owned confirmation | PASS |
