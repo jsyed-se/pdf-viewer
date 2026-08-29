@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   Bookmark,
   CheckCircle2,
@@ -39,6 +39,7 @@ import { DEFAULT_VIEW_STATE, rotateViewDegrees } from '../lib/phase4State';
 import { calculateScale, pagesForMode } from '../lib/viewMath';
 import { PdfEngineClient } from './engineClient';
 import { convertScanImages } from './scanConversion';
+import { documentSourceIdentity } from './sourceIdentity';
 import type {
   AnnotationTool,
   EngineCommand,
@@ -139,6 +140,21 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     onPasswordRequest,
   } = props;
   const filename = filenameFromSource(props);
+  const sourceIdentity = documentSourceIdentity(source);
+  const sourceRef = useRef(source);
+  const filenameRef = useRef(filename);
+  const onReadyRef = useRef(onReady);
+  const onProgressRef = useRef(onProgress);
+  const onErrorRef = useRef(onError);
+  const onPasswordRequestRef = useRef(onPasswordRequest);
+  useLayoutEffect(() => {
+    sourceRef.current = source;
+    filenameRef.current = filename;
+    onReadyRef.current = onReady;
+    onProgressRef.current = onProgress;
+    onErrorRef.current = onError;
+    onPasswordRequestRef.current = onPasswordRequest;
+  }, [filename, onError, onPasswordRequest, onProgress, onReady, source]);
   const engine = useMemo(() => new PdfEngineClient(), []);
   const loadingTaskRef = useRef<PDFDocumentLoadingTask | null>(null);
   const loadingTasksPendingRetirementRef = useRef<PDFDocumentLoadingTask[]>([]);
@@ -236,7 +252,7 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
 
   const installPdfDocument = useCallback(async (
     next: PDFDocumentProxy,
-    nextFilename = filename,
+    nextFilename = filenameRef.current,
     options: { resetPage?: boolean; notifyReady?: boolean } = {},
   ) => {
     setPdfDocument(next);
@@ -253,8 +269,8 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     }
     setError(null);
     setStatus(`${next.numPages} page${next.numPages === 1 ? '' : 's'} ready.`);
-    if (options.notifyReady !== false) onReady?.({ pageCount: next.numPages, filename: nextFilename });
-  }, [filename, lockVisiblePage, onReady]);
+    if (options.notifyReady !== false) onReadyRef.current?.({ pageCount: next.numPages, filename: nextFilename });
+  }, [lockVisiblePage]);
 
   const loadBytesIntoViewer = useCallback(async (bytes: Uint8Array) => {
     const revision = ++documentRevision.current;
@@ -267,8 +283,8 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
       throw new Error('A newer document replaced this result.');
     }
     if (previousTask) loadingTasksPendingRetirementRef.current.push(previousTask);
-    await installPdfDocument(next, filename, { resetPage: false, notifyReady: false });
-  }, [filename, installPdfDocument]);
+    await installPdfDocument(next, filenameRef.current, { resetPage: false, notifyReady: false });
+  }, [installPdfDocument]);
 
   useEffect(() => {
     const tasks = loadingTasksPendingRetirementRef.current.splice(0);
@@ -276,6 +292,7 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
   }, [pdfDocument]);
 
   useEffect(() => {
+    const loadSource = sourceRef.current;
     const revision = ++documentRevision.current;
     const previousTask = loadingTaskRef.current;
     const hadPreviousDocument = pdfDocumentRef.current !== null;
@@ -303,7 +320,7 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     setPdfDocument(null);
     pdfDocumentRef.current = null;
 
-    if (!source) {
+    if (!loadSource) {
       setLoading(false);
       setPageCount(0);
       setStatus('Choose a local PDF or enter a PDF URL.');
@@ -311,26 +328,26 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     }
 
     setLoading(true);
-    setStatus(source.kind === 'url' ? 'Connecting to the remote PDF…' : 'Reading PDF structure…');
+    setStatus(loadSource.kind === 'url' ? 'Connecting to the remote PDF…' : 'Reading PDF structure…');
     let task: PDFDocumentLoadingTask | null = null;
     void (async () => {
-      const parameters = source.kind === 'url'
-        ? { url: source.url, disableRange: false, disableStream: true, disableAutoFetch: true, useWasm: true }
-        : source.kind === 'file'
-          ? { data: new Uint8Array(await source.file.arrayBuffer()), useWasm: true }
-          : { data: Uint8Array.from(source.bytes), useWasm: true };
+      const parameters = loadSource.kind === 'url'
+        ? { url: loadSource.url, disableRange: false, disableStream: true, disableAutoFetch: true, useWasm: true }
+        : loadSource.kind === 'file'
+          ? { data: new Uint8Array(await loadSource.file.arrayBuffer()), useWasm: true }
+          : { data: Uint8Array.from(loadSource.bytes), useWasm: true };
       if (revision !== documentRevision.current) return;
       task = getDocument(parameters);
       loadingTaskRef.current = task;
       task.onProgress = ({ loaded, total }: { loaded: number; total: number }) => {
         if (revision !== documentRevision.current) return;
         setProgress({ loaded, total: total || undefined });
-        onProgress?.(loaded, total || undefined);
+        onProgressRef.current?.(loaded, total || undefined);
       };
       task.onPassword = (updatePassword: (password: string) => void, reason: number) => {
         const passwordReason = reason === PasswordResponses.INCORRECT_PASSWORD ? 'incorrect' : 'required';
-        const request = onPasswordRequest
-          ? onPasswordRequest(passwordReason)
+        const request = onPasswordRequestRef.current
+          ? onPasswordRequestRef.current(passwordReason)
           : Promise.resolve(window.prompt(passwordReason === 'incorrect' ? 'Incorrect password. Try again:' : 'Enter the PDF password:'));
         void request.then((password) => {
           if (password == null) {
@@ -353,10 +370,10 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
       })
       .catch((loadError) => {
         if (revision !== documentRevision.current) return;
-        const message = describeLoadError(loadError, source.kind);
+        const message = describeLoadError(loadError, loadSource.kind);
         setError(message);
         setStatus('Document failed to load.');
-        onError?.(new Error(message));
+        onErrorRef.current?.(new Error(message));
       })
       .finally(() => {
         if (revision === documentRevision.current) {
@@ -368,7 +385,7 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     return () => {
       retireLoadingTask(task);
     };
-  }, [engine, installPdfDocument, onError, onPasswordRequest, onProgress, source]);
+  }, [engine, installPdfDocument, sourceIdentity]);
 
   useEffect(() => () => {
     documentRevision.current += 1;
