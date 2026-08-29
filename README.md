@@ -1,81 +1,64 @@
 # Atlas PDF SDK
 
-Atlas is a reusable React/TypeScript PDF viewer and transactional document editor. The demonstration host in `A/` supplies attachment metadata and document sources to the SDK; the SDK owns loading, rendering, navigation, editing, annotations, printing, and export.
+Atlas is a React/TypeScript PDF viewer and transactional document editor. PDF.js provides browser rendering, selectable text, navigation, and HTTP range loading. MuPDF.js runs as WebAssembly in Web Workers for document mutation, annotations, redaction, bookmarks, image-to-PDF conversion, and serialization.
 
-## Capabilities and Stack
+## Run locally
 
-PDF.js provides lazy high-DPI rendering, selectable text, navigation, and byte-range URL loading. MuPDF.js 1.28.0 runs in an on-demand Web Worker for transactional page operations, native notes/highlights/redactions, applied redaction, bookmark editing, widget inspection, and final serialization. The editor supports rotation, reorder, delete, import/merge, extraction, keep-selected, copy/paste, undo/redo, save/cancel, print, and local export.
-
-Phase 4 adds a searchable records-and-attachments demonstration host, async host persistence, Quick Download, PNG/JPEG scan conversion, editor-grid zoom, temporary viewer rotation, compact toolbar grouping, and a single-page 125% opening default.
-
-## Validation Status
-
-**Phase 2 passed and is closed.** Controlled browser runs, reopened exported PDFs, range-server logs, accessibility checks, and final screenshots support the result. See [`C/phase-2/validation-report.md`](C/phase-2/validation-report.md). Validated application revision: `d778c24b1ef09d777eadcdd6eb336984a1d6fc23`.
-
-**Phase 3 passed and the submission is closed.** Use its [`conformance matrix`](C/phase-3/conformance-matrix.md) and [`closure report`](C/phase-3/closure-report.md). The validated package revision is `6ab29a7f06535ef616779c7aea1d5c4fbef52de0`; the published `phase-3-complete` tag adds only the final closure record.
-
-**Phase 4 passed.** The nine-gap result is in [`C/phase-4/gap-closure-report.md`](C/phase-4/gap-closure-report.md). Validated application revision: `0133bae68e09ab0293d80e264bdccacd35ee814a`; the `phase-4-complete` tag identifies the publication closure.
-
-## Setup
-
-Prerequisite: Node.js 22.13+ or 24+.
+Requires Node.js 22.13+ or 24+.
 
 ```bash
 npm install
 npm run dev
 ```
 
-The development server prints its local URL. It also provides the sample host API and creates ignored runtime state in `A/.runtime-data/`; no environment variables or manual asset copying are required.
+The development server prints its local URL and provides a demonstration records-and-attachments API. No environment variables are required.
 
 ```bash
-npm run build       # Type-check and create A/dist
-npm run type-check  # Check TypeScript
-npm run lint        # Run ESLint
-npm test            # Run focused unit tests
+npm run type-check
+npm run lint
+npm test
+npm run build
 ```
 
-## SDK Integration
+## Features
+
+- High-DPI PDF rendering, thumbnails, page navigation, keyboard navigation, and selectable text
+- Zoom in/out, fit-to-width, fit-to-viewport, continuous, single-page, and spread modes
+- HTTP byte-range loading for linearized PDFs when the source server supports `206 Partial Content`
+- Page rotation, reordering, deletion, import/merge, extraction, keep-selected, copy/paste, and undo/redo
+- Browser printing and local export
+- PNG/JPEG scan-to-PDF import with progress and cancellation
+- Native highlights, notes, rectangle/text redaction, applied redaction, and bookmark editing
+- Host-controlled save, upload confirmation, records search, attachment management, and Quick Download
+
+## Repository structure
+
+- [`A/`](A/) — MVP application and reusable SDK source
+- [`B/architecture-and-design.md`](B/architecture-and-design.md) — required architecture and design document
+- [`C/README.md`](C/README.md) — required AI usage and validation records
+
+## SDK integration
 
 ```tsx
-import { PdfViewerSDK } from './src/sdk/PdfViewerSDK';
-
 <PdfViewerSDK
   source={{ kind: 'url', url: 'https://files.example.com/report.pdf' }}
   attachment={{ id: 'report-42', filename: 'report.pdf' }}
-  onReady={({ pageCount }) => console.log(pageCount)}
-  onDirtyChange={(dirty) => protectHostNavigation(dirty)}
   onSave={(request) => persistInHost(request)}
+  onDirtyChange={(dirty) => protectHostNavigation(dirty)}
   onCloseRequest={() => closeViewerInHost()}
 />
 ```
 
-The host owns source metadata, navigation, persistence, and the response to a close request. The SDK awaits the host's asynchronous `onSave` result before committing its working document. The SDK also accepts local `File` objects or raw `Uint8Array` bytes and exposes progress, page, error, password, dirty, save, and close-request callbacks.
+The host owns records, attachment metadata, surrounding navigation, and persistence. The SDK owns PDF loading, viewing, editing, printing, and export. It awaits the host's asynchronous `onSave` result before committing a working document.
 
-## Browser and Range-Server Requirements
+## Known limitations
 
-Phase 2 browser evidence covers current Chrome and Firefox. Other browsers are not certified; they require Web Workers, WebAssembly, canvas, `ResizeObserver`, and `IntersectionObserver`. For fast first-page URL display, the origin must allow CORS, expose range headers, return `206 Partial Content`, and serve a linearized PDF. Background stream/autofetch is disabled so complete bytes are only requested explicitly for processing; servers without range support may require a full viewing response.
-
-## Repository Layout
-
-- [`A/`](A/README.md) — working MVP, reusable SDK, demonstration host, and app instructions
-- [`B/`](B/README.md) — architecture and design
-- [`C/`](C/README.md) — phase plans, final conformance, validation, evidence, defects, and approved Codex records
-
-The assignment checklist remains in [`REQUIREMENTS.md`](REQUIREMENTS.md).
-
-| Requirement | Reviewer location |
-| --- | --- |
-| A. Working MVP | [`A/`](A/README.md) |
-| B. Architecture and design | [`B/`](B/README.md) |
-| C. Approved AI record and validation | [`C/`](C/README.md) |
-| D. Repository setup and delivery | This README, `package.json`, and the top-level A/B/C folders |
+- PDF.js performs viewer rendering; MuPDF WebAssembly performs document processing.
+- Signature-field creation and cryptographic signing are not implemented. Existing widgets can be inspected.
+- The included persistence API is a local demonstration service with a 25 MB limit and no authentication or cloud storage.
+- Browser validation covers Chrome and Firefox; print options remain browser-dependent.
+- Annotation resizing is numeric, and direct text selection is page-scoped.
 
 ## Licensing
 
-The project is AGPL-3.0-or-later because it uses MuPDF.js WebAssembly. See [`LICENSE`](LICENSE), [`NOTICE-MUPDF.md`](NOTICE-MUPDF.md), and [`A/public/SOURCE_OFFER.txt`](A/public/SOURCE_OFFER.txt). PDF.js is Apache-2.0. Corresponding application source is public at <https://github.com/jsyed-se/pdf-viewer>; deployed copies must retain the source-and-license notice.
-
-## Known Limitations
-
-Text-selection annotation is per page, annotation resize is numeric rather than handle-based, and signature/widget creation and cryptographic signing are not claimed. The reviewer approved Codex plan and activity evidence as the AI-tool equivalent; the repository provides an honest activity summary and does not fabricate a word-for-word transcript.
-
-The included persistence endpoint is for local Vite development and preview. It accepts PDFs up to 25 MB and stores them under ignored `A/.runtime-data/`; it has no authentication or cloud storage. The SDK is deployment-neutral, so a static or production host must provide its own `onSave` API.
+This project is AGPL-3.0-or-later because it uses MuPDF.js. See [`LICENSE`](LICENSE), [`NOTICE-MUPDF.md`](NOTICE-MUPDF.md), and [`A/public/SOURCE_OFFER.txt`](A/public/SOURCE_OFFER.txt). PDF.js is Apache-2.0.

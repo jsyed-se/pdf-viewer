@@ -86,9 +86,9 @@ Local and remote sources remain inside the SDK until the user chooses the host S
 - Add bounded worker checkpoints and configurable memory limits for very large edit histories.
 - Preserve nested outline placement when adding new child bookmarks.
 - Add a production persistence adapter with authentication, authorization, and configurable limits.
-- Complete the remaining Phase 2 cross-browser, encrypted-file, malformed-file, range-server, and combined-export validation.
+- Add automated browser regression coverage for the highest-value viewer and editor workflows.
 - Add multi-page text-selection batching and tagged-PDF reading-order audits.
 
 ## Validation Status
 
-This document includes the verified Phase 4 design. See [`../C/phase-4/gap-closure-report.md`](../C/phase-4/gap-closure-report.md) for results and [`../C/phase-4/defects.md`](../C/phase-4/defects.md) for corrections. Validated application revision: `0133bae68e09ab0293d80e264bdccacd35ee814a`.
+The implementation and its validation approach are summarized in [`../C/validation.md`](../C/validation.md).

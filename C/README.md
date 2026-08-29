@@ -1,34 +1,12 @@
-# Plans, Validation, and AI Records
+# AI Usage and Validation
 
-## Phase 1
+The reviewer approved Codex as the AI-tool alternative for this assignment.
 
-- [`phase-1/plan.md`](phase-1/plan.md) — implementation plan saved before the build
-- [`phase-1/implementation.md`](phase-1/implementation.md) — implementation decisions, checks, and limitations
+Required records:
 
-## Phase 2
+- [`implementation-plan.md`](implementation-plan.md) — finalized plan prepared before implementation
+- [`chat-records/pdf-viewer-sdk-phases-1-4-chat-record.md`](chat-records/pdf-viewer-sdk-phases-1-4-chat-record.md) — full development chat record
+- [`ai-output-changes.md`](ai-output-changes.md) — what changed from AI output and why
+- [`validation.md`](validation.md) — how correctness was validated
 
-- [`phase-2/plan.md`](phase-2/plan.md) — validation plan
-- [`phase-2/requirements-validation.md`](phase-2/requirements-validation.md) — detailed requirement test inventory
-- [`phase-2/validation-report.md`](phase-2/validation-report.md) — reviewer-facing result and evidence map
-- [`phase-2/defects.md`](phase-2/defects.md) — observed defects, corrections, and revalidation notes
-
-## Phase 3
-
-- [`phase-3/plan.md`](phase-3/plan.md) — strict final-closure plan and baseline
-- [`phase-3/conformance-matrix.md`](phase-3/conformance-matrix.md) — concise final requirement map
-- [`phase-3/closure-report.md`](phase-3/closure-report.md) — reviewer path and final publication gate
-
-## Phase 4
-
-- [`phase-4/plan.md`](phase-4/plan.md) — nine-gap implementation and validation plan
-- [`requirements-validation.md`](requirements-validation.md) — current Phase 4 traceability table
-- [`phase-4/gap-closure-report.md`](phase-4/gap-closure-report.md) — working-candidate results and publication gate
-- [`phase-4/defects.md`](phase-4/defects.md) — observed defects and revalidation
-
-## AI and Evidence
-
-- [`codex-plan.md`](codex-plan.md) — saved Codex plans in review order
-- [`codex-transcript.md`](codex-transcript.md) — approved Codex activity summary; not a fabricated transcript
-- [`ai-output-changes.md`](ai-output-changes.md) — material corrections to AI-generated work
-- [`validation.md`](validation.md) — stable pointer to the current validation report
-- [`evidence/README.md`](evidence/README.md) — evidence catalog and handling notes
+UI screenshots are retained under [`screenshots/`](screenshots/).

@@ -1,26 +1,38 @@
-# Validation
+# Correctness Validation
 
-Phase 2 is closed at `phase-2-complete`. The authoritative result is the [`Phase 2 validation report`](phase-2/validation-report.md); Phase 3 packaging is tracked in the [`conformance matrix`](phase-3/conformance-matrix.md) and [`closure report`](phase-3/closure-report.md).
+## Automated checks
 
-## How Correctness Was Checked
+The project is validated from the repository root with:
 
-- Phase 3 candidate `6ab29a7f06535ef616779c7aea1d5c4fbef52de0` passed `npm install`, `npm run type-check`, `npm run lint`, `npm test`, `npm run build`, and `npm run dev` from a clean public clone. The server returned HTTP 200, the clone remained clean, and GitHub CI passed.
-- Synthetic fixtures from `A/tests/fixtures/` cover normal, mixed-size/rotation, large linearized, encrypted, corrupt, annotation, bookmark, widget, and import cases. They contain no private data.
-- Controlled Chrome and Firefox workflows exercised loading, navigation, fit/modes, editing, dirty-state protection, print launch, accessibility, responsive layout, and source replacement. Safari was not available and is not certified.
-- Exported PDFs in [`evidence/generated-pdfs/`](evidence/generated-pdfs/) were reopened and structurally inspected for page order, rotation, annotations, applied redaction, bookmarks, and save/cancel behavior.
-- Range-server records prove HTTP `206` requests and early display for the linearized fixture. PDF.js performs page rendering; traces and serialized output prove on-demand MuPDF WASM processing in its worker.
-- Applied-redaction inspection reports that the controlled secret is absent. Screenshots show visible results but are not used alone to prove PDF structure, byte ranges, WASM execution, or content removal.
+```bash
+npm ci
+npm run type-check
+npm run lint
+npm test
+npm run build
+npm run dev
+```
 
-Evidence is indexed in [`evidence/README.md`](evidence/README.md), with detailed defects in [`phase-2/defects.md`](phase-2/defects.md). Boundaries remain explicit: signature/widget creation and signing are unsupported; native screen-reader/touch, broad performance/adversarial testing, and Safari were not executed; the original source baseline was not treated as evidence.
+GitHub Actions runs install, type checking, ESLint, Vitest, and the production build on pushes and pull requests.
 
-## Phase 4 Working Candidate
+## Functional validation
 
-The nine-gap result is mapped in [`requirements-validation.md`](requirements-validation.md), with defects in [`phase-4/defects.md`](phase-4/defects.md) and evidence in [`evidence/phase-4/README.md`](evidence/phase-4/README.md).
+Controlled Chrome and Firefox workflows verified:
 
-- The current candidate passes `npm run type-check`, `npm run lint`, `npm test` (3 files, 13 tests), and `npm run build`.
-- The browser flow opened 5 pages, imported two scan images to reach 7, cancelled a 40-image batch at 20/40 without changing 7, rejected invalid input without changing 7, uploaded through the host, and reopened 7 persisted pages.
-- The 34,944-byte `persisted-and-quick-download.pdf` covers both persisted reopen and host Quick Download. Its SHA-256 is `6ad8cf387ee6964017e7e95a8467ffb17449ddbd1b4cde511402846aa824c85b`; the inserted pages retained 480 × 270 and 270 × 480 PDF-point bounds.
-- Upload success appeared only after the host responded. A rejected upload kept the editor dirty with retry and local-download choices.
-- Viewer rotation remained page-scoped and temporary; new sources opened in single-page mode at 125%; editor zoom remained within 18%–50%.
+- PDF loading, page navigation, thumbnails, every zoom option, and all view modes
+- direct page entry, keyboard navigation, viewer rotation, and the 125% single-page default
+- editor rotation, reordering, deletion, import/merge, extraction, keep-selected, copy/paste, undo/redo, cancel, save, and export
+- browser print launch
+- linearized PDF loading through HTTP `206 Partial Content` range requests
+- native highlights, text notes, rectangle and selected-text redactions, applied redaction, and bookmark CRUD
+- PNG/JPEG scan conversion, progress reporting, cancellation, invalid-input rejection, and atomic insertion
+- host upload success, rejected upload recovery, persisted-document reopen, refreshed metadata, and Quick Download
 
-The included dev/preview persistence API is local demonstration infrastructure, accepts only PDFs up to 25 MB, and writes ignored `A/.runtime-data/`. Static deployments must provide their own host API. Application revision `0133bae68e09ab0293d80e264bdccacd35ee814a` also passed a clean-clone install, build, development-server, HTML, and record-API smoke check.
+Exported PDFs were reopened and inspected for page count, page order, rotation, annotations, bookmark changes, scan-page geometry, and removal of applied-redaction text. Screenshots from the final workflows are retained in [`screenshots/`](screenshots/).
+
+## Boundaries
+
+- PDF.js, not MuPDF, renders viewer pages.
+- Signature-widget creation and cryptographic signing are not claimed.
+- The persistence endpoint is a local demonstration service, not production infrastructure.
+- Native screen-reader, touch-device, Safari, broad performance, and adversarial-PDF certification are outside the validated scope.
