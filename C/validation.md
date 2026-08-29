@@ -39,7 +39,7 @@ Exported PDFs were reopened and inspected for page count, page order, rotation, 
 
 ## SDK Packaging Validation
 
-Validated implementation commit: `6193bab860eb52ba6c5ec70c2c73549418181a34` on `feature/sdk`. Validation ran on Windows 11 with Node.js 24.14.1, npm 11.11.0, and Chromium 151. The local package is `@atlas-pdf/react-sdk`; it is not published to npm or presented as a production-supported package.
+Validated implementation commit: `7d005d768b8f4a2c9f754f5e36bbab14ae0f4ff1` on `feature/sdk`. Validation ran on Windows 11 with Node.js 24.14.1, npm 11.11.0, and Chromium 151. The local package is `@atlas-pdf/react-sdk`; it is not published to npm or presented as a production-supported package.
 
 ```bash
 npm ci
