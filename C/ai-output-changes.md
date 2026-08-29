@@ -27,6 +27,15 @@ This record explains where generated plans or code were corrected after inspecti
 | Structural undo leaves the page count unchanged | Restore serialized pre-operation revisions for undo/redo | Corrected — see `P2-D06` and the final validation report |
 | Existing annotations do not appear in the panel | Initialize MuPDF on panel open and handle annotation types without quad points | Corrected — see `P2-D07` and the final validation report |
 
+## Phase 4 Corrections
+
+| Change | Why it changed | Validation |
+| --- | --- | --- |
+| Replaced planned IndexedDB storage with a same-origin Vite host API | The authoritative gap required host-controlled upload and persistence outside the SDK | Persist, return, reopen, and Quick Download browser flow |
+| Added a scan-worker bootstrap and `ready` handshake (`P4-D01`) | Image messages could arrive before MuPDF WASM initialization and leave progress at 0/2 | Two-image conversion plus cancel-at-20/40 invariance |
+| Memoized demonstration-host callbacks (`P4-D02`) | Inline callback identities retriggered the SDK source effect and reset the editor | Full scan/edit/upload/reopen/failure browser flow |
+| Commit only after awaited `onSave` success | A local worker commit before host confirmation could misreport failed persistence | Delayed success and rejected-upload retry/local-download flows |
+
 ## Review Rule
 
-Each correction remains traceable to its defect ID and evidence. The accepted closure status is recorded in `C/phase-2/validation-report.md`; unsupported bonus work remains explicitly limited there.
+Each correction remains traceable to its defect ID and evidence. Phase 2 closure remains in `C/phase-2/validation-report.md`; the current working-candidate result is in `C/phase-4/gap-closure-report.md`. Unsupported bonus work remains explicitly limited.

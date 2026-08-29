@@ -7,6 +7,22 @@ export interface AttachmentMetadata {
   id: string;
   filename: string;
   label?: string;
+  recordId?: string;
+  size?: number;
+  updatedAt?: string;
+}
+
+export interface PdfSaveRequest {
+  bytes: Uint8Array;
+  filename: string;
+  mimeType: 'application/pdf';
+  attachment?: AttachmentMetadata;
+  signal: AbortSignal;
+}
+
+export interface PdfSaveResult {
+  attachment: AttachmentMetadata;
+  savedAt: string;
 }
 
 export type ViewMode = 'continuous' | 'single' | 'spread';
@@ -19,7 +35,7 @@ export interface ViewerLifecycleCallbacks {
   onError?: (error: Error) => void;
   onPageChange?: (page: number) => void;
   onDirtyChange?: (dirty: boolean) => void;
-  onSave?: (bytes: Uint8Array, filename: string) => void;
+  onSave?: (request: PdfSaveRequest) => Promise<PdfSaveResult>;
   onCloseRequest?: () => void;
   onPasswordRequest?: (reason: 'required' | 'incorrect') => Promise<string | null>;
 }

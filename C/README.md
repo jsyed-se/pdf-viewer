@@ -18,6 +18,13 @@
 - [`phase-3/conformance-matrix.md`](phase-3/conformance-matrix.md) — concise final requirement map
 - [`phase-3/closure-report.md`](phase-3/closure-report.md) — reviewer path and final publication gate
 
+## Phase 4
+
+- [`phase-4/plan.md`](phase-4/plan.md) — nine-gap implementation and validation plan
+- [`requirements-validation.md`](requirements-validation.md) — current Phase 4 traceability table
+- [`phase-4/gap-closure-report.md`](phase-4/gap-closure-report.md) — working-candidate results and publication gate
+- [`phase-4/defects.md`](phase-4/defects.md) — observed defects and revalidation
+
 ## AI and Evidence
 
 - [`codex-plan.md`](codex-plan.md) — saved Codex plans in review order

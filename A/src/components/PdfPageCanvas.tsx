@@ -9,6 +9,7 @@ interface PdfPageCanvasProps {
   document: PDFDocumentProxy;
   pageNumber: number;
   scale: number;
+  rotation?: number;
   compact?: boolean;
   active?: boolean;
   annotationTool?: AnnotationTool;
@@ -31,6 +32,7 @@ export function PdfPageCanvas({
   document,
   pageNumber,
   scale,
+  rotation = 0,
   compact = false,
   active = false,
   annotationTool = 'none',
@@ -92,7 +94,7 @@ export function PdfPageCanvas({
     void document.getPage(pageNumber)
       .then(async (page) => {
         if (cancelled || !canvasRef.current) return;
-        const viewport = page.getViewport({ scale });
+        const viewport = page.getViewport({ scale, rotation: page.rotate + rotation });
         viewportRef.current = viewport;
         setDimensions({ width: viewport.width, height: viewport.height });
         const canvas = canvasRef.current;
@@ -120,7 +122,7 @@ export function PdfPageCanvas({
       cancelled = true;
       activeTask?.cancel();
     };
-  }, [compact, document, nearViewport, pageNumber, scale]);
+  }, [compact, document, nearViewport, pageNumber, rotation, scale]);
 
   useEffect(() => {
     if (!selectedAnnotationRect) {
@@ -130,7 +132,7 @@ export function PdfPageCanvas({
     let cancelled = false;
     void document.getPage(pageNumber).then((page) => {
       if (cancelled) return;
-      const viewport = page.getViewport({ scale });
+      const viewport = page.getViewport({ scale, rotation: page.rotate + rotation });
       const first = viewport.convertToViewportPoint(selectedAnnotationRect[0], selectedAnnotationRect[1]);
       const second = viewport.convertToViewportPoint(selectedAnnotationRect[2], selectedAnnotationRect[3]);
       setSelectedAnnotationStyle({
@@ -141,7 +143,7 @@ export function PdfPageCanvas({
       });
     }).catch(() => setSelectedAnnotationStyle(undefined));
     return () => { cancelled = true; };
-  }, [document, pageNumber, scale, selectedAnnotationRect]);
+  }, [document, pageNumber, rotation, scale, selectedAnnotationRect]);
 
   useEffect(() => {
     if (compact || !nearViewport || !textLayerRef.current) return;
@@ -152,7 +154,7 @@ export function PdfPageCanvas({
     void document.getPage(pageNumber)
       .then(async (page) => {
         if (cancelled) return;
-        const viewport = page.getViewport({ scale });
+        const viewport = page.getViewport({ scale, rotation: page.rotate + rotation });
         textLayer = new TextLayer({
           textContentSource: page.streamTextContent(),
           container,
@@ -169,7 +171,7 @@ export function PdfPageCanvas({
       textLayer?.cancel();
       container.replaceChildren();
     };
-  }, [compact, document, nearViewport, pageNumber, scale]);
+  }, [compact, document, nearViewport, pageNumber, rotation, scale]);
 
   const pointFromEvent = (event: React.PointerEvent<HTMLDivElement>): Point => {
     const rect = event.currentTarget.getBoundingClientRect();

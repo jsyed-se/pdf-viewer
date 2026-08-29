@@ -12,6 +12,7 @@ These files preserve the user-supplied source instructions for audit history. Th
 - [Phase 1 implementation instructions](phase-1-implementation-instructions.md)
 - [Phase 2 validation instructions](phase-2-validation-instructions.md)
 - [Phase 3 closure instructions](phase-3-closure-instructions.md)
+- [Phase 4 reference-video gap-closure instructions](phase-4-reference-video-gap-closure.md)
 
 ## Existing Instructions and Records
 
@@ -24,6 +25,8 @@ These files preserve the user-supplied source instructions for audit history. Th
 - [Phase 3 closure plan](../C/phase-3/plan.md)
 - [Phase 3 conformance matrix](../C/phase-3/conformance-matrix.md)
 - [Phase 3 closure report](../C/phase-3/closure-report.md)
+- [Phase 4 gap-closure plan](../C/phase-4/plan.md)
+- [Phase 4 gap-closure report](../C/phase-4/gap-closure-report.md)
 - [Canonical Codex plan index](../C/codex-plan.md)
 - [Complete validation and AI-record index](../C/README.md)
 

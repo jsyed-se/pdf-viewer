@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Bookmark,
+  CheckCircle2,
   ChevronLeft,
   ChevronRight,
   Edit3,
+  Download,
   FileText,
   Highlighter,
   Maximize2,
@@ -12,9 +14,12 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   Printer,
+  RotateCcw,
+  RotateCw,
   Save,
   Search,
   ShieldAlert,
+  UploadCloud,
   X,
   ZoomIn,
   ZoomOut,
@@ -30,13 +35,16 @@ import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { DocumentEditor } from '../components/DocumentEditor';
 import { PdfPageCanvas } from '../components/PdfPageCanvas';
 import { decideVisiblePage } from '../lib/navigation';
+import { DEFAULT_VIEW_STATE, rotateViewDegrees } from '../lib/phase4State';
 import { calculateScale, pagesForMode } from '../lib/viewMath';
 import { PdfEngineClient } from './engineClient';
+import { convertScanImages } from './scanConversion';
 import type {
   AnnotationTool,
   EngineCommand,
   EngineSnapshot,
   PdfViewerSDKProps,
+  PdfSaveResult,
   ViewMode,
   ZoomMode,
 } from './types';
@@ -143,21 +151,28 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState({ width: 612, height: 792 });
   const [workspaceSize, setWorkspaceSize] = useState({ width: 844, height: 644, gap: 24 });
-  const [viewMode, setViewMode] = useState<ViewMode>('continuous');
-  const [zoomMode, setZoomMode] = useState<ZoomMode>('fit-width');
-  const [customScale, setCustomScale] = useState(1);
+  const [viewMode, setViewMode] = useState<ViewMode>(DEFAULT_VIEW_STATE.viewMode);
+  const [zoomMode, setZoomMode] = useState<ZoomMode>(DEFAULT_VIEW_STATE.zoomMode);
+  const [customScale, setCustomScale] = useState(DEFAULT_VIEW_STATE.scale);
+  const [viewRotations, setViewRotations] = useState<Record<number, number>>({});
   const [thumbnailsOpen, setThumbnailsOpen] = useState(true);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState<{ loaded: number; total?: number } | null>(null);
   const [status, setStatus] = useState('Choose a local PDF or enter a PDF URL.');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [busyLabel, setBusyLabel] = useState('Updating PDF with MuPDF WebAssembly…');
   const [editorOpen, setEditorOpen] = useState(false);
   const [selectedPages, setSelectedPages] = useState<Set<number>>(new Set());
   const [engineSnapshot, setEngineSnapshot] = useState<EngineSnapshot | null>(null);
   const [annotationTool, setAnnotationTool] = useState<AnnotationTool>('none');
   const [selectedAnnotation, setSelectedAnnotation] = useState<{ pageIndex: number; index: number } | null>(null);
   const [detailsPanel, setDetailsPanel] = useState<'none' | 'annotations' | 'bookmarks'>('none');
+  const [scanProgress, setScanProgress] = useState<{ completed: number; total: number; filename: string } | undefined>();
+  const [saveFailure, setSaveFailure] = useState<{ message: string; bytes: Uint8Array } | null>(null);
+  const [saveSuccess, setSaveSuccess] = useState<{ result: PdfSaveResult; bytes: Uint8Array } | null>(null);
+  const scanAbortRef = useRef<AbortController | null>(null);
+  const saveAbortRef = useRef<AbortController | null>(null);
   const passwordRef = useRef<string | undefined>(undefined);
   const pendingNavigationPageRef = useRef<number | null>(null);
   const navigationReleaseTimerRef = useRef<number | null>(null);
@@ -271,11 +286,19 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     }
     void engine.resetIfStarted().catch(() => undefined);
     setEngineSnapshot(null);
+    setViewMode(DEFAULT_VIEW_STATE.viewMode);
+    setZoomMode(DEFAULT_VIEW_STATE.zoomMode);
+    setCustomScale(DEFAULT_VIEW_STATE.scale);
+    setViewRotations({});
     setEditorOpen(false);
     setSelectedPages(new Set());
     setAnnotationTool('none');
     setSelectedAnnotation(null);
     setError(null);
+    setSaveFailure(null);
+    setSaveSuccess(null);
+    scanAbortRef.current?.abort();
+    saveAbortRef.current?.abort();
     passwordRef.current = undefined;
     setPdfDocument(null);
     pdfDocumentRef.current = null;
@@ -353,6 +376,8 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     for (const task of loadingTasksPendingRetirementRef.current.splice(0)) retireLoadingTask(task);
     void pdfDocumentRef.current?.cleanup();
     engine.destroy();
+    scanAbortRef.current?.abort();
+    saveAbortRef.current?.abort();
     if (navigationReleaseTimerRef.current != null) window.clearTimeout(navigationReleaseTimerRef.current);
   }, [engine]);
 
@@ -488,11 +513,25 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     onCloseRequest?.();
   }, [engineSnapshot?.dirty, onCloseRequest]);
 
+  const rotateCurrentView = useCallback((degrees: -90 | 90) => {
+    setViewRotations((current) => ({
+      ...current,
+      [currentPage]: rotateViewDegrees(current[currentPage] ?? 0, degrees),
+    }));
+    setStatus(`Page ${currentPage} view rotated ${degrees < 0 ? 'left' : 'right'}. Exported PDF bytes are unchanged.`);
+  }, [currentPage]);
+
   useEffect(() => {
     const handleKeyboard = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
       if (target?.matches('input, textarea, select, [contenteditable="true"]')) return;
-      if (event.key === 'PageDown' || event.key === 'ArrowRight') {
+      if (event.altKey && event.shiftKey && event.key === 'ArrowLeft') {
+        event.preventDefault();
+        rotateCurrentView(-90);
+      } else if (event.altKey && event.shiftKey && event.key === 'ArrowRight') {
+        event.preventDefault();
+        rotateCurrentView(90);
+      } else if (event.key === 'PageDown' || event.key === 'ArrowRight') {
         event.preventDefault();
         setPage(currentPage + 1);
       } else if (event.key === 'PageUp' || event.key === 'ArrowLeft') {
@@ -510,7 +549,7 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     };
     window.addEventListener('keydown', handleKeyboard);
     return () => window.removeEventListener('keydown', handleKeyboard);
-  }, [currentPage, setPage]);
+  }, [currentPage, rotateCurrentView, setPage]);
 
   const beginEditor = async () => {
     try {
@@ -555,6 +594,43 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     setSelectedPages(new Set());
   };
 
+  const scanImages = async (files: File[]) => {
+    const controller = new AbortController();
+    scanAbortRef.current?.abort();
+    scanAbortRef.current = controller;
+    setBusy(true);
+    setBusyLabel('Converting scan images with MuPDF WebAssembly…');
+    setError(null);
+    setScanProgress({ completed: 0, total: files.length * 2, filename: 'Reading selected images' });
+    try {
+      await ensureEngine();
+      const scanPdf = await convertScanImages(files, controller.signal, setScanProgress);
+      if (controller.signal.aborted) throw new DOMException('Scan import cancelled.', 'AbortError');
+      setScanProgress(undefined);
+      setBusyLabel('Inserting converted scan pages…');
+      const after = selectedPages.size ? Math.max(...selectedPages) : (engineSnapshot?.pageCount ?? 1) - 1;
+      const result = await engine.call({ type: 'import', bytes: scanPdf, after });
+      if (result.bytes) await loadBytesIntoViewer(result.bytes);
+      if (result.snapshot) setEngineSnapshot(result.snapshot);
+      setSelectedPages(new Set());
+      setStatus(`${files.length} scan image${files.length === 1 ? '' : 's'} converted and inserted.`);
+    } catch (scanError) {
+      if (scanError instanceof DOMException && scanError.name === 'AbortError') {
+        setStatus('Scan import cancelled. The working document was not changed.');
+      } else {
+        const message = scanError instanceof Error ? scanError.message : String(scanError);
+        setError(message);
+        setStatus('Scan import failed. The working document was not changed.');
+        onError?.(scanError instanceof Error ? scanError : new Error(message));
+      }
+    } finally {
+      if (scanAbortRef.current === controller) scanAbortRef.current = null;
+      setScanProgress(undefined);
+      setBusy(false);
+      setBusyLabel('Updating PDF with MuPDF WebAssembly…');
+    }
+  };
+
   const cancelEditor = async () => {
     if (engineSnapshot?.dirty && !window.confirm('Discard all changes made since the last save?')) return;
     try {
@@ -568,14 +644,49 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
   };
 
   const saveChanges = async () => {
+    const controller = new AbortController();
+    saveAbortRef.current?.abort();
+    saveAbortRef.current = controller;
+    setBusy(true);
+    setBusyLabel(onSave ? 'Uploading edited PDF through the host…' : 'Saving edited PDF…');
+    setSaveFailure(null);
+    setError(null);
     try {
-      const result = await runEngine({ type: 'commit' });
-      if (result.bytes) onSave?.(result.bytes, filename);
+      await ensureEngine();
+      const candidate = await engine.call({ type: 'serialize' });
+      if (!candidate.bytes) throw new Error('The PDF engine did not generate save bytes.');
+      let persisted: PdfSaveResult | null = null;
+      if (onSave) {
+        const minimumFeedback = new Promise<void>((resolve) => window.setTimeout(resolve, 3_000));
+        [persisted] = await Promise.all([onSave({
+          bytes: candidate.bytes,
+          filename: safeDownloadName(filename),
+          mimeType: 'application/pdf',
+          attachment: props.attachment,
+          signal: controller.signal,
+        }), minimumFeedback]);
+      }
+      if (controller.signal.aborted) throw new DOMException('Save cancelled.', 'AbortError');
+      const committed = await engine.call({ type: 'commit' });
+      if (committed.bytes) await loadBytesIntoViewer(committed.bytes);
+      if (committed.snapshot) setEngineSnapshot(committed.snapshot);
       setEditorOpen(false);
       setSelectedPages(new Set());
-      setStatus('Changes committed to the current workspace document.');
-    } catch {
-      // runEngine reports errors.
+      setStatus(onSave ? 'The host confirmed that the edited PDF was persisted.' : 'Changes committed to the current workspace document.');
+      if (persisted) setSaveSuccess({ result: persisted, bytes: candidate.bytes });
+    } catch (saveError) {
+      const message = saveError instanceof Error ? saveError.message : String(saveError);
+      const candidate = await engine.call({ type: 'serialize' }).catch(() => undefined);
+      if (!(saveError instanceof DOMException && saveError.name === 'AbortError')) {
+        setSaveFailure({ message, bytes: candidate?.bytes ?? new Uint8Array() });
+        setError(`Upload failed: ${message}`);
+        setStatus('Upload failed. Edits remain available for retry or local download.');
+        onError?.(saveError instanceof Error ? saveError : new Error(message));
+      }
+    } finally {
+      if (saveAbortRef.current === controller) saveAbortRef.current = null;
+      setBusy(false);
+      setBusyLabel('Updating PDF with MuPDF WebAssembly…');
     }
   };
 
@@ -709,6 +820,28 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
           <button type="button" onClick={() => setError(null)}>Dismiss</button>
         </div>
       )}
+      {saveFailure && (
+        <div className="save-dialog" role="alertdialog" aria-modal="true" aria-labelledby="save-failure-title">
+          <ShieldAlert />
+          <div><h2 id="save-failure-title">Upload did not complete</h2><p>{saveFailure.message}</p><p>Your edits are still open and unchanged.</p></div>
+          <div className="dialog-actions">
+            <button type="button" className="secondary-button" disabled={!saveFailure.bytes.length} onClick={() => downloadBytes(saveFailure.bytes, safeDownloadName(filename, '-unsaved'))}><Download /> Download locally</button>
+            <button type="button" className="primary-button" onClick={() => void saveChanges()}><UploadCloud /> Retry upload</button>
+            <button type="button" className="secondary-button" onClick={() => setSaveFailure(null)}>Close</button>
+          </div>
+        </div>
+      )}
+      {saveSuccess && (
+        <div className="save-dialog success" role="dialog" aria-modal="true" aria-labelledby="save-success-title">
+          <CheckCircle2 />
+          <div><h2 id="save-success-title">PDF successfully uploaded</h2><p><strong>{saveSuccess.result.attachment.filename}</strong> was persisted to {saveSuccess.result.attachment.label ?? saveSuccess.result.attachment.recordId ?? 'the selected record'}.</p></div>
+          <div className="dialog-actions">
+            <button type="button" className="secondary-button" onClick={() => downloadBytes(saveSuccess.bytes, saveSuccess.result.attachment.filename)}><Download /> Download saved PDF</button>
+            <button type="button" className="secondary-button" onClick={() => setSaveSuccess(null)}>Continue viewing</button>
+            {onCloseRequest && <button type="button" className="primary-button" onClick={() => { setSaveSuccess(null); onCloseRequest(); }}>Return to record</button>}
+          </div>
+        </div>
+      )}
       {loading && (
         <div className="loading-panel" role="status">
           <span className="spinner" />
@@ -728,9 +861,13 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
           snapshot={engineSnapshot}
           selected={selectedPages}
           busy={busy}
+          busyLabel={busyLabel}
           onSelectedChange={setSelectedPages}
           onCommand={(command, payload) => void editorCommand(command, payload)}
           onImport={(file) => void importPdf(file)}
+          onScan={(files) => void scanImages(files)}
+          onCancelScan={() => scanAbortRef.current?.abort()}
+          scanProgress={scanProgress}
           onCancel={() => void cancelEditor()}
           onSave={() => void saveChanges()}
           onExport={() => void exportDocument('-working-copy')}
@@ -765,6 +902,8 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
             <ToolButton label="Zoom out" onClick={() => { setZoomMode('custom'); setCustomScale(Math.max(0.2, scale - 0.15)); }}><ZoomOut /></ToolButton>
             <span className="zoom-value">{Math.round(scale * 100)}%</span>
             <ToolButton label="Zoom in" onClick={() => { setZoomMode('custom'); setCustomScale(Math.min(5, scale + 0.15)); }}><ZoomIn /></ToolButton>
+            <ToolButton label="Rotate view left" onClick={() => rotateCurrentView(-90)}><RotateCcw /></ToolButton>
+            <ToolButton label="Rotate view right" onClick={() => rotateCurrentView(90)}><RotateCw /></ToolButton>
             <ToolButton label="Fit width" active={zoomMode === 'fit-width'} onClick={() => setZoomMode('fit-width')}><Menu /></ToolButton>
             <ToolButton label="Fit viewport" active={zoomMode === 'fit-viewport'} onClick={() => setZoomMode('fit-viewport')}><Maximize2 /></ToolButton>
             <select name="pdf-scroll-mode" aria-label="Scroll mode" value={viewMode} onChange={(event) => setViewMode(event.target.value as ViewMode)}>
@@ -806,10 +945,11 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
               <div className="page-list">
                 {visiblePageNumbers.map((pageNumber) => (
                   <PdfPageCanvas
-                    key={`${pageNumber}-${scale}`}
+                    key={`${pageNumber}-${scale}-${viewRotations[pageNumber] ?? 0}`}
                     document={pdfDocument}
                     pageNumber={pageNumber}
                     scale={scale}
+                    rotation={viewRotations[pageNumber] ?? 0}
                     active={pageNumber === currentPage}
                     annotationTool={annotationTool}
                     selectedAnnotationRect={selectedAnnotationMetadata?.pageIndex === pageNumber - 1 ? selectedAnnotationMetadata.rect : undefined}
@@ -923,7 +1063,7 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
               </aside>
             )}
           </div>
-          {busy && <div className="busy-overlay" role="status"><span className="spinner" /> Updating PDF with MuPDF WebAssembly…</div>}
+          {busy && !scanProgress && <div className="busy-overlay" role="status"><span className="spinner" /> {busyLabel}</div>}
         </>
       ) : null}
     </section>

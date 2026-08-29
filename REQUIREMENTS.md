@@ -95,3 +95,21 @@ Resolve these from the job description or with the reviewer before relying on th
 - What document range and options must the Print action support?
 - Which browsers, PDF size limits, accessibility target, and test coverage are expected?
 - Where should the saved Codex plan and available activity record be uploaded, and must sensitive activity content be removed first?
+
+## Phase 4 Gap-Closure Addendum
+
+This addendum does not change the original assignment wording above. It maps the nine later gap-closure requests to the working candidate; details are in [`C/requirements-validation.md`](C/requirements-validation.md).
+
+| Gap | Working-candidate status |
+| --- | --- |
+| PNG/JPEG multi-image scan import with progress, cancellation, and atomic insertion | PASS |
+| Independent 18%–50% editor-grid zoom | PASS |
+| Host-controlled asynchronous PDF persistence | PASS |
+| Success after host confirmation; failure retry/local download | PASS |
+| Searchable records-and-attachments demonstration host | PASS |
+| Quick Download of persisted bytes | PASS |
+| Viewer/editor toolbar alignment | PASS |
+| Temporary page-scoped viewer rotation | PASS |
+| Single-page 125% opening defaults | PASS |
+
+Final publication revision: `FINAL_COMMIT_PENDING`.

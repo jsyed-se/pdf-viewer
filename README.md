@@ -6,11 +6,15 @@ Atlas is a reusable React/TypeScript PDF viewer and transactional document edito
 
 PDF.js provides lazy high-DPI rendering, selectable text, navigation, and byte-range URL loading. MuPDF.js 1.28.0 runs in an on-demand Web Worker for transactional page operations, native notes/highlights/redactions, applied redaction, bookmark editing, widget inspection, and final serialization. The editor supports rotation, reorder, delete, import/merge, extraction, keep-selected, copy/paste, undo/redo, save/cancel, print, and local export.
 
+Phase 4 adds a searchable records-and-attachments demonstration host, async host persistence, Quick Download, PNG/JPEG scan conversion, editor-grid zoom, temporary viewer rotation, compact toolbar grouping, and a single-page 125% opening default.
+
 ## Validation Status
 
 **Phase 2 passed and is closed.** Controlled browser runs, reopened exported PDFs, range-server logs, accessibility checks, and final screenshots support the result. See [`C/phase-2/validation-report.md`](C/phase-2/validation-report.md). Validated application revision: `d778c24b1ef09d777eadcdd6eb336984a1d6fc23`.
 
 **Phase 3 passed and the submission is closed.** Use its [`conformance matrix`](C/phase-3/conformance-matrix.md) and [`closure report`](C/phase-3/closure-report.md). The validated package revision is `6ab29a7f06535ef616779c7aea1d5c4fbef52de0`; the published `phase-3-complete` tag adds only the final closure record.
+
+**Phase 4 working-candidate checks pass; publication is pending.** The nine-gap result is in [`C/phase-4/gap-closure-report.md`](C/phase-4/gap-closure-report.md). Final package revision: `FINAL_COMMIT_PENDING`.
 
 ## Setup
 
@@ -21,13 +25,13 @@ npm install
 npm run dev
 ```
 
-The development server prints its local URL. No environment variables or manual asset copying are required.
+The development server prints its local URL. It also provides the sample host API and creates ignored runtime state in `A/.runtime-data/`; no environment variables or manual asset copying are required.
 
 ```bash
 npm run build       # Type-check and create A/dist
 npm run type-check  # Check TypeScript
 npm run lint        # Run ESLint
-npm test            # Run focused Phase 1 unit tests
+npm test            # Run focused unit tests
 ```
 
 ## SDK Integration
@@ -40,12 +44,12 @@ import { PdfViewerSDK } from './src/sdk/PdfViewerSDK';
   attachment={{ id: 'report-42', filename: 'report.pdf' }}
   onReady={({ pageCount }) => console.log(pageCount)}
   onDirtyChange={(dirty) => protectHostNavigation(dirty)}
-  onSave={(bytes, filename) => persistInHost(bytes, filename)}
+  onSave={(request) => persistInHost(request)}
   onCloseRequest={() => closeViewerInHost()}
 />
 ```
 
-The host owns source metadata, navigation, persistence, and the response to a close request. The SDK also accepts local `File` objects or raw `Uint8Array` bytes and exposes progress, page, error, password, dirty, save, and close-request callbacks.
+The host owns source metadata, navigation, persistence, and the response to a close request. The SDK awaits the host's asynchronous `onSave` result before committing its working document. The SDK also accepts local `File` objects or raw `Uint8Array` bytes and exposes progress, page, error, password, dirty, save, and close-request callbacks.
 
 ## Browser and Range-Server Requirements
 
@@ -73,3 +77,5 @@ The project is AGPL-3.0-or-later because it uses MuPDF.js WebAssembly. See [`LIC
 ## Known Limitations
 
 Text-selection annotation is per page, annotation resize is numeric rather than handle-based, and signature/widget creation and cryptographic signing are not claimed. The reviewer approved Codex plan and activity evidence as the AI-tool equivalent; the repository provides an honest activity summary and does not fabricate a word-for-word transcript.
+
+The included persistence endpoint is for local Vite development and preview. It accepts PDFs up to 25 MB and stores them under ignored `A/.runtime-data/`; it has no authentication or cloud storage. The SDK is deployment-neutral, so a static or production host must provide its own `onSave` API.

@@ -1,4 +1,6 @@
-# Phase 2 Evidence
+# Evidence Catalog
+
+## Phase 2
 
 Evidence remains in its original locations so existing references stay reproducible:
 
@@ -10,3 +12,7 @@ The reviewer-facing mapping is in [`../phase-2/validation-report.md`](../phase-2
 Raw browser-driver logs are intentionally omitted because they contain local browser-profile paths. The committed JSON summaries retain the relevant result, callback, request, console-error, and application-error counts.
 
 The PDFs are reproducible from the repository scripts, and their hashes and parsed facts remain recorded in `logs/artifact-inspection-final.json`. All fixtures and artifacts are synthetic. Do not add private PDFs, credentials, browser profiles, or unredacted user data.
+
+## Phase 4
+
+[`phase-4/README.md`](phase-4/README.md) indexes ten browser screenshots and the persisted/Quick Download PDF for scan conversion, editor zoom, host persistence, save recovery, viewer rotation, opening defaults, and demonstration-host flows. `A/.runtime-data/` is intentionally ignored and must not be committed.
