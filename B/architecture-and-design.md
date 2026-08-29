@@ -91,4 +91,4 @@ Local and remote sources remain inside the SDK until the user chooses the host S
 
 ## Validation Status
 
-This document includes the verified Phase 4 working-candidate design. See [`../C/phase-4/gap-closure-report.md`](../C/phase-4/gap-closure-report.md) for current results and [`../C/phase-4/defects.md`](../C/phase-4/defects.md) for corrections. Final publication revision: `FINAL_COMMIT_PENDING`.
+This document includes the verified Phase 4 design. See [`../C/phase-4/gap-closure-report.md`](../C/phase-4/gap-closure-report.md) for results and [`../C/phase-4/defects.md`](../C/phase-4/defects.md) for corrections. Validated application revision: `0133bae68e09ab0293d80e264bdccacd35ee814a`.

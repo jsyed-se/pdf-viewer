@@ -14,4 +14,4 @@ This table adds the nine Phase 4 gaps to the accepted Phase 3 conformance record
 | P4-08 | Add viewer-only page rotation | Temporary rotation is keyed by page and applied to canvas/text/annotation geometry | Rotate, navigate, and focused normalization check | Evidence 03; 13-test run | PASS | It does not dirty or alter exported bytes. |
 | P4-09 | Open each new source at single-page 125% | Source reset uses single view, custom zoom, scale 1.25 | New-source browser check and focused default-state test | Evidence 02; 13-test run | PASS | Users may change the mode and zoom after opening. |
 
-Working-candidate behavior is verified. Final publication revision: `FINAL_COMMIT_PENDING`.
+All nine Phase 4 gaps pass at validated application revision `0133bae68e09ab0293d80e264bdccacd35ee814a`.

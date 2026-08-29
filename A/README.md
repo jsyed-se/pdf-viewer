@@ -8,7 +8,7 @@ Phase 4 adds PNG/JPEG scan import, independent 18%–50% editor zoom, page-scope
 
 Phase 2 browser and persistence validation passed and is closed. See [`../C/phase-2/validation-report.md`](../C/phase-2/validation-report.md) for the tested scope and explicit limits.
 
-The Phase 4 working-candidate result is in [`../C/phase-4/gap-closure-report.md`](../C/phase-4/gap-closure-report.md). Earlier accepted status remains in the Phase 3 conformance matrix.
+The closed Phase 4 result is in [`../C/phase-4/gap-closure-report.md`](../C/phase-4/gap-closure-report.md). Earlier accepted status remains in the Phase 3 conformance matrix.
 
 Implemented viewing features include thumbnails, previous/next/direct navigation, current-page tracking, continuous/single/cover-aware spread modes, keyboard navigation, custom zoom, and fit-to-width/fit-to-viewport calculated from the live container and page dimensions.
 
@@ -101,7 +101,7 @@ Controls use semantic buttons, labels, pressed/disabled states, visible focus, s
 - Annotation resizing uses explicit PDF-point dimensions instead of drag handles.
 - MuPDF.js 1.28 exposes browser widget inspection but not a safe signature-field creation helper; signature/widget creation and cryptographic signing are not claimed.
 - Browser print UI and supported options remain browser-dependent.
-- Phase 2 evidence covers the accepted Chrome/Firefox workflows. Phase 4 adds a controlled working-candidate browser flow but does not expand browser certification. Native print appearance, screen-reader/touch certification, broad performance testing, and unsupported signature/widget creation remain outside the validated claim.
+- Phase 2 evidence covers the accepted Chrome/Firefox workflows. Phase 4 adds a controlled Chromium browser flow but does not expand browser certification. Native print appearance, screen-reader/touch certification, broad performance testing, and unsupported signature/widget creation remain outside the validated claim.
 
 ## License
 

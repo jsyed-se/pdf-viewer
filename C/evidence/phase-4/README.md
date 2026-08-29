@@ -1,6 +1,6 @@
 # Phase 4 Evidence
 
-These artifacts use controlled sample records, synthetic images, and non-sensitive PDFs. They support the working candidate. Final package revision: `FINAL_COMMIT_PENDING`.
+These artifacts use controlled sample records, synthetic images, and non-sensitive PDFs. Screenshots and artifacts validate application revision `0133bae68e09ab0293d80e264bdccacd35ee814a`.
 
 | File | What it supports |
 | --- | --- |

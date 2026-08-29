@@ -112,4 +112,4 @@ This addendum does not change the original assignment wording above. It maps the
 | Temporary page-scoped viewer rotation | PASS |
 | Single-page 125% opening defaults | PASS |
 
-Final publication revision: `FINAL_COMMIT_PENDING`.
+Validated Phase 4 application revision: `0133bae68e09ab0293d80e264bdccacd35ee814a`.

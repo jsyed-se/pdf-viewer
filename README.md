@@ -14,7 +14,7 @@ Phase 4 adds a searchable records-and-attachments demonstration host, async host
 
 **Phase 3 passed and the submission is closed.** Use its [`conformance matrix`](C/phase-3/conformance-matrix.md) and [`closure report`](C/phase-3/closure-report.md). The validated package revision is `6ab29a7f06535ef616779c7aea1d5c4fbef52de0`; the published `phase-3-complete` tag adds only the final closure record.
 
-**Phase 4 working-candidate checks pass; publication is pending.** The nine-gap result is in [`C/phase-4/gap-closure-report.md`](C/phase-4/gap-closure-report.md). Final package revision: `FINAL_COMMIT_PENDING`.
+**Phase 4 passed.** The nine-gap result is in [`C/phase-4/gap-closure-report.md`](C/phase-4/gap-closure-report.md). Validated application revision: `0133bae68e09ab0293d80e264bdccacd35ee814a`; the `phase-4-complete` tag identifies the publication closure.
 
 ## Setup
 

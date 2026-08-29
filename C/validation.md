@@ -23,4 +23,4 @@ The nine-gap result is mapped in [`requirements-validation.md`](requirements-val
 - Upload success appeared only after the host responded. A rejected upload kept the editor dirty with retry and local-download choices.
 - Viewer rotation remained page-scoped and temporary; new sources opened in single-page mode at 125%; editor zoom remained within 18%–50%.
 
-The included dev/preview persistence API is local demonstration infrastructure, accepts only PDFs up to 25 MB, and writes ignored `A/.runtime-data/`. Static deployments must provide their own host API. Final clean-clone, CI, public revision, and approval checks remain pending at `FINAL_COMMIT_PENDING`.
+The included dev/preview persistence API is local demonstration infrastructure, accepts only PDFs up to 25 MB, and writes ignored `A/.runtime-data/`. Static deployments must provide their own host API. Application revision `0133bae68e09ab0293d80e264bdccacd35ee814a` also passed a clean-clone install, build, development-server, HTML, and record-API smoke check.

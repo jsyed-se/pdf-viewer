@@ -2,7 +2,7 @@
 
 ## Status
 
-**Nine requested gaps pass in the working candidate; final publication is pending.** Phase 4 began at `7ce08369b9bf2e1bd6713bc590f081965f95cdbe`. Final package revision: `FINAL_COMMIT_PENDING`.
+**All nine requested gaps pass.** Phase 4 began at `7ce08369b9bf2e1bd6713bc590f081965f95cdbe`. Validated application revision: `0133bae68e09ab0293d80e264bdccacd35ee814a`.
 
 Earlier phase records remain unchanged. The current mapping is in [`../requirements-validation.md`](../requirements-validation.md), and Phase 4 evidence is indexed in [`../evidence/phase-4/README.md`](../evidence/phase-4/README.md).
 
@@ -24,8 +24,12 @@ Earlier phase records remain unchanged. The current mapping is in [`../requireme
 
 The controlled browser flow opened a 5-page PDF. Two scan images produced 7 pages. Cancelling a 40-image batch at 20/40 kept 7 pages, and an invalid image also kept 7 pages. Upload success returned only after host persistence; reopening the stored attachment returned 7 pages. The two inserted scan pages retained landscape and portrait bounds of 480 × 270 and 270 × 480 PDF points. The final persisted/Quick Download PDF is 34,944 bytes with SHA-256 `6ad8cf387ee6964017e7e95a8467ffb17449ddbd1b4cde511402846aa824c85b`. Upload failure kept the editor available for retry or local download.
 
-The working candidate passes `npm run type-check`, `npm run lint`, `npm test` (3 files, 13 tests), and `npm run build`. Final clean-clone, CI, public revision, and approval checks must be recorded after the commit is frozen.
+The validated revision passes `npm run type-check`, `npm run lint`, `npm test` (3 files, 13 tests), and `npm run build`. A clean clone also passed `npm ci`, production build, development-server startup, host HTML (`200`), and record API smoke checks.
 
 ## Defects and Boundaries
 
 [`defects.md`](defects.md) records two implementation defects, both corrected and revalidated. The SDK remains deployment-neutral: the included persistence API is a local Vite demonstration service, not production storage. A static deployment must provide its own `onSave` host endpoint. The demo accepts only PDFs up to 25 MB and has no authentication, authorization, cloud storage, or production search.
+
+## Submission Impact and Files
+
+Application changes are contained in `A/src/App.tsx`, `A/src/app/`, `A/src/components/`, `A/src/lib/`, `A/src/sdk/`, `A/src/workers/`, and `A/vite.config.ts`; the focused unit test is under `A/src/tests/`, with fixture generation under `A/tests/fixtures/`. Phase 4 records and artifacts are under `C/phase-4/` and `C/evidence/phase-4/`, with corresponding updates to the root, `A/`, and `B/` documentation. The package is reviewer-ready without changing the original assignment scope. Intentional boundaries remain the local demonstration host, PNG/JPEG scan inputs, temporary viewer rotation, and the previously documented browser and signature/widget limitations.
