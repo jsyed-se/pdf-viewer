@@ -1,4 +1,4 @@
-import type { AttachmentMetadata, PdfSaveRequest, PdfSaveResult } from '../sdk/types';
+import type { AttachmentMetadata, PdfSaveRequest, PdfSaveResult } from '../sdk';
 
 export interface DemoRecord {
   id: string;

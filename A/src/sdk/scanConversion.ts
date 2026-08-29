@@ -1,3 +1,5 @@
+import { runtimeWorkerUrl, SCAN_CONVERSION_WORKER_FILE } from './runtimeAssets';
+
 interface ScanProgress {
   completed: number;
   total: number;
@@ -14,6 +16,7 @@ export async function convertScanImages(
   files: File[],
   signal: AbortSignal,
   onProgress: (progress: ScanProgress) => void,
+  assetBaseUrl?: string,
 ): Promise<Uint8Array> {
   if (files.length === 0) throw new Error('Choose one or more PNG or JPEG images.');
   const inputs: ScanInput[] = [];
@@ -28,7 +31,12 @@ export async function convertScanImages(
   if (signal.aborted) throw new DOMException('Scan import cancelled.', 'AbortError');
 
   return new Promise((resolve, reject) => {
-    const worker = new Worker(new URL('../workers/scanConversion.bootstrap.worker.ts', import.meta.url), { type: 'module', name: 'atlas-scan-converter' });
+    const workerUrl = runtimeWorkerUrl(
+      assetBaseUrl,
+      SCAN_CONVERSION_WORKER_FILE,
+      new URL('../workers/scanConversion.bootstrap.worker.ts', import.meta.url),
+    );
+    const worker = new Worker(workerUrl, { type: 'module', name: 'atlas-scan-converter' });
     const abort = () => {
       worker.terminate();
       reject(new DOMException('Scan import cancelled.', 'AbortError'));

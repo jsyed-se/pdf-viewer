@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ChevronDown, Download, FileText, FileUp, Link2, Search } from 'lucide-react';
 import { listDemoRecords, loadDemoAttachment, persistDemoAttachment, type DemoRecord } from './app/demoRepository';
-import { PdfViewerSDK } from './sdk/PdfViewerSDK';
-import type { AttachmentMetadata, PdfDocumentSource, PdfSaveRequest } from './sdk/types';
+import { PdfViewerSDK } from './sdk';
+import type { AttachmentMetadata, PdfDocumentSource, PdfSaveRequest } from './sdk';
 
 function metadataFor(source: PdfDocumentSource): AttachmentMetadata {
   const filename = source.kind === 'file' ? source.file.name : source.kind === 'bytes'
@@ -162,7 +162,8 @@ export default function App() {
           </form></details>
       </section> : <PdfViewerSDK source={source} attachment={attachment} onDirtyChange={setDirty}
         onReady={handleReady} onError={handleError}
-        onSave={attachment?.recordId ? handleSave : undefined} onCloseRequest={handleCloseRequest} />}
+        onSave={attachment?.recordId ? handleSave : undefined} onCloseRequest={handleCloseRequest}
+        showSaveConfirmation />}
     </main>
   );
 }

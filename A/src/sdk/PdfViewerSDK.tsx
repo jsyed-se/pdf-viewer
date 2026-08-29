@@ -39,13 +39,13 @@ import { DEFAULT_VIEW_STATE, rotateViewDegrees } from '../lib/phase4State';
 import { calculateScale, pagesForMode } from '../lib/viewMath';
 import { PdfEngineClient } from './engineClient';
 import { convertScanImages } from './scanConversion';
+import { pdfJsRuntimeOptions } from './runtimeAssets';
 import { documentSourceIdentity } from './sourceIdentity';
+import type { PdfSaveResult, PdfViewerSDKProps } from './publicTypes';
 import type {
   AnnotationTool,
   EngineCommand,
   EngineSnapshot,
-  PdfViewerSDKProps,
-  PdfSaveResult,
   ViewMode,
   ZoomMode,
 } from './types';
@@ -129,7 +129,9 @@ function ToolButton({
 export function PdfViewerSDK(props: PdfViewerSDKProps) {
   const {
     source,
+    assets,
     className,
+    showSaveConfirmation = false,
     onReady,
     onProgress,
     onError,
@@ -155,7 +157,9 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     onErrorRef.current = onError;
     onPasswordRequestRef.current = onPasswordRequest;
   }, [filename, onError, onPasswordRequest, onProgress, onReady, source]);
-  const engine = useMemo(() => new PdfEngineClient(), []);
+  const assetBaseUrl = assets?.baseUrl;
+  const pdfJsAssets = useMemo(() => pdfJsRuntimeOptions(assetBaseUrl), [assetBaseUrl]);
+  const engine = useMemo(() => new PdfEngineClient(assetBaseUrl), [assetBaseUrl]);
   const loadingTaskRef = useRef<PDFDocumentLoadingTask | null>(null);
   const loadingTasksPendingRetirementRef = useRef<PDFDocumentLoadingTask[]>([]);
   const pdfDocumentRef = useRef<PDFDocumentProxy | null>(null);
@@ -275,7 +279,7 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
   const loadBytesIntoViewer = useCallback(async (bytes: Uint8Array) => {
     const revision = ++documentRevision.current;
     const previousTask = loadingTaskRef.current;
-    const task = getDocument({ data: Uint8Array.from(bytes), useWasm: true });
+    const task = getDocument({ data: Uint8Array.from(bytes), useWasm: true, ...pdfJsAssets });
     loadingTaskRef.current = task;
     const next = await task.promise;
     if (revision !== documentRevision.current) {
@@ -284,7 +288,7 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     }
     if (previousTask) loadingTasksPendingRetirementRef.current.push(previousTask);
     await installPdfDocument(next, filenameRef.current, { resetPage: false, notifyReady: false });
-  }, [installPdfDocument]);
+  }, [installPdfDocument, pdfJsAssets]);
 
   useEffect(() => {
     const tasks = loadingTasksPendingRetirementRef.current.splice(0);
@@ -332,10 +336,10 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     let task: PDFDocumentLoadingTask | null = null;
     void (async () => {
       const parameters = loadSource.kind === 'url'
-        ? { url: loadSource.url, disableRange: false, disableStream: true, disableAutoFetch: true, useWasm: true }
+        ? { url: loadSource.url, disableRange: false, disableStream: true, disableAutoFetch: true, useWasm: true, ...pdfJsAssets }
         : loadSource.kind === 'file'
-          ? { data: new Uint8Array(await loadSource.file.arrayBuffer()), useWasm: true }
-          : { data: Uint8Array.from(loadSource.bytes), useWasm: true };
+          ? { data: new Uint8Array(await loadSource.file.arrayBuffer()), useWasm: true, ...pdfJsAssets }
+          : { data: Uint8Array.from(loadSource.bytes), useWasm: true, ...pdfJsAssets };
       if (revision !== documentRevision.current) return;
       task = getDocument(parameters);
       loadingTaskRef.current = task;
@@ -385,7 +389,7 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     return () => {
       retireLoadingTask(task);
     };
-  }, [engine, installPdfDocument, sourceIdentity]);
+  }, [engine, installPdfDocument, pdfJsAssets, sourceIdentity]);
 
   useEffect(() => () => {
     documentRevision.current += 1;
@@ -621,7 +625,7 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
     setScanProgress({ completed: 0, total: files.length * 2, filename: 'Reading selected images' });
     try {
       await ensureEngine();
-      const scanPdf = await convertScanImages(files, controller.signal, setScanProgress);
+      const scanPdf = await convertScanImages(files, controller.signal, setScanProgress, assetBaseUrl);
       if (controller.signal.aborted) throw new DOMException('Scan import cancelled.', 'AbortError');
       setScanProgress(undefined);
       setBusyLabel('Inserting converted scan pages…');
@@ -690,7 +694,7 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
       setEditorOpen(false);
       setSelectedPages(new Set());
       setStatus(onSave ? 'The host confirmed that the edited PDF was persisted.' : 'Changes committed to the current workspace document.');
-      if (persisted) setSaveSuccess({ result: persisted, bytes: candidate.bytes });
+      if (persisted && showSaveConfirmation) setSaveSuccess({ result: persisted, bytes: candidate.bytes });
     } catch (saveError) {
       const message = saveError instanceof Error ? saveError.message : String(saveError);
       const candidate = await engine.call({ type: 'serialize' }).catch(() => undefined);
@@ -851,11 +855,11 @@ export function PdfViewerSDK(props: PdfViewerSDKProps) {
       {saveSuccess && (
         <div className="save-dialog success" role="dialog" aria-modal="true" aria-labelledby="save-success-title">
           <CheckCircle2 />
-          <div><h2 id="save-success-title">PDF successfully uploaded</h2><p><strong>{saveSuccess.result.attachment.filename}</strong> was persisted to {saveSuccess.result.attachment.label ?? saveSuccess.result.attachment.recordId ?? 'the selected record'}.</p></div>
+          <div><h2 id="save-success-title">PDF saved</h2><p>The host confirmed that <strong>{saveSuccess.result.attachment.filename}</strong> was persisted.</p></div>
           <div className="dialog-actions">
             <button type="button" className="secondary-button" onClick={() => downloadBytes(saveSuccess.bytes, saveSuccess.result.attachment.filename)}><Download /> Download saved PDF</button>
             <button type="button" className="secondary-button" onClick={() => setSaveSuccess(null)}>Continue viewing</button>
-            {onCloseRequest && <button type="button" className="primary-button" onClick={() => { setSaveSuccess(null); onCloseRequest(); }}>Return to record</button>}
+            {onCloseRequest && <button type="button" className="primary-button" onClick={() => { setSaveSuccess(null); onCloseRequest(); }}>Close viewer</button>}
           </div>
         </div>
       )}

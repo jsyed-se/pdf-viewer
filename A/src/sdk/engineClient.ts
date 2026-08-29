@@ -1,4 +1,5 @@
 import type { EngineCommand, EngineResult } from './types';
+import { PDF_ENGINE_WORKER_FILE, runtimeWorkerUrl } from './runtimeAssets';
 
 interface PendingCall {
   resolve: (value: EngineResult) => void;
@@ -12,10 +13,17 @@ export class PdfEngineClient {
   private nextId = 1;
   private pending = new Map<number, PendingCall>();
 
+  constructor(private readonly assetBaseUrl?: string) {}
+
   private getWorker() {
     if (this.worker) return this.worker;
-    const worker = new Worker(
+    const workerUrl = runtimeWorkerUrl(
+      this.assetBaseUrl,
+      PDF_ENGINE_WORKER_FILE,
       new URL('../workers/pdfEngine.bootstrap.worker.ts', import.meta.url),
+    );
+    const worker = new Worker(
+      workerUrl,
       { type: 'module', name: 'atlas-mupdf-engine' },
     );
     let readyTimer: number | undefined;

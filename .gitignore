@@ -1,5 +1,6 @@
 node_modules/
 A/dist/
+A/dist-sdk/
 dist/
 coverage/
 *.tsbuildinfo
@@ -11,3 +12,8 @@ A/tests/fixtures/generated/
 A/.runtime-data/
 C/evidence/artifacts/generated/
 tmp/
+*.tgz
+examples/sdk-consumer/node_modules/
+examples/sdk-consumer/dist/
+examples/sdk-consumer/public/atlas-pdf-assets/
+examples/sdk-consumer/public/sample-scan.png

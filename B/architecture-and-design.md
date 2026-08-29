@@ -3,12 +3,13 @@
 ## Component Diagram
 
 ```text
-Demo host (`App`)
-  owns records, attachment metadata, navigation, persistence
-  └─ same-origin Vite demo API ── ignored `A/.runtime-data/`
-             │ typed props + lifecycle callbacks
-             ▼
-`PdfViewerSDK`
+Third-party React consumer                 Demonstration host (`App`)
+  imports only `@atlas-pdf/react-sdk`        owns records and attachments
+  and its documented CSS entry               uses a local Vite demo API
+                 │                                      │
+                 └──────── public props, types, and callbacks ────────┐
+                                                                      ▼
+Packaged SDK: `PdfViewerSDK`
   ├─ loading/view state ── PDF.js loading task + PDF.js worker
   │                         range/stream transport, page render, passwords
   ├─ viewer UI ─────────── lazy high-DPI canvases, thumbnails, fit/navigation
@@ -23,6 +24,10 @@ Demo host (`App`)
 ## SDK Integration Boundary
 
 The host supplies a discriminated `file`, `url`, or `bytes` source plus attachment metadata. It owns surrounding navigation and decides how to react to lifecycle callbacks. `onSave` receives bytes, a safe filename, PDF MIME type, attachment context, and an abort signal, then returns persisted metadata asynchronously. The SDK owns PDF behavior and commits only after host success. This keeps host storage and attachment rules out of both PDF engines.
+
+The library build places one explicit package entry between consumers and the implementation. Consumers import the component and supported types from `@atlas-pdf/react-sdk` and import its documented stylesheet; they do not import workers, engine clients, reducers, hooks, or UI modules from `A/src/`. React and React DOM remain peer dependencies so the host supplies one React runtime. The package is validated for local `npm pack` installation and is not published to npm, production-supported, or presented as an official Neubus package.
+
+The package contains a complete `dist-sdk/assets/` tree. A consumer recursively copies that tree to a hosted public directory and supplies its URL through typed `assets.baseUrl` configuration. Worker entry files resolve their hashed chunks and embedded MuPDF WebAssembly beside themselves; copying the directory as a unit avoids repository-relative paths and missing transitive assets. A packed tarball was exercised in clean development and production consumers with both worker paths and their dependencies loading successfully.
 
 ## Major Modules
 
@@ -62,7 +67,10 @@ MuPDF.js performs rotation, reorder, delete, graft/import, subset extraction, co
 
 ## Decisions and Tradeoffs
 
+- **React and TypeScript:** React provides an embeddable component boundary, while declarations and discriminated source/callback types make host integration checkable. The tradeoff is a React peer-version contract and a larger public compatibility surface.
 - **Two engines:** PDF.js has stronger browser streaming/rendering; MuPDF has stronger document mutation. Atomic serialized revisions cost CPU but prevent split-brain state.
+- **Package boundary:** One explicit entry and a narrow export list protect consumers from internal refactors. A separate library build and packed-consumer validation add build complexity but prove that the SDK works outside its source repository.
+- **Runtime assets:** A recursive hosted copy plus typed `assets.baseUrl` is explicit and bundler-neutral, but it adds a consumer deployment step. The PDF.js worker is embedded as a data URL; PDF.js CMaps, standard fonts, and decoder WASM are hosted beside the MuPDF document worker, scan worker, hashed chunks, and embedded MuPDF WASM.
 - **Performance:** Lazy rendering, range-only remote acquisition, and capped device scale avoid fetching or rendering every page. `PdfEngineClient` creates the MuPDF worker only on the first processing command, so its ~10 MB WASM payload is not loaded by idle viewing. Unedited print/export can use PDF.js bytes directly.
 - **History:** Serialized pre-operation revisions make structural undo reliable but increase worker memory for large documents and long editing sessions. Save, Cancel, and document replacement reset session history.
 - **Accessibility:** Semantic toolbars, live regions, visible focus, button-based reorder, and PDF.js text layers support keyboard workflows and selectable page text. Full tagged-PDF reading order still depends on source quality.
@@ -73,7 +81,7 @@ MuPDF.js performs rotation, reorder, delete, graft/import, subset extraction, co
 
 ## Licensing
 
-MuPDF.js 1.28.0 is AGPL-3.0-or-later, so the application uses the same license. The repository carries the full license, dependency notice, exact lock file, deployed source notice, the public application source URL, and the pinned MuPDF 1.28.0 source tag. The built app serves license/source-offer files. PDF.js is Apache-2.0.
+MuPDF.js 1.28.0 is AGPL-3.0-or-later, so the application uses the same license. Packaging MuPDF in a React SDK does not remove those obligations. Distribution or network deployment may create source-disclosure and other AGPL duties, and proprietary distribution may require a commercial license from Artifex. The repository carries the full license, dependency notice, exact lock file, deployed source notice, the public application source URL, and the pinned MuPDF 1.28.0 source tag. The built app serves license/source-offer files. PDF.js is Apache-2.0. This summary is not legal advice.
 
 ## Privacy and Security
 
