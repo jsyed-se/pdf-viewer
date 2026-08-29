@@ -418,5 +418,3 @@ Report:
 7. Regression status
 8. Remaining intentional differences
 9. Final delivery readiness
-
-
